@@ -22,6 +22,25 @@ OG_IMAGE_PATTERN = re.compile(
 
 PICKS = [
     {"team": "Boca Juniors", "url": "https://www.gmkitsc.com/1986-1988-Boca-Juniors-Home-Retro-Soccer-Jersey-p28018753.html"},
+    {"team": "Boca Juniors", "url": "https://www.gmkitsc.com/25-26-Boca-Juniors-Home-Fans-Soccer-Jersey-p27999208.html"},
+    {"team": "Boca Juniors", "url": "https://www.gmkitsc.com/25-26-Boca-Juniors-Away-Fans-Soccer-Jersey-p28219074.html"},
+    {"team": "Boca Juniors", "url": "https://www.gmkitsc.com/2001-Boca-Juniors-Away-Retro-Soccer-Jersey-p19927222.html"},
+    {"team": "Boca Juniors", "url": "https://www.gmkitsc.com/2001-Boca-Juniors-Home-Retro-Soccer-Jersey-p18034105.html"},
+    {"team": "Boca Juniors", "url": "https://www.gmkitsc.com/1999-Boca-Juniors-Away-Retro-Soccer-Jersey-p19388936.html"},
+    {"team": "Boca Juniors", "url": "https://www.gmkitsc.com/1999-2000-Boca-Juniors-Third-Retro-Soccer-Jersey-p28233543.html"},
+    {"team": "Boca Juniors", "url": "https://www.gmkitsc.com/1999-Boca-Juniors-Away-White-Retro-Soccer-Jersey-p18043414.html"},
+    {"team": "Boca Juniors", "url": "https://www.gmkitsc.com/1999-2000-Boca-Juniors-Home-Retro-Soccer-Jersey-p18034566.html"},
+    {"team": "Boca Juniors", "url": "https://www.gmkitsc.com/1998-1999-Boca-Juniors-Home-Retro-Soccer-Jersey-p18034765.html"},
+    {"team": "Boca Juniors", "url": "https://www.gmkitsc.com/1996-1997-Boca-Juniors-Home-Retro-Soccer-Jersey-p18034082.html"},
+    {"team": "Boca Juniors", "url": "https://www.gmkitsc.com/1996-1997-Boca-Juniors-Away-Retro-Soccer-Jersey-p18034061.html"},
+    {"team": "Boca Juniors", "url": "https://www.gmkitsc.com/2002-Boca-Juniors-Away-Retro-Soccer-Jersey-p18034671.html"},
+    {"team": "Boca Juniors", "url": "https://www.gmkitsc.com/2002-Boca-Juniors-Home-Retro-Soccer-Jersey-p18034364.html"},
+    {"team": "Boca Juniors", "url": "https://www.gmkitsc.com/2003-2004-Boca-juniors-Home-Retro-Soccer-Jersey-p20485300.html"},
+    {"team": "Boca Juniors", "url": "https://www.gmkitsc.com/2006-2007-Boca-Juniors-Home-Retro-Soccer-Jersey-p27621553.html"},
+    {"team": "Boca Juniors", "url": "https://www.gmkitsc.com/1981-Boca-Juniors-Home-Retro-Soccer-Jersey-p18034750.html"},
+    {"team": "Boca Juniors", "url": "https://www.gmkitsc.com/1993-1995-Boca-Juniors-Home-Retro-Soccer-Jersey-p18036995.html"},
+    {"team": "Boca Juniors", "url": "https://www.gmkitsc.com/1996-1997-Boca-Home-Long-Sleeve-Retro-Soccer-Jersey-%E9%95%BF%E8%A2%96-p27559748.html"},
+    {"team": "Boca Juniors", "url": "https://www.gmkitsc.com/1994-Boca-Juniors-Away-White-Retro-Soccer-Jersey-%E8%83%8C%E5%90%8E%E5%B8%A6%E5%B9%BF%E5%91%8A-p18037178.html"},
     {"team": "River Plate", "url": "https://www.gmkitsc.com/1996-1997-River-Plate-Third-Retro-Soccer-Jersey-p28857752.html"},
     {"team": "Barcelona", "url": "https://www.gmkitsc.com/25-26-BAR-Black-Joint-Edition-1-1-Fans-Soccer-Jersey-p28359752.html"},
     {"team": "Real Madrid", "url": "https://www.gmkitsc.com/2004-2005-RMA-Third-Retro-Soccer-Jersey-p27061835.html"},
@@ -147,6 +166,8 @@ def sanitize_product_name(name: str) -> str:
     cleaned = re.sub(r"\([^)]*(?:VIS|NDA)[^)]*\)", " ", cleaned, flags=re.I)
     cleaned = cleaned.replace("()", " ")
     cleaned = cleaned.replace("..", " ")
+    cleaned = re.sub(r"\bBoca juniors\b", "Boca Juniors", cleaned, flags=re.I)
+    cleaned = re.sub(r"\bLeverKusen\b", "Leverkusen", cleaned, flags=re.I)
     return re.sub(r"\s+", " ", cleaned).strip(" -")
 
 

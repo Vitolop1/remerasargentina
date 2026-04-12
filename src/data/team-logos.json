@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-12T16:33:41.793564+00:00",
+  "generatedAt": "2026-04-12T17:43:32.353652+00:00",
   "source": "wikipedia.org",
   "teams": {
     "Argentina": {
@@ -96,6 +96,11 @@
       "sourcePage": "https://en.wikipedia.org/wiki/Liverpool_F.C.",
       "imageUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/Liverpool_FC.svg/960px-Liverpool_FC.svg.png",
       "path": "/crests/liverpool.png"
+    },
+    "Leverkusen": {
+      "sourcePage": "https://en.wikipedia.org/wiki/Bayer_04_Leverkusen",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/5/59/Bayer_04_Leverkusen_logo.svg/1280px-Bayer_04_Leverkusen_logo.svg.png",
+      "path": "/crests/leverkusen.png"
     },
     "Manchester City": {
       "sourcePage": "https://en.wikipedia.org/wiki/Manchester_City_F.C.",

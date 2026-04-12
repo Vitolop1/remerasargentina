@@ -33,6 +33,7 @@ TEAM_PAGES = {
     "Inter": "https://en.wikipedia.org/wiki/Inter_Milan",
     "Juventus": "https://en.wikipedia.org/wiki/Juventus_FC",
     "Liverpool": "https://en.wikipedia.org/wiki/Liverpool_F.C.",
+    "Leverkusen": "https://en.wikipedia.org/wiki/Bayer_04_Leverkusen",
     "Manchester City": "https://en.wikipedia.org/wiki/Manchester_City_F.C.",
     "Manchester United": "https://en.wikipedia.org/wiki/Manchester_United_F.C.",
     "Portugal": "https://en.wikipedia.org/wiki/Portugal_national_football_team",

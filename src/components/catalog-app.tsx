@@ -57,6 +57,7 @@ const FEATURED_CLUB_TEAMS = [
   "PSG",
   "Inter",
   "AC Milan",
+  "Leverkusen",
 ] as const;
 
 const REQUIRED_RETRO_GROUPS = [
@@ -125,7 +126,12 @@ function translateProductName(value: string) {
     .replace(/\bHome\b/gi, "Titular")
     .replace(/\bAway\b/gi, "Alternativa")
     .replace(/\bThird\b/gi, "Tercera")
+    .replace(/\bFourth\b/gi, "Cuarta")
     .replace(/\bPlayer\b/gi, "Version jugador")
+    .replace(/\bLong Sleeve\b/gi, "Manga larga")
+    .replace(/\bSpecial Edition\b/gi, "Edicion especial")
+    .replace(/\bJoint Edition\b/gi, "Edicion conjunta")
+    .replace(/\bAnniversary\b/gi, "Aniversario")
     .replace(/\bUCL Final\b/gi, "Final Champions")
     .replace(/\bUCL\b/gi, "Champions")
     .replace(/\bWC2022\b/gi, "Mundial 2022")

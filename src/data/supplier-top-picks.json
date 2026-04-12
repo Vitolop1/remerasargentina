@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-12T17:36:28.169204+00:00",
+  "generatedAt": "2026-04-12T17:46:00.215591+00:00",
   "supplier": "gmkitsc.com",
   "products": [
     {
@@ -11,9 +11,9 @@
       "player": "Sin nombre",
       "eraLabel": "1986-1988",
       "tags": [
+        "Titular",
         "Retro",
-        "Boca Juniors",
-        "Titular"
+        "Boca Juniors"
       ],
       "sourceUrl": "https://www.gmkitsc.com/1986-1988-Boca-Juniors-Home-Retro-Soccer-Jersey-p28018753.html",
       "image": "/top-picks/1986-1988-boca-juniors-home-retro-soccer-jersey/01.jpg",
@@ -25,6 +25,417 @@
       ]
     },
     {
+      "id": "25-26-boca-juniors-home-fans-soccer-jersey",
+      "name": "25-26 Boca Juniors Home Fans Soccer Jersey",
+      "shortName": "25-26 Boca Juniors Home",
+      "team": "Boca Juniors",
+      "collection": "Clubes",
+      "player": "Sin nombre",
+      "eraLabel": "25-26",
+      "tags": [
+        "Titular",
+        "Boca Juniors"
+      ],
+      "sourceUrl": "https://www.gmkitsc.com/25-26-Boca-Juniors-Home-Fans-Soccer-Jersey-p27999208.html",
+      "image": "/top-picks/25-26-boca-juniors-home-fans-soccer-jersey/01.jpg",
+      "gallery": [
+        "/top-picks/25-26-boca-juniors-home-fans-soccer-jersey/01.jpg",
+        "/top-picks/25-26-boca-juniors-home-fans-soccer-jersey/02.png",
+        "/top-picks/25-26-boca-juniors-home-fans-soccer-jersey/03.jpg",
+        "/top-picks/25-26-boca-juniors-home-fans-soccer-jersey/04.png",
+        "/top-picks/25-26-boca-juniors-home-fans-soccer-jersey/05.jpg"
+      ]
+    },
+    {
+      "id": "25-26-boca-juniors-away-fans-soccer-jersey",
+      "name": "25-26 Boca Juniors Away Fans Soccer Jersey",
+      "shortName": "25-26 Boca Juniors Away",
+      "team": "Boca Juniors",
+      "collection": "Clubes",
+      "player": "Sin nombre",
+      "eraLabel": "25-26",
+      "tags": [
+        "Alternativa",
+        "Boca Juniors"
+      ],
+      "sourceUrl": "https://www.gmkitsc.com/25-26-Boca-Juniors-Away-Fans-Soccer-Jersey-p28219074.html",
+      "image": "/top-picks/25-26-boca-juniors-away-fans-soccer-jersey/01.jpg",
+      "gallery": [
+        "/top-picks/25-26-boca-juniors-away-fans-soccer-jersey/01.jpg",
+        "/top-picks/25-26-boca-juniors-away-fans-soccer-jersey/02.png",
+        "/top-picks/25-26-boca-juniors-away-fans-soccer-jersey/03.jpg",
+        "/top-picks/25-26-boca-juniors-away-fans-soccer-jersey/04.png",
+        "/top-picks/25-26-boca-juniors-away-fans-soccer-jersey/05.jpg"
+      ]
+    },
+    {
+      "id": "2001-boca-juniors-away-retro-soccer-jersey",
+      "name": "2001 Boca Juniors Away Retro Soccer Jersey",
+      "shortName": "2001 Boca Juniors Away Retro",
+      "team": "Boca Juniors",
+      "collection": "Clubes",
+      "player": "Sin nombre",
+      "eraLabel": "2001",
+      "tags": [
+        "Retro",
+        "Alternativa",
+        "Boca Juniors"
+      ],
+      "sourceUrl": "https://www.gmkitsc.com/2001-Boca-Juniors-Away-Retro-Soccer-Jersey-p19927222.html",
+      "image": "/top-picks/2001-boca-juniors-away-retro-soccer-jersey/01.jpg",
+      "gallery": [
+        "/top-picks/2001-boca-juniors-away-retro-soccer-jersey/01.jpg",
+        "/top-picks/2001-boca-juniors-away-retro-soccer-jersey/02.jpg"
+      ]
+    },
+    {
+      "id": "2001-boca-juniors-home-retro-soccer-jersey",
+      "name": "2001 Boca Juniors Home Retro Soccer Jersey",
+      "shortName": "2001 Boca Juniors Home Retro",
+      "team": "Boca Juniors",
+      "collection": "Clubes",
+      "player": "Sin nombre",
+      "eraLabel": "2001",
+      "tags": [
+        "Titular",
+        "Retro",
+        "Boca Juniors"
+      ],
+      "sourceUrl": "https://www.gmkitsc.com/2001-Boca-Juniors-Home-Retro-Soccer-Jersey-p18034105.html",
+      "image": "/top-picks/2001-boca-juniors-home-retro-soccer-jersey/01.jpg",
+      "gallery": [
+        "/top-picks/2001-boca-juniors-home-retro-soccer-jersey/01.jpg",
+        "/top-picks/2001-boca-juniors-home-retro-soccer-jersey/02.jpg"
+      ]
+    },
+    {
+      "id": "1999-boca-juniors-away-retro-soccer-jersey",
+      "name": "1999 Boca Juniors Away Retro Soccer Jersey",
+      "shortName": "1999 Boca Juniors Away Retro",
+      "team": "Boca Juniors",
+      "collection": "Clubes",
+      "player": "Sin nombre",
+      "eraLabel": "1999",
+      "tags": [
+        "Retro",
+        "Alternativa",
+        "Boca Juniors"
+      ],
+      "sourceUrl": "https://www.gmkitsc.com/1999-Boca-Juniors-Away-Retro-Soccer-Jersey-p19388936.html",
+      "image": "/top-picks/1999-boca-juniors-away-retro-soccer-jersey/01.jpg",
+      "gallery": [
+        "/top-picks/1999-boca-juniors-away-retro-soccer-jersey/01.jpg",
+        "/top-picks/1999-boca-juniors-away-retro-soccer-jersey/02.jpg"
+      ]
+    },
+    {
+      "id": "1999-2000-boca-juniors-third-retro-soccer-jersey",
+      "name": "1999-2000 Boca Juniors Third Retro Soccer Jersey",
+      "shortName": "1999-2000 Boca Juniors Third Retro",
+      "team": "Boca Juniors",
+      "collection": "Clubes",
+      "player": "Sin nombre",
+      "eraLabel": "1999-2000",
+      "tags": [
+        "Retro",
+        "Boca Juniors",
+        "Tercera"
+      ],
+      "sourceUrl": "https://www.gmkitsc.com/1999-2000-Boca-Juniors-Third-Retro-Soccer-Jersey-p28233543.html",
+      "image": "/top-picks/1999-2000-boca-juniors-third-retro-soccer-jersey/01.jpg",
+      "gallery": [
+        "/top-picks/1999-2000-boca-juniors-third-retro-soccer-jersey/01.jpg",
+        "/top-picks/1999-2000-boca-juniors-third-retro-soccer-jersey/02.jpg"
+      ]
+    },
+    {
+      "id": "1999-boca-juniors-away-white-retro-soccer-jersey",
+      "name": "1999 Boca Juniors Away White Retro Soccer Jersey",
+      "shortName": "1999 Boca Juniors Away White Retro",
+      "team": "Boca Juniors",
+      "collection": "Clubes",
+      "player": "Sin nombre",
+      "eraLabel": "1999",
+      "tags": [
+        "Retro",
+        "Alternativa",
+        "Boca Juniors"
+      ],
+      "sourceUrl": "https://www.gmkitsc.com/1999-Boca-Juniors-Away-White-Retro-Soccer-Jersey-p18043414.html",
+      "image": "/top-picks/1999-boca-juniors-away-white-retro-soccer-jersey/01.jpg",
+      "gallery": [
+        "/top-picks/1999-boca-juniors-away-white-retro-soccer-jersey/01.jpg",
+        "/top-picks/1999-boca-juniors-away-white-retro-soccer-jersey/02.jpg",
+        "/top-picks/1999-boca-juniors-away-white-retro-soccer-jersey/03.jpg",
+        "/top-picks/1999-boca-juniors-away-white-retro-soccer-jersey/04.jpg",
+        "/top-picks/1999-boca-juniors-away-white-retro-soccer-jersey/05.jpg",
+        "/top-picks/1999-boca-juniors-away-white-retro-soccer-jersey/06.jpg"
+      ]
+    },
+    {
+      "id": "1999-2000-boca-juniors-home-retro-soccer-jersey",
+      "name": "1999-2000 Boca Juniors Home Retro Soccer Jersey",
+      "shortName": "1999-2000 Boca Juniors Home Retro",
+      "team": "Boca Juniors",
+      "collection": "Clubes",
+      "player": "Sin nombre",
+      "eraLabel": "1999-2000",
+      "tags": [
+        "Titular",
+        "Retro",
+        "Boca Juniors"
+      ],
+      "sourceUrl": "https://www.gmkitsc.com/1999-2000-Boca-Juniors-Home-Retro-Soccer-Jersey-p18034566.html",
+      "image": "/top-picks/1999-2000-boca-juniors-home-retro-soccer-jersey/01.jpg",
+      "gallery": [
+        "/top-picks/1999-2000-boca-juniors-home-retro-soccer-jersey/01.jpg",
+        "/top-picks/1999-2000-boca-juniors-home-retro-soccer-jersey/02.jpg",
+        "/top-picks/1999-2000-boca-juniors-home-retro-soccer-jersey/03.jpg",
+        "/top-picks/1999-2000-boca-juniors-home-retro-soccer-jersey/04.jpg",
+        "/top-picks/1999-2000-boca-juniors-home-retro-soccer-jersey/05.jpg",
+        "/top-picks/1999-2000-boca-juniors-home-retro-soccer-jersey/06.jpg"
+      ]
+    },
+    {
+      "id": "1998-1999-boca-juniors-home-retro-soccer-jersey",
+      "name": "1998-1999 Boca Juniors Home Retro Soccer Jersey",
+      "shortName": "1998-1999 Boca Juniors Home Retro",
+      "team": "Boca Juniors",
+      "collection": "Clubes",
+      "player": "Sin nombre",
+      "eraLabel": "1998-1999",
+      "tags": [
+        "Titular",
+        "Retro",
+        "Boca Juniors"
+      ],
+      "sourceUrl": "https://www.gmkitsc.com/1998-1999-Boca-Juniors-Home-Retro-Soccer-Jersey-p18034765.html",
+      "image": "/top-picks/1998-1999-boca-juniors-home-retro-soccer-jersey/01.jpg",
+      "gallery": [
+        "/top-picks/1998-1999-boca-juniors-home-retro-soccer-jersey/01.jpg",
+        "/top-picks/1998-1999-boca-juniors-home-retro-soccer-jersey/02.jpeg"
+      ]
+    },
+    {
+      "id": "1996-1997-boca-juniors-home-retro-soccer-jersey",
+      "name": "1996-1997 Boca Juniors Home Retro Soccer Jersey",
+      "shortName": "1996-1997 Boca Juniors Home Retro",
+      "team": "Boca Juniors",
+      "collection": "Clubes",
+      "player": "Sin nombre",
+      "eraLabel": "1996-1997",
+      "tags": [
+        "Titular",
+        "Retro",
+        "Boca Juniors"
+      ],
+      "sourceUrl": "https://www.gmkitsc.com/1996-1997-Boca-Juniors-Home-Retro-Soccer-Jersey-p18034082.html",
+      "image": "/top-picks/1996-1997-boca-juniors-home-retro-soccer-jersey/01.jpg",
+      "gallery": [
+        "/top-picks/1996-1997-boca-juniors-home-retro-soccer-jersey/01.jpg",
+        "/top-picks/1996-1997-boca-juniors-home-retro-soccer-jersey/02.jpg"
+      ]
+    },
+    {
+      "id": "1996-1997-boca-juniors-away-retro-soccer-jersey",
+      "name": "1996-1997 Boca Juniors Away Retro Soccer Jersey",
+      "shortName": "1996-1997 Boca Juniors Away Retro",
+      "team": "Boca Juniors",
+      "collection": "Clubes",
+      "player": "Sin nombre",
+      "eraLabel": "1996-1997",
+      "tags": [
+        "Retro",
+        "Alternativa",
+        "Boca Juniors"
+      ],
+      "sourceUrl": "https://www.gmkitsc.com/1996-1997-Boca-Juniors-Away-Retro-Soccer-Jersey-p18034061.html",
+      "image": "/top-picks/1996-1997-boca-juniors-away-retro-soccer-jersey/01.jpg",
+      "gallery": [
+        "/top-picks/1996-1997-boca-juniors-away-retro-soccer-jersey/01.jpg",
+        "/top-picks/1996-1997-boca-juniors-away-retro-soccer-jersey/02.jpg",
+        "/top-picks/1996-1997-boca-juniors-away-retro-soccer-jersey/03.jpg",
+        "/top-picks/1996-1997-boca-juniors-away-retro-soccer-jersey/04.jpg",
+        "/top-picks/1996-1997-boca-juniors-away-retro-soccer-jersey/05.jpg",
+        "/top-picks/1996-1997-boca-juniors-away-retro-soccer-jersey/06.jpg"
+      ]
+    },
+    {
+      "id": "2002-boca-juniors-away-retro-soccer-jersey",
+      "name": "2002 Boca Juniors Away Retro Soccer Jersey",
+      "shortName": "2002 Boca Juniors Away Retro",
+      "team": "Boca Juniors",
+      "collection": "Clubes",
+      "player": "Sin nombre",
+      "eraLabel": "2002",
+      "tags": [
+        "Retro",
+        "Alternativa",
+        "Boca Juniors"
+      ],
+      "sourceUrl": "https://www.gmkitsc.com/2002-Boca-Juniors-Away-Retro-Soccer-Jersey-p18034671.html",
+      "image": "/top-picks/2002-boca-juniors-away-retro-soccer-jersey/01.jpg",
+      "gallery": [
+        "/top-picks/2002-boca-juniors-away-retro-soccer-jersey/01.jpg",
+        "/top-picks/2002-boca-juniors-away-retro-soccer-jersey/02.jpg"
+      ]
+    },
+    {
+      "id": "2002-boca-juniors-home-retro-soccer-jersey",
+      "name": "2002 Boca Juniors Home Retro Soccer Jersey",
+      "shortName": "2002 Boca Juniors Home Retro",
+      "team": "Boca Juniors",
+      "collection": "Clubes",
+      "player": "Sin nombre",
+      "eraLabel": "2002",
+      "tags": [
+        "Titular",
+        "Retro",
+        "Boca Juniors"
+      ],
+      "sourceUrl": "https://www.gmkitsc.com/2002-Boca-Juniors-Home-Retro-Soccer-Jersey-p18034364.html",
+      "image": "/top-picks/2002-boca-juniors-home-retro-soccer-jersey/01.jpg",
+      "gallery": [
+        "/top-picks/2002-boca-juniors-home-retro-soccer-jersey/01.jpg",
+        "/top-picks/2002-boca-juniors-home-retro-soccer-jersey/02.jpg"
+      ]
+    },
+    {
+      "id": "2003-2004-boca-juniors-home-retro-soccer-jersey",
+      "name": "2003-2004 Boca Juniors Home Retro Soccer Jersey",
+      "shortName": "2003-2004 Boca Juniors Home Retro",
+      "team": "Boca Juniors",
+      "collection": "Clubes",
+      "player": "Sin nombre",
+      "eraLabel": "2003-2004",
+      "tags": [
+        "Titular",
+        "Retro",
+        "Boca Juniors"
+      ],
+      "sourceUrl": "https://www.gmkitsc.com/2003-2004-Boca-juniors-Home-Retro-Soccer-Jersey-p20485300.html",
+      "image": "/top-picks/2003-2004-boca-juniors-home-retro-soccer-jersey/01.jpg",
+      "gallery": [
+        "/top-picks/2003-2004-boca-juniors-home-retro-soccer-jersey/01.jpg",
+        "/top-picks/2003-2004-boca-juniors-home-retro-soccer-jersey/02.jpg",
+        "/top-picks/2003-2004-boca-juniors-home-retro-soccer-jersey/03.jpg",
+        "/top-picks/2003-2004-boca-juniors-home-retro-soccer-jersey/04.jpg",
+        "/top-picks/2003-2004-boca-juniors-home-retro-soccer-jersey/05.jpg",
+        "/top-picks/2003-2004-boca-juniors-home-retro-soccer-jersey/06.jpg"
+      ]
+    },
+    {
+      "id": "2006-2007-boca-juniors-home-retro-soccer-jersey",
+      "name": "2006-2007 Boca Juniors Home Retro Soccer Jersey",
+      "shortName": "2006-2007 Boca Juniors Home Retro",
+      "team": "Boca Juniors",
+      "collection": "Clubes",
+      "player": "Sin nombre",
+      "eraLabel": "2006-2007",
+      "tags": [
+        "Titular",
+        "Retro",
+        "Boca Juniors"
+      ],
+      "sourceUrl": "https://www.gmkitsc.com/2006-2007-Boca-Juniors-Home-Retro-Soccer-Jersey-p27621553.html",
+      "image": "/top-picks/2006-2007-boca-juniors-home-retro-soccer-jersey/01.jpg",
+      "gallery": [
+        "/top-picks/2006-2007-boca-juniors-home-retro-soccer-jersey/01.jpg",
+        "/top-picks/2006-2007-boca-juniors-home-retro-soccer-jersey/02.jpg",
+        "/top-picks/2006-2007-boca-juniors-home-retro-soccer-jersey/03.jpg",
+        "/top-picks/2006-2007-boca-juniors-home-retro-soccer-jersey/04.jpg",
+        "/top-picks/2006-2007-boca-juniors-home-retro-soccer-jersey/05.jpg"
+      ]
+    },
+    {
+      "id": "1981-boca-juniors-home-retro-soccer-jersey",
+      "name": "1981 Boca Juniors Home Retro Soccer Jersey",
+      "shortName": "1981 Boca Juniors Home Retro",
+      "team": "Boca Juniors",
+      "collection": "Clubes",
+      "player": "Sin nombre",
+      "eraLabel": "1981",
+      "tags": [
+        "Titular",
+        "Retro",
+        "Boca Juniors"
+      ],
+      "sourceUrl": "https://www.gmkitsc.com/1981-Boca-Juniors-Home-Retro-Soccer-Jersey-p18034750.html",
+      "image": "/top-picks/1981-boca-juniors-home-retro-soccer-jersey/01.jpg",
+      "gallery": [
+        "/top-picks/1981-boca-juniors-home-retro-soccer-jersey/01.jpg",
+        "/top-picks/1981-boca-juniors-home-retro-soccer-jersey/02.jpg",
+        "/top-picks/1981-boca-juniors-home-retro-soccer-jersey/03.jpg",
+        "/top-picks/1981-boca-juniors-home-retro-soccer-jersey/04.jpg",
+        "/top-picks/1981-boca-juniors-home-retro-soccer-jersey/05.jpg",
+        "/top-picks/1981-boca-juniors-home-retro-soccer-jersey/06.jpg"
+      ]
+    },
+    {
+      "id": "1993-1995-boca-juniors-home-retro-soccer-jersey",
+      "name": "1993-1995 Boca Juniors Home Retro Soccer Jersey",
+      "shortName": "1993-1995 Boca Juniors Home Retro",
+      "team": "Boca Juniors",
+      "collection": "Clubes",
+      "player": "Sin nombre",
+      "eraLabel": "1993-1995",
+      "tags": [
+        "Titular",
+        "Retro",
+        "Boca Juniors"
+      ],
+      "sourceUrl": "https://www.gmkitsc.com/1993-1995-Boca-Juniors-Home-Retro-Soccer-Jersey-p18036995.html",
+      "image": "/top-picks/1993-1995-boca-juniors-home-retro-soccer-jersey/01.jpg",
+      "gallery": [
+        "/top-picks/1993-1995-boca-juniors-home-retro-soccer-jersey/01.jpg",
+        "/top-picks/1993-1995-boca-juniors-home-retro-soccer-jersey/02.jpg",
+        "/top-picks/1993-1995-boca-juniors-home-retro-soccer-jersey/03.jpg",
+        "/top-picks/1993-1995-boca-juniors-home-retro-soccer-jersey/04.jpg",
+        "/top-picks/1993-1995-boca-juniors-home-retro-soccer-jersey/05.jpg",
+        "/top-picks/1993-1995-boca-juniors-home-retro-soccer-jersey/06.jpg"
+      ]
+    },
+    {
+      "id": "1996-1997-boca-home-long-sleeve-retro-soccer-jersey",
+      "name": "1996-1997 Boca Home Long Sleeve Retro Soccer Jersey",
+      "shortName": "1996-1997 Boca Home Long Sleeve Retro",
+      "team": "Boca Juniors",
+      "collection": "Clubes",
+      "player": "Sin nombre",
+      "eraLabel": "1996-1997",
+      "tags": [
+        "Titular",
+        "Retro",
+        "Boca Juniors"
+      ],
+      "sourceUrl": "https://www.gmkitsc.com/1996-1997-Boca-Home-Long-Sleeve-Retro-Soccer-Jersey-%E9%95%BF%E8%A2%96-p27559748.html",
+      "image": "/top-picks/1996-1997-boca-home-long-sleeve-retro-soccer-jersey/01.jpg",
+      "gallery": [
+        "/top-picks/1996-1997-boca-home-long-sleeve-retro-soccer-jersey/01.jpg",
+        "/top-picks/1996-1997-boca-home-long-sleeve-retro-soccer-jersey/02.jpg"
+      ]
+    },
+    {
+      "id": "1994-boca-juniors-away-white-retro-soccer-jersey",
+      "name": "1994 Boca Juniors Away White Retro Soccer Jersey",
+      "shortName": "1994 Boca Juniors Away White Retro",
+      "team": "Boca Juniors",
+      "collection": "Clubes",
+      "player": "Sin nombre",
+      "eraLabel": "1994",
+      "tags": [
+        "Retro",
+        "Alternativa",
+        "Boca Juniors"
+      ],
+      "sourceUrl": "https://www.gmkitsc.com/1994-Boca-Juniors-Away-White-Retro-Soccer-Jersey-%E8%83%8C%E5%90%8E%E5%B8%A6%E5%B9%BF%E5%91%8A-p18037178.html",
+      "image": "/top-picks/1994-boca-juniors-away-white-retro-soccer-jersey/01.jpg",
+      "gallery": [
+        "/top-picks/1994-boca-juniors-away-white-retro-soccer-jersey/01.jpg",
+        "/top-picks/1994-boca-juniors-away-white-retro-soccer-jersey/02.jpg"
+      ]
+    },
+    {
       "id": "1996-1997-river-plate-third-retro-soccer-jersey",
       "name": "1996-1997 River Plate Third Retro Soccer Jersey",
       "shortName": "1996-1997 River Plate Third Retro",
@@ -33,9 +444,9 @@
       "player": "Sin nombre",
       "eraLabel": "1996-1997",
       "tags": [
-        "River Plate",
         "Retro",
-        "Tercera"
+        "Tercera",
+        "River Plate"
       ],
       "sourceUrl": "https://www.gmkitsc.com/1996-1997-River-Plate-Third-Retro-Soccer-Jersey-p28857752.html",
       "image": "/top-picks/1996-1997-river-plate-third-retro-soccer-jersey/01.jpg",
@@ -53,8 +464,8 @@
       "player": "Sin nombre",
       "eraLabel": "25-26",
       "tags": [
-        "Barcelona",
-        "Edicion especial"
+        "Edicion especial",
+        "Barcelona"
       ],
       "sourceUrl": "https://www.gmkitsc.com/25-26-BAR-Black-Joint-Edition-1-1-Fans-Soccer-Jersey-p28359752.html",
       "image": "/top-picks/25-26-bar-black-joint-edition-1-1-fans-soccer-jersey/01.jpg",
@@ -76,8 +487,8 @@
       "player": "Sin nombre",
       "eraLabel": "2004-2005",
       "tags": [
-        "Retro",
         "Real Madrid",
+        "Retro",
         "Tercera"
       ],
       "sourceUrl": "https://www.gmkitsc.com/2004-2005-RMA-Third-Retro-Soccer-Jersey-p27061835.html",
@@ -100,9 +511,9 @@
       "player": "Sin nombre",
       "eraLabel": "1997-1998",
       "tags": [
+        "Titular",
         "AC Milan",
-        "Retro",
-        "Titular"
+        "Retro"
       ],
       "sourceUrl": "https://www.gmkitsc.com/1997-1998-ACM-Home-Retro-Soccer-Jersey-p28687074.html",
       "image": "/top-picks/1997-1998-acm-home-retro-soccer-jersey/01.jpg",
@@ -148,8 +559,8 @@
       "player": "Sin nombre",
       "eraLabel": "2006-2007",
       "tags": [
-        "Liverpool",
-        "Retro"
+        "Retro",
+        "Liverpool"
       ],
       "sourceUrl": "https://www.gmkitsc.com/2006-2007-LIV-Yellow-Retro-Soccer-Jersey-p28746932.html",
       "image": "/top-picks/2006-2007-liv-yellow-retro-soccer-jersey/01.jpg",
@@ -169,8 +580,8 @@
       "player": "Sin nombre",
       "eraLabel": "2003-2004",
       "tags": [
-        "Retro",
         "Manchester United",
+        "Retro",
         "Alternativa"
       ],
       "sourceUrl": "https://www.gmkitsc.com/2003-2004-Man-Utd-Away-Retro-Soccer-Jersey-p25062009.html",
@@ -193,9 +604,9 @@
       "player": "Sin nombre",
       "eraLabel": "1986-1987",
       "tags": [
-        "Manchester City",
+        "Titular",
         "Retro",
-        "Titular"
+        "Manchester City"
       ],
       "sourceUrl": "https://www.gmkitsc.com/1986-1987-Man-City-Home-Retro-Soccer-Jersey-p28511705.html",
       "image": "/top-picks/1986-1987-man-city-home-retro-soccer-jersey/01.jpg",
@@ -215,9 +626,9 @@
       "player": "Sin nombre",
       "eraLabel": "2009-2010",
       "tags": [
-        "Chelsea",
+        "Titular",
         "Retro",
-        "Titular"
+        "Chelsea"
       ],
       "sourceUrl": "https://www.gmkitsc.com/2009-2010-CHE-Home-Retro-Soccer-Jersey-p27903330.html",
       "image": "/top-picks/2009-2010-che-home-retro-soccer-jersey/01.jpg",
@@ -239,9 +650,9 @@
       "player": "Sin nombre",
       "eraLabel": "1992-1994",
       "tags": [
+        "Arsenal",
         "Retro",
-        "Alternativa",
-        "Arsenal"
+        "Alternativa"
       ],
       "sourceUrl": "https://www.gmkitsc.com/1992-1994-ARS-Away-Retro-Soccer-Jersey-p28843338.html",
       "image": "/top-picks/1992-1994-ars-away-retro-soccer-jersey/01.jpg",
@@ -262,9 +673,9 @@
       "player": "Sin nombre",
       "eraLabel": "2016-2017",
       "tags": [
-        "Retro",
         "Juventus",
-        "Titular"
+        "Titular",
+        "Retro"
       ],
       "sourceUrl": "https://www.gmkitsc.com/2016-2017-JUV-Home-Retro-Soccer-Jersey-p28327293.html",
       "image": "/top-picks/2016-2017-juv-home-retro-soccer-jersey/01.jpg",
@@ -285,8 +696,8 @@
       "player": "Sin nombre",
       "eraLabel": "2003-2004",
       "tags": [
-        "Edicion especial",
         "Retro",
+        "Edicion especial",
         "Atletico Madrid"
       ],
       "sourceUrl": "https://www.gmkitsc.com/2003-2004-ATM-100th-Anniversary-Retro-Soccer-Jersey-p28202668.html",
@@ -306,8 +717,8 @@
       "player": "Sin nombre",
       "eraLabel": "1996-1997",
       "tags": [
-        "Retro",
         "Alternativa",
+        "Retro",
         "Borussia Dortmund"
       ],
       "sourceUrl": "https://www.gmkitsc.com/1996-1997-Dortmund-UCL-Away-Retro-Soccer-Jersey-p28018848.html",
@@ -321,15 +732,15 @@
     },
     {
       "id": "1999-2000-leverkusen-home-retro-soccer-jersey",
-      "name": "1999-2000 LeverKusen Home Retro Soccer Jersey",
+      "name": "1999-2000 Leverkusen Home Retro Soccer Jersey",
       "shortName": "1999-2000 Leverkusen Home Retro",
       "team": "Leverkusen",
       "collection": "Clubes",
       "player": "Sin nombre",
       "eraLabel": "1999-2000",
       "tags": [
-        "Retro",
         "Titular",
+        "Retro",
         "Leverkusen"
       ],
       "sourceUrl": "https://www.gmkitsc.com/1999-2000-LeverKusen-Home-Retro-Soccer-Jersey-p28886561.html",
@@ -397,9 +808,9 @@
       "player": "Sin nombre",
       "eraLabel": "2006-2007",
       "tags": [
+        "Flamengo",
         "Titular",
-        "Retro",
-        "Flamengo"
+        "Retro"
       ],
       "sourceUrl": "https://www.gmkitsc.com/2006-2007-Flamengo-Home-Retro-Soccer-Jersey-p27880844.html",
       "image": "/top-picks/2006-2007-flamengo-home-retro-soccer-jersey/01.jpg",
@@ -417,9 +828,9 @@
       "player": "Sin nombre",
       "eraLabel": "2007-2008",
       "tags": [
+        "Titular",
         "Retro",
-        "Boca Juniors",
-        "Titular"
+        "Boca Juniors"
       ],
       "sourceUrl": "https://www.gmkitsc.com/2007-2008-Boca-Juniors-Home-Retro-Soccer-Jersey-p28204633.html",
       "image": "/top-picks/2007-2008-boca-juniors-home-retro-soccer-jersey/01.jpg",
@@ -439,9 +850,9 @@
       "player": "Sin nombre",
       "eraLabel": "1992-1993",
       "tags": [
-        "River Plate",
         "Retro",
-        "Alternativa"
+        "Alternativa",
+        "River Plate"
       ],
       "sourceUrl": "https://www.gmkitsc.com/1992-1993-River-Plate-Away-Retro-Soccer-Jersey-p28765078.html",
       "image": "/top-picks/1992-1993-river-plate-away-retro-soccer-jersey/01.jpg",
@@ -459,8 +870,8 @@
       "player": "Sin nombre",
       "eraLabel": "25-26",
       "tags": [
-        "Barcelona",
-        "Edicion especial"
+        "Edicion especial",
+        "Barcelona"
       ],
       "sourceUrl": "https://www.gmkitsc.com/25-26-BAR-Purple-Joint-Edition-Fans-Soccer-Jersey-p28478443.html",
       "image": "/top-picks/25-26-bar-purple-joint-edition-fans-soccer-jersey/01.jpg",
@@ -505,9 +916,9 @@
       "player": "Sin nombre",
       "eraLabel": "2004-2005",
       "tags": [
+        "Retro",
         "AC Milan",
-        "Alternativa",
-        "Retro"
+        "Alternativa"
       ],
       "sourceUrl": "https://www.gmkitsc.com/2004-2005-ACM-Away-Retro-Soccer-Jersey-p28300840.html",
       "image": "/top-picks/2004-2005-acm-away-retro-soccer-jersey/01.jpg",
@@ -551,9 +962,9 @@
       "player": "Sin nombre",
       "eraLabel": "2008-2009",
       "tags": [
-        "Liverpool",
         "Retro",
-        "Tercera"
+        "Tercera",
+        "Liverpool"
       ],
       "sourceUrl": "https://www.gmkitsc.com/2008-2009-LIV-Third-Retro-Soccer-Jersey-p28687081.html",
       "image": "/top-picks/2008-2009-liv-third-retro-soccer-jersey/01.jpg",
@@ -574,9 +985,9 @@
       "player": "Sin nombre",
       "eraLabel": "2011-2012",
       "tags": [
-        "Retro",
         "Manchester United",
-        "Titular"
+        "Titular",
+        "Retro"
       ],
       "sourceUrl": "https://www.gmkitsc.com/2011-2012-Man-Utd-Home-Retro-Soccer-Jersey-p28682212.html",
       "image": "/top-picks/2011-2012-man-utd-home-retro-soccer-jersey/01.jpg",
@@ -598,9 +1009,9 @@
       "player": "Sin nombre",
       "eraLabel": "2018-2019",
       "tags": [
-        "Manchester City",
+        "Titular",
         "Retro",
-        "Titular"
+        "Manchester City"
       ],
       "sourceUrl": "https://www.gmkitsc.com/2018-2019-Man-City-Home-Retro-Soccer-Jersey-p28089235.html",
       "image": "/top-picks/2018-2019-man-city-home-retro-soccer-jersey/01.jpg",
@@ -620,8 +1031,8 @@
       "player": "Sin nombre",
       "eraLabel": "1998",
       "tags": [
-        "Chelsea",
-        "Retro"
+        "Retro",
+        "Chelsea"
       ],
       "sourceUrl": "https://www.gmkitsc.com/1998-CHE-White-Out-Retro-Soccer-Jersey-p28711301.html",
       "image": "/top-picks/1998-che-white-out-retro-soccer-jersey/01.jpg",
@@ -643,9 +1054,9 @@
       "player": "Sin nombre",
       "eraLabel": "2010-2011",
       "tags": [
-        "Retro",
         "Arsenal",
-        "Titular"
+        "Titular",
+        "Retro"
       ],
       "sourceUrl": "https://www.gmkitsc.com/2010-2011-ARS-Home-Retro-Soccer-Jersey-p28690922.html",
       "image": "/top-picks/2010-2011-ars-home-retro-soccer-jersey/01.jpg",
@@ -667,8 +1078,8 @@
       "player": "Sin nombre",
       "eraLabel": "2014-2015",
       "tags": [
-        "Retro",
         "Juventus",
+        "Retro",
         "Alternativa"
       ],
       "sourceUrl": "https://www.gmkitsc.com/2014-2015-JUV-Away-Retro-Soccer-Jersey-p28600941.html",
@@ -715,8 +1126,8 @@
       "player": "Sin nombre",
       "eraLabel": "25-26",
       "tags": [
-        "Borussia Dortmund",
-        "Edicion especial"
+        "Edicion especial",
+        "Borussia Dortmund"
       ],
       "sourceUrl": "https://www.gmkitsc.com/25-26-Dortmund-Rote-Erde-100th-Anniversary-Fans-Soccer-Jersey-p28892746.html",
       "image": "/top-picks/25-26-dortmund-rote-erde-100th-anniversary-fans-soccer-jersey/01.jpg",
@@ -784,9 +1195,9 @@
       "player": "Sin nombre",
       "eraLabel": "2002-2003",
       "tags": [
+        "Flamengo",
         "Titular",
-        "Retro",
-        "Flamengo"
+        "Retro"
       ],
       "sourceUrl": "https://www.gmkitsc.com/2002-2003-Flamengo-Home-Retro-Soccer-Jersey-p27966542.html",
       "image": "/top-picks/2002-2003-flamengo-home-retro-soccer-jersey/01.jpg",
@@ -828,8 +1239,8 @@
       "player": "Sin nombre",
       "eraLabel": "25-26",
       "tags": [
-        "River Plate",
-        "Titular"
+        "Titular",
+        "River Plate"
       ],
       "sourceUrl": "https://www.gmkitsc.com/25-26-River-Plate-Home-Fans-Soccer-Jersey-p28096183.html",
       "image": "/top-picks/25-26-river-plate-home-fans-soccer-jersey/01.jpg",
@@ -851,9 +1262,9 @@
       "player": "Sin nombre",
       "eraLabel": "1990-1992",
       "tags": [
-        "Barcelona",
         "Retro",
-        "Alternativa"
+        "Alternativa",
+        "Barcelona"
       ],
       "sourceUrl": "https://www.gmkitsc.com/1990-1992-BAR-Away-Retro-Soccer-Jersey-p28367900.html",
       "image": "/top-picks/1990-1992-bar-away-retro-soccer-jersey/01.jpg",
@@ -943,8 +1354,8 @@
       "player": "Sin nombre",
       "eraLabel": "25-26",
       "tags": [
-        "Liverpool",
-        "Alternativa"
+        "Alternativa",
+        "Liverpool"
       ],
       "sourceUrl": "https://www.gmkitsc.com/25-26-LIV-Away-1-1-Fans-Soccer-Jersey-p28361214.html",
       "image": "/top-picks/25-26-liv-away-1-1-fans-soccer-jersey/01.jpg",
@@ -989,8 +1400,8 @@
       "player": "Sin nombre",
       "eraLabel": "26-27",
       "tags": [
-        "Manchester City",
-        "Titular"
+        "Titular",
+        "Manchester City"
       ],
       "sourceUrl": "https://www.gmkitsc.com/26-27-Man-City-Home-1-1-Fans-Soccer-Jersey-p28747897.html",
       "image": "/top-picks/26-27-man-city-home-1-1-fans-soccer-jersey/01.jpg",
@@ -1012,9 +1423,9 @@
       "player": "Sin nombre",
       "eraLabel": "25-26",
       "tags": [
+        "Titular",
         "Edicion especial",
-        "Chelsea",
-        "Titular"
+        "Chelsea"
       ],
       "sourceUrl": "https://www.gmkitsc.com/25-26-CHE-Home-120th-Anniversary-Fans-Soccer-Jersey-%E5%91%A8%E5%B9%B4%E7%89%88-p28408849.html",
       "image": "/top-picks/25-26-che-home-120th-anniversary-fans-soccer-jersey/01.jpg",
@@ -1105,8 +1516,8 @@
       "player": "Sin nombre",
       "eraLabel": "26-27",
       "tags": [
-        "Borussia Dortmund",
-        "Titular"
+        "Titular",
+        "Borussia Dortmund"
       ],
       "sourceUrl": "https://www.gmkitsc.com/26-27-Dortmund-Home-Fans-Soccer-Jersey-p28751756.html",
       "image": "/top-picks/26-27-dortmund-home-fans-soccer-jersey/01.jpg",
@@ -1151,9 +1562,9 @@
       "player": "Sin nombre",
       "eraLabel": "25-26",
       "tags": [
-        "Edicion especial",
+        "Cuarta",
         "PSG",
-        "Cuarta"
+        "Edicion especial"
       ],
       "sourceUrl": "https://www.gmkitsc.com/25-26-PSG-Jordan-Fourth-1-1-Fans-Soccer-jersey-p28572567.html",
       "image": "/top-picks/25-26-psg-jordan-fourth-1-1-fans-soccer-jersey/01.jpg",
