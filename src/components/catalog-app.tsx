@@ -15,6 +15,7 @@ type CartItem = {
 type Customer = {
   name: string;
   phone: string;
+  email: string;
   zone: string;
   instagram: string;
   notes: string;
@@ -26,6 +27,7 @@ type GalleryState = {
 };
 
 type CatalogAppProps = CatalogSummary & {
+  orderEmail?: string;
   whatsappNumber?: string;
   whatsappDisplay?: string;
   paymentAlias?: string;
@@ -33,12 +35,44 @@ type CatalogAppProps = CatalogSummary & {
 };
 
 const DEPOSIT_RATE = 0.5;
+const ORIGINAL_PRICE_ARS = 79000;
 
 function depositFor(amount: number) {
   return Math.round(amount * DEPOSIT_RATE);
 }
 
-function buildOrderMessage(
+function translateProductName(value: string) {
+  return value
+    .replace(/\bHome\b/gi, "Titular")
+    .replace(/\bAway\b/gi, "Alternativa")
+    .replace(/\bThird\b/gi, "Tercera")
+    .replace(/\bPlayer\b/gi, "Version jugador")
+    .replace(/\bUCL Final\b/gi, "Final Champions")
+    .replace(/\bUCL\b/gi, "Champions")
+    .replace(/\bWC2022\b/gi, "Mundial 2022")
+    .replace(/\bWC\b/gi, "Mundial")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function translateTag(tag: string) {
+  switch (tag) {
+    case "Home":
+      return "Titular";
+    case "Away":
+      return "Alternativa";
+    case "Third":
+      return "Tercera";
+    case "Player":
+      return "Version jugador";
+    case "UCL":
+      return "Champions";
+    default:
+      return tag;
+  }
+}
+
+function buildOrderText(
   items: Array<{
     product: CatalogProduct;
     size: string;
@@ -47,29 +81,33 @@ function buildOrderMessage(
   customer: Customer,
   totalArs: number,
   depositArs: number,
-  paymentAlias?: string,
+  orderEmail?: string,
 ) {
   const itemLines = items.map(
     ({ product, size, quantity }) =>
-      `- ${product.shortName} | talle ${size} | x${quantity} | ${formatArs(product.priceArs * quantity)}`,
+      `- ${translateProductName(product.shortName)} | talle ${size} | x${quantity} | ${formatArs(
+        product.priceArs * quantity,
+      )}`,
   );
 
   return [
-    "Hola, quiero reservar estas remeras:",
+    "Hola, quiero pedir estas remeras:",
     "",
     ...itemLines,
     "",
-    `Total: ${formatArs(totalArs)}`,
-    `Sena para reservar (50%): ${formatArs(depositArs)}`,
-    paymentAlias ? `Alias para transferir: ${paymentAlias}` : "Necesito el alias o el QR para transferir la sena.",
+    `Total promocional: ${formatArs(totalArs)}`,
+    `Sena estimada (50%): ${formatArs(depositArs)}`,
     "",
     `Nombre: ${customer.name || "-"}`,
     `Telefono: ${customer.phone || "-"}`,
+    `Mail: ${customer.email || "-"}`,
     `Zona: ${customer.zone || "-"}`,
     `Instagram: ${customer.instagram || "-"}`,
     `Notas: ${customer.notes || "-"}`,
     "",
-    "Cuando transfiera, te mando el comprobante por este chat.",
+    orderEmail
+      ? `Mandame la confirmacion a ${orderEmail} y despues coordinamos la sena y la entrega.`
+      : "Despues coordinamos la sena y la entrega.",
   ].join("\n");
 }
 
@@ -78,12 +116,14 @@ export function CatalogApp({
   teams,
   sizes,
   settings,
+  orderEmail,
   whatsappNumber,
   whatsappDisplay = "+1 704 676 2602",
   paymentAlias,
   paymentQrPath,
 }: CatalogAppProps) {
   const [query, setQuery] = useState("");
+  const [collectionFilter, setCollectionFilter] = useState("Todas");
   const [teamFilter, setTeamFilter] = useState("Todos");
   const [sizeFilter, setSizeFilter] = useState("Todos");
   const [selectedSizes, setSelectedSizes] = useState<Record<string, string>>(
@@ -93,6 +133,7 @@ export function CatalogApp({
   const [customer, setCustomer] = useState<Customer>({
     name: "",
     phone: "",
+    email: "",
     zone: "Salta Capital",
     instagram: "",
     notes: "",
@@ -102,22 +143,36 @@ export function CatalogApp({
   const [gallery, setGallery] = useState<GalleryState | null>(null);
 
   const cleanWhatsapp = normalizeWhatsapp(whatsappNumber);
+  const collections = useMemo(() => [...new Set(products.map((product) => product.collection))], [products]);
 
   const featuredProducts = useMemo(() => {
     return products.filter((product) => product.image).slice(0, 3);
   }, [products]);
 
+  const collectionShowcases = useMemo(() => {
+    return collections
+      .map((collection) => products.find((product) => product.collection === collection))
+      .filter(Boolean) as CatalogProduct[];
+  }, [collections, products]);
+
+  const teamShowcases = useMemo(() => {
+    return teams
+      .map((team) => products.find((product) => product.team === team))
+      .filter(Boolean) as CatalogProduct[];
+  }, [products, teams]);
+
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
       const matchesQuery = !query || product.searchText.includes(query.toLowerCase());
+      const matchesCollection = collectionFilter === "Todas" || product.collection === collectionFilter;
       const matchesTeam = teamFilter === "Todos" || product.team === teamFilter;
       const matchesSize =
         sizeFilter === "Todos" ||
         product.sizeOptions.some((option) => option.size === sizeFilter && option.stock > 0);
 
-      return matchesQuery && matchesTeam && matchesSize;
+      return matchesQuery && matchesCollection && matchesTeam && matchesSize;
     });
-  }, [products, query, teamFilter, sizeFilter]);
+  }, [collectionFilter, products, query, sizeFilter, teamFilter]);
 
   const cartDetails = useMemo(() => {
     return cart
@@ -153,10 +208,16 @@ export function CatalogApp({
 
   const depositArs = depositFor(totals.ars);
   const remainingArs = Math.max(totals.ars - depositArs, 0);
-  const canReserve = cartDetails.length > 0 && customer.name.trim() !== "" && customer.phone.trim() !== "";
-  const orderMessage = buildOrderMessage(cartDetails, customer, totals.ars, depositArs, paymentAlias);
+  const canSendOrder =
+    cartDetails.length > 0 && customer.name.trim() !== "" && customer.phone.trim() !== "";
+  const orderText = buildOrderText(cartDetails, customer, totals.ars, depositArs, orderEmail);
   const whatsappHref = cleanWhatsapp
-    ? `https://wa.me/${cleanWhatsapp}?text=${encodeURIComponent(orderMessage)}`
+    ? `https://wa.me/${cleanWhatsapp}?text=${encodeURIComponent(orderText)}`
+    : "#";
+  const emailHref = orderEmail
+    ? `mailto:${orderEmail}?subject=${encodeURIComponent(
+        `Pedido web - ${customer.name || "Cliente"}`,
+      )}&body=${encodeURIComponent(orderText)}`
     : "#";
   const otherJerseyHref = cleanWhatsapp
     ? `https://wa.me/${cleanWhatsapp}?text=${encodeURIComponent(
@@ -252,7 +313,7 @@ export function CatalogApp({
   }
 
   async function copyOrder() {
-    await navigator.clipboard.writeText(orderMessage);
+    await navigator.clipboard.writeText(orderText);
     setCopiedOrder(true);
     window.setTimeout(() => setCopiedOrder(false), 1800);
   }
@@ -295,13 +356,13 @@ export function CatalogApp({
 
                 <div className="flex flex-wrap gap-2 text-sm">
                   <span className="rounded-[8px] border border-white/18 bg-white/8 px-3 py-2">
-                    {settings.unitsForSale} listas
+                    {teams.length} equipos
                   </span>
                   <span className="rounded-[8px] border border-white/18 bg-white/8 px-3 py-2">
                     {products.length} modelos
                   </span>
                   <span className="rounded-[8px] border border-white/18 bg-white/8 px-3 py-2">
-                    {formatArs(settings.defaultSalePriceArs)}
+                    {formatArs(settings.defaultSalePriceArs)} promo
                   </span>
                 </div>
               </div>
@@ -351,7 +412,9 @@ export function CatalogApp({
                     <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
                     <div className="absolute inset-x-0 bottom-0 p-4">
                       <p className="text-xs uppercase tracking-[0.16em] text-white/70">{product.collection}</p>
-                      <p className="mt-1 text-sm font-semibold text-white">{product.shortName}</p>
+                      <p className="mt-1 text-sm font-semibold text-white">
+                        {translateProductName(product.shortName)}
+                      </p>
                     </div>
                   </button>
                 ))}
@@ -387,15 +450,126 @@ export function CatalogApp({
           </div>
         </section>
 
+        <section className="mt-8 rounded-[8px] border border-[var(--line)] bg-[var(--surface)] p-6">
+          <div className="grid gap-8 xl:grid-cols-[0.95fr_1.25fr]">
+            <div>
+              <div className="mb-4 flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">Explorar</p>
+                  <h2 className="mt-1 text-2xl font-semibold">Por categoria</h2>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setCollectionFilter("Todas")}
+                  className="rounded-[8px] border border-[var(--line)] px-3 py-2 text-sm font-semibold"
+                >
+                  Ver todo
+                </button>
+              </div>
+
+              <div className="grid gap-3 sm:grid-cols-2">
+                {collectionShowcases.map((product) => (
+                  <button
+                    key={product.collection}
+                    type="button"
+                    onClick={() => {
+                      setCollectionFilter(product.collection);
+                      setTeamFilter("Todos");
+                      document.getElementById("catalogo")?.scrollIntoView({ behavior: "smooth" });
+                    }}
+                    className="group relative min-h-[10rem] overflow-hidden rounded-[8px] border border-[var(--line)] text-left"
+                  >
+                    {product.image ? (
+                      <Image
+                        src={product.image}
+                        alt={product.collection}
+                        fill
+                        className="object-cover transition duration-300 group-hover:scale-[1.02]"
+                        sizes="(max-width: 640px) 100vw, 50vw"
+                      />
+                    ) : null}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent" />
+                    <div className="absolute inset-x-0 bottom-0 p-4">
+                      <p className="text-xs uppercase tracking-[0.16em] text-white/70">Categoria</p>
+                      <p className="mt-1 text-xl font-semibold text-white">{product.collection}</p>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <div className="mb-4 flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">Explorar</p>
+                  <h2 className="mt-1 text-2xl font-semibold">Por equipo</h2>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setCollectionFilter("Todas");
+                    setTeamFilter("Todos");
+                  }}
+                  className="rounded-[8px] border border-[var(--line)] px-3 py-2 text-sm font-semibold"
+                >
+                  Limpiar filtros
+                </button>
+              </div>
+
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {teamShowcases.map((product) => (
+                  <button
+                    key={product.team}
+                    type="button"
+                    onClick={() => {
+                      setCollectionFilter("Todas");
+                      setTeamFilter(product.team);
+                      document.getElementById("catalogo")?.scrollIntoView({ behavior: "smooth" });
+                    }}
+                    className="group relative min-h-[8.5rem] overflow-hidden rounded-[8px] border border-[var(--line)] text-left"
+                  >
+                    {product.image ? (
+                      <Image
+                        src={product.image}
+                        alt={product.team}
+                        fill
+                        className="object-cover transition duration-300 group-hover:scale-[1.02]"
+                        sizes="(max-width: 1024px) 50vw, 33vw"
+                      />
+                    ) : null}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
+                    <div className="absolute inset-x-0 bottom-0 p-4">
+                      <p className="text-xs uppercase tracking-[0.16em] text-white/70">Equipo</p>
+                      <p className="mt-1 text-lg font-semibold text-white">{product.team}</p>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
         <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_25rem]">
           <section id="catalogo" className="min-w-0">
-            <div className="grid gap-3 border-y border-[var(--line)] py-4 md:grid-cols-[minmax(0,1fr)_12rem_10rem]">
+            <div className="grid gap-3 border-y border-[var(--line)] py-4 xl:grid-cols-[minmax(0,1fr)_12rem_12rem_10rem]">
               <input
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder="Messi, Boca, Argentina, Milan..."
                 className="rounded-[8px] border border-[var(--line)] bg-[var(--surface)] px-4 py-3 text-sm"
               />
+              <select
+                value={collectionFilter}
+                onChange={(event) => setCollectionFilter(event.target.value)}
+                className="rounded-[8px] border border-[var(--line)] bg-[var(--surface)] px-4 py-3 text-sm"
+              >
+                <option value="Todas">Todas las categorias</option>
+                {collections.map((collection) => (
+                  <option key={collection} value={collection}>
+                    {collection}
+                  </option>
+                ))}
+              </select>
               <select
                 value={teamFilter}
                 onChange={(event) => setTeamFilter(event.target.value)}
@@ -425,7 +599,6 @@ export function CatalogApp({
             <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
               {filteredProducts.map((product) => {
                 const selectedSize = getSelectedSize(product);
-                const availableUnits = selectedSize ? availableForSelection(product, selectedSize) : 0;
 
                 return (
                   <article
@@ -457,13 +630,10 @@ export function CatalogApp({
                         <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">
                           {product.collection}
                         </p>
-                        <h2 className="mt-1 text-lg font-semibold leading-6">{product.shortName}</h2>
+                        <h2 className="mt-1 text-lg font-semibold leading-6">
+                          {translateProductName(product.shortName)}
+                        </h2>
                       </div>
-                      {product.featured ? (
-                        <span className="rounded-[8px] bg-[var(--accent)] px-2 py-1 text-xs font-semibold text-white">
-                          Sale rapido
-                        </span>
-                      ) : null}
                     </div>
 
                     <div className="mt-3 flex flex-wrap gap-2 text-xs text-[var(--muted)]">
@@ -480,23 +650,25 @@ export function CatalogApp({
                           key={tag}
                           className="rounded-[8px] border border-[var(--line)] px-2 py-1 text-xs text-[var(--muted)]"
                         >
-                          {tag}
+                          {translateTag(tag)}
                         </span>
                       ))}
                     </div>
 
                     <div className="mt-5">
-                      <p className="text-xs uppercase tracking-[0.14em] text-[var(--muted)]">Precio final</p>
+                      <p className="text-xs uppercase tracking-[0.14em] text-[var(--muted)]">Precio promocional</p>
+                      <p className="mt-1 text-sm text-[var(--muted)] line-through">
+                        {formatArs(ORIGINAL_PRICE_ARS)}
+                      </p>
                       <p className="mt-1 text-2xl font-semibold">{formatArs(product.priceArs)}</p>
                       <p className="mt-1 text-sm text-[var(--muted)]">
-                        Sena para reservar: {formatArs(depositFor(product.priceArs))}
+                        Sena estimada: {formatArs(depositFor(product.priceArs))}
                       </p>
                     </div>
 
                     <div className="mt-5 flex flex-wrap gap-2">
                       {product.sizeOptions.map((option) => {
                         const active = selectedSize === option.size;
-                        const remaining = availableForSelection(product, option.size);
 
                         return (
                           <button
@@ -514,7 +686,7 @@ export function CatalogApp({
                                 : "border-[var(--line)]"
                             }`}
                           >
-                            {option.size} ({remaining})
+                            {option.size}
                           </button>
                         );
                       })}
@@ -532,10 +704,9 @@ export function CatalogApp({
                         <button
                           type="button"
                           onClick={() => addToCart(product)}
-                          disabled={availableUnits === 0}
-                          className="rounded-[8px] bg-[var(--accent-2)] px-4 py-3 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:bg-[var(--line)] disabled:text-[var(--muted)]"
+                          className="rounded-[8px] bg-[var(--accent-2)] px-4 py-3 text-sm font-semibold text-white"
                         >
-                          {availableUnits === 0 ? "Sin stock" : "Reservar"}
+                          Agregar
                         </button>
                       </div>
                     </div>
@@ -548,8 +719,8 @@ export function CatalogApp({
           <aside className="h-fit rounded-[8px] border border-[var(--line)] bg-[var(--surface)] p-5 lg:sticky lg:top-6">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-xs uppercase tracking-[0.18em] text-[var(--muted)]">Reserva</p>
-                <h2 className="mt-1 text-xl font-semibold">Cerralo por WhatsApp</h2>
+                <p className="text-xs uppercase tracking-[0.18em] text-[var(--muted)]">Pedido</p>
+                <h2 className="mt-1 text-xl font-semibold">Arma tu carrito</h2>
               </div>
               <span className="rounded-[8px] bg-[var(--foreground)] px-3 py-2 text-sm font-semibold text-[var(--surface)]">
                 {totals.units}
@@ -558,20 +729,20 @@ export function CatalogApp({
 
             <div className="mt-5 space-y-3 rounded-[8px] border border-[var(--line)] bg-[var(--background)] p-4 text-sm">
               <p className="font-semibold">1. Elegi remera y talle.</p>
-              <p className="font-semibold">2. Transferi la sena del 50%.</p>
-              <p className="font-semibold">3. Manda el comprobante por WhatsApp.</p>
+              <p className="font-semibold">2. Envia el pedido por mail o WhatsApp.</p>
+              <p className="font-semibold">3. Te confirmamos llegada, precio final y sena.</p>
             </div>
 
             <div className="mt-5 space-y-3 border-b border-[var(--line)] pb-5">
               {cartDetails.length === 0 ? (
                 <p className="text-sm text-[var(--muted)]">
-                  Agrega tus remeras y te dejamos el mensaje listo para copiar o mandar.
+                  Agrega tus remeras y te dejamos el pedido listo para enviar.
                 </p>
               ) : (
                 cartDetails.map((item) => (
                   <div key={`${item.product.id}-${item.size}`} className="flex items-start justify-between gap-4">
                     <div className="min-w-0">
-                      <p className="text-sm font-medium">{item.product.shortName}</p>
+                      <p className="text-sm font-medium">{translateProductName(item.product.shortName)}</p>
                       <p className="text-xs text-[var(--muted)]">
                         Talle {item.size} / {formatArs(item.product.priceArs)}
                       </p>
@@ -613,6 +784,12 @@ export function CatalogApp({
                 className="rounded-[8px] border border-[var(--line)] bg-[var(--background)] px-4 py-3 text-sm"
               />
               <input
+                value={customer.email}
+                onChange={(event) => updateCustomer("email", event.target.value)}
+                placeholder="Mail"
+                className="rounded-[8px] border border-[var(--line)] bg-[var(--background)] px-4 py-3 text-sm"
+              />
+              <input
                 value={customer.zone}
                 onChange={(event) => updateCustomer("zone", event.target.value)}
                 placeholder="Barrio o ciudad"
@@ -636,21 +813,25 @@ export function CatalogApp({
             <div className="mt-5 space-y-4 rounded-[8px] border border-[var(--line)] bg-[var(--background)] p-4">
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-[var(--muted)]">Total</span>
+                  <span className="text-[var(--muted)]">Precio original</span>
+                  <strong className="line-through">{formatArs(ORIGINAL_PRICE_ARS * totals.units)}</strong>
+                </div>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-[var(--muted)]">Total promocional</span>
                   <strong>{formatArs(totals.ars)}</strong>
                 </div>
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-[var(--muted)]">Sena para reservar</span>
+                  <span className="text-[var(--muted)]">Sena estimada</span>
                   <strong>{formatArs(depositArs)}</strong>
                 </div>
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-[var(--muted)]">Saldo al entregar</span>
+                  <span className="text-[var(--muted)]">Saldo estimado</span>
                   <strong>{formatArs(remainingArs)}</strong>
                 </div>
               </div>
 
               <div className="rounded-[8px] border border-[var(--line)] bg-[var(--surface)] p-4">
-                <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">Pago</p>
+                <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">Como sigue</p>
                 {paymentAlias ? (
                   <div className="mt-3 space-y-3">
                     <div className="rounded-[8px] border border-[var(--line)] bg-[var(--background)] px-3 py-3">
@@ -669,8 +850,8 @@ export function CatalogApp({
                   </div>
                 ) : (
                   <p className="mt-3 text-sm text-[var(--muted)]">
-                    En cuanto me pases el alias o el QR, lo dejo conectado aca para que te puedan
-                    transferir directo.
+                    Cuando confirmemos disponibilidad, te pasamos por mail o por WhatsApp el alias o el
+                    QR para la sena.
                   </p>
                 )}
 
@@ -681,7 +862,8 @@ export function CatalogApp({
                 ) : null}
 
                 <p className="mt-4 text-sm text-[var(--muted)]">
-                  Despues de transferir la sena, manda la captura del comprobante por WhatsApp.
+                  Primero recibimos el pedido y despues coordinamos la compra, la sena y la fecha de
+                  entrega.
                 </p>
               </div>
             </div>
@@ -693,20 +875,31 @@ export function CatalogApp({
                 disabled={cartDetails.length === 0}
                 className="rounded-[8px] border border-[var(--foreground)] px-4 py-3 text-sm font-semibold disabled:cursor-not-allowed disabled:border-[var(--line)] disabled:text-[var(--muted)]"
               >
-                {copiedOrder ? "Mensaje copiado" : "Copiar mensaje"}
+                {copiedOrder ? "Pedido copiado" : "Copiar pedido"}
               </button>
 
               <a
-                href={canReserve ? whatsappHref : "#"}
+                href={canSendOrder ? emailHref : "#"}
+                className={`rounded-[8px] px-4 py-3 text-center text-sm font-semibold text-white ${
+                  canSendOrder && orderEmail
+                    ? "bg-[var(--foreground)]"
+                    : "pointer-events-none bg-[var(--line)] text-[var(--muted)]"
+                }`}
+              >
+                Enviar pedido por mail
+              </a>
+
+              <a
+                href={canSendOrder ? whatsappHref : "#"}
                 target="_blank"
                 rel="noreferrer"
                 className={`rounded-[8px] px-4 py-3 text-center text-sm font-semibold text-white ${
-                  canReserve
+                  canSendOrder
                     ? "bg-[var(--accent)]"
                     : "pointer-events-none bg-[var(--line)] text-[var(--muted)]"
                 }`}
               >
-                Quiero reservar y enviar comprobante
+                Hablar por WhatsApp
               </a>
             </div>
           </aside>
@@ -721,7 +914,9 @@ export function CatalogApp({
                 <p className="text-xs uppercase tracking-[0.16em] text-white/70">
                   {activeGalleryProduct.collection}
                 </p>
-                <h3 className="mt-1 text-xl font-semibold">{activeGalleryProduct.shortName}</h3>
+                <h3 className="mt-1 text-xl font-semibold">
+                  {translateProductName(activeGalleryProduct.shortName)}
+                </h3>
               </div>
               <button
                 type="button"

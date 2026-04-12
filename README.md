@@ -8,6 +8,7 @@ Crear un archivo `.env.local` con:
 
 ```bash
 ADMIN_PASSWORD=tu-clave
+NEXT_PUBLIC_ORDER_EMAIL=lopresttivito@gmail.com
 NEXT_PUBLIC_WHATSAPP_NUMBER=17046762602
 NEXT_PUBLIC_PAYMENT_ALIAS=tu.alias.mp
 NEXT_PUBLIC_PAYMENT_QR_PATH=/payments/qr.png

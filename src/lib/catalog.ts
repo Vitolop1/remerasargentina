@@ -7,6 +7,13 @@ const supplierImagePayload = supplierImages as {
   products: Record<string, { images: Array<{ path: string }> }>;
 };
 const SIZE_ORDER = ["S", "M", "L", "XL", "XXL", "XXXL"];
+const PREORDER_SIZES = ["S", "M", "L", "XL", "XXL"] as const;
+const REMOVED_PRODUCTS = new Set([
+  "1981 Boca Juniors Home #10 MARADONA",
+  "1996-97 Argentina Home #10 MEMI",
+  "2005-06 BAR Away UCL #10 Ronaldinho",
+]);
+const PROMO_PRICE_ARS = 64999;
 
 const TEAM_RULES = [
   "Argentina",
@@ -89,12 +96,6 @@ function buildShortName(name: string) {
     .trim();
 }
 
-function sortSizes(sizeOptions: Map<string, number>) {
-  return [...sizeOptions.entries()]
-    .sort((a, b) => SIZE_ORDER.indexOf(a[0]) - SIZE_ORDER.indexOf(b[0]))
-    .map(([size, stock]) => ({ size, stock }));
-}
-
 function buildTags(line: CatalogOrderLine, team: string) {
   const tags = new Set<string>([team]);
 
@@ -141,6 +142,10 @@ export function getCatalogData(): CatalogSummary {
 
   for (const line of catalogPayload.orderLines) {
     const key = compactWhitespace(line.name);
+    if (REMOVED_PRODUCTS.has(key)) {
+      continue;
+    }
+
     const existing = grouped.get(key);
 
     if (existing) {
@@ -157,13 +162,13 @@ export function getCatalogData(): CatalogSummary {
   }
 
   const products: CatalogProduct[] = [...grouped.values()]
-    .map(({ baseLine, totalStock, sizeOptions }) => {
+    .map(({ baseLine }) => {
       const team = detectTeam(baseLine.name);
       const player = extractPlayer(baseLine.name);
       const eraLabel = extractEra(baseLine.name);
       const tags = buildTags(baseLine, team);
-      const priceUsd = catalogPayload.settings.defaultSalePriceUsd;
-      const priceArs = Math.round(priceUsd * catalogPayload.settings.exchangeRateArsPerUsd);
+      const priceArs = PROMO_PRICE_ARS;
+      const priceUsd = Number((priceArs / catalogPayload.settings.exchangeRateArsPerUsd).toFixed(2));
       const supplierMatch = supplierImagePayload.products[baseLine.name];
       const gallery = supplierMatch?.images.map((image) => image.path) ?? [];
 
@@ -175,8 +180,8 @@ export function getCatalogData(): CatalogSummary {
         team,
         collection: detectCollection(team),
         player,
-        totalStock,
-        sizeOptions: sortSizes(sizeOptions),
+        totalStock: 999,
+        sizeOptions: PREORDER_SIZES.map((size) => ({ size, stock: 999 })),
         image: choosePrimaryImage(gallery),
         gallery,
         priceUsd,
@@ -201,12 +206,16 @@ export function getCatalogData(): CatalogSummary {
     });
 
   return {
-    settings: catalogPayload.settings,
+    settings: {
+      ...catalogPayload.settings,
+      defaultSalePriceArs: PROMO_PRICE_ARS,
+      defaultSalePriceUsd: Number(
+        (PROMO_PRICE_ARS / catalogPayload.settings.exchangeRateArsPerUsd).toFixed(2),
+      ),
+    },
     products,
     teams: [...new Set(products.map((product) => product.team))],
-    sizes: SIZE_ORDER.filter((size) =>
-      products.some((product) => product.sizeOptions.some((option) => option.size === size)),
-    ),
+    sizes: SIZE_ORDER.filter((size) => PREORDER_SIZES.includes(size as (typeof PREORDER_SIZES)[number])),
   };
 }
 
