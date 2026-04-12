@@ -31,6 +31,8 @@ type CatalogAppProps = CatalogSummary & {
   whatsappNumber?: string;
   whatsappDisplay?: string;
   paymentAlias?: string;
+  paymentCvu?: string;
+  paymentAccountName?: string;
   paymentQrPath?: string;
 };
 
@@ -90,7 +92,7 @@ function translateTeamName(team: string) {
     case "Brazil":
       return "Brasil";
     case "Spain":
-      return "España";
+      return "Espana";
     case "France":
       return "Francia";
     case "Germany":
@@ -166,6 +168,8 @@ export function CatalogApp({
   whatsappNumber,
   whatsappDisplay = "+1 704 676 2602",
   paymentAlias,
+  paymentCvu,
+  paymentAccountName,
   paymentQrPath,
 }: CatalogAppProps) {
   const [query, setQuery] = useState("");
@@ -186,6 +190,7 @@ export function CatalogApp({
   });
   const [copiedOrder, setCopiedOrder] = useState(false);
   const [copiedAlias, setCopiedAlias] = useState(false);
+  const [copiedCvu, setCopiedCvu] = useState(false);
   const [gallery, setGallery] = useState<GalleryState | null>(null);
 
   const cleanWhatsapp = normalizeWhatsapp(whatsappNumber);
@@ -378,6 +383,16 @@ export function CatalogApp({
     await navigator.clipboard.writeText(paymentAlias);
     setCopiedAlias(true);
     window.setTimeout(() => setCopiedAlias(false), 1800);
+  }
+
+  async function copyCvu() {
+    if (!paymentCvu) {
+      return;
+    }
+
+    await navigator.clipboard.writeText(paymentCvu);
+    setCopiedCvu(true);
+    window.setTimeout(() => setCopiedCvu(false), 1800);
   }
 
   return (
@@ -943,21 +958,51 @@ export function CatalogApp({
 
               <div className="rounded-[8px] border border-[var(--line)] bg-[var(--surface)] p-4">
                 <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">Como sigue</p>
-                {paymentAlias ? (
+                {paymentAlias || paymentCvu || paymentAccountName ? (
                   <div className="mt-3 space-y-3">
                     <div className="rounded-[8px] border border-[var(--line)] bg-[var(--background)] px-3 py-3">
                       <p className="text-xs text-[var(--muted)]">Alias Mercado Pago</p>
                       <code className="mt-1 block text-sm font-semibold text-[var(--foreground)]">
-                        {paymentAlias}
+                        {paymentAlias || "-"}
                       </code>
                     </div>
-                    <button
-                      type="button"
-                      onClick={copyAlias}
-                      className="w-full rounded-[8px] border border-[var(--foreground)] px-4 py-3 text-sm font-semibold"
-                    >
-                      {copiedAlias ? "Alias copiado" : "Copiar alias"}
-                    </button>
+
+                    {paymentCvu ? (
+                      <div className="rounded-[8px] border border-[var(--line)] bg-[var(--background)] px-3 py-3">
+                        <p className="text-xs text-[var(--muted)]">CVU</p>
+                        <code className="mt-1 block break-all text-sm font-semibold text-[var(--foreground)]">
+                          {paymentCvu}
+                        </code>
+                      </div>
+                    ) : null}
+
+                    {paymentAccountName ? (
+                      <div className="rounded-[8px] border border-[var(--line)] bg-[var(--background)] px-3 py-3">
+                        <p className="text-xs text-[var(--muted)]">Titular</p>
+                        <p className="mt-1 text-sm font-semibold text-[var(--foreground)]">
+                          {paymentAccountName}
+                        </p>
+                      </div>
+                    ) : null}
+
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      <button
+                        type="button"
+                        onClick={copyAlias}
+                        disabled={!paymentAlias}
+                        className="w-full rounded-[8px] border border-[var(--foreground)] px-4 py-3 text-sm font-semibold disabled:cursor-not-allowed disabled:border-[var(--line)] disabled:text-[var(--muted)]"
+                      >
+                        {copiedAlias ? "Alias copiado" : "Copiar alias"}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={copyCvu}
+                        disabled={!paymentCvu}
+                        className="w-full rounded-[8px] border border-[var(--foreground)] px-4 py-3 text-sm font-semibold disabled:cursor-not-allowed disabled:border-[var(--line)] disabled:text-[var(--muted)]"
+                      >
+                        {copiedCvu ? "CVU copiado" : "Copiar CVU"}
+                      </button>
+                    </div>
                   </div>
                 ) : (
                   <p className="mt-3 text-sm text-[var(--muted)]">
