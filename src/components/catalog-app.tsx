@@ -270,96 +270,98 @@ export function CatalogApp({
   return (
     <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)]">
       <header className="border-b border-[var(--line)] bg-[var(--surface)]">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
-          <div>
-            <p className="text-xs uppercase tracking-[0.18em] text-[var(--muted)]">Catalogo en Salta</p>
-            <h1 className="text-xl font-semibold">Remeras Argentina</h1>
+        <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
+          <div className="rounded-[8px] bg-[#111820] px-4 py-5 text-white sm:px-6">
+            <div className="flex flex-col gap-5">
+              <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-[8px] bg-white p-2">
+                    <Image
+                      src="/images/logo-remeras-argentina.png"
+                      alt="Logo Remeras Argentina"
+                      fill
+                      className="object-contain p-2"
+                      sizes="64px"
+                    />
+                  </div>
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.18em] text-white/60">Remeras en Salta</p>
+                    <h1 className="mt-1 text-2xl font-semibold sm:text-3xl">Remeras Argentina</h1>
+                    <p className="mt-1 text-sm text-white/75">
+                      Retro, seleccion y clubes. Reserva facil y coordinacion por WhatsApp.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap gap-2 text-sm">
+                  <span className="rounded-[8px] border border-white/18 bg-white/8 px-3 py-2">
+                    {settings.unitsForSale} listas
+                  </span>
+                  <span className="rounded-[8px] border border-white/18 bg-white/8 px-3 py-2">
+                    {products.length} modelos
+                  </span>
+                  <span className="rounded-[8px] border border-white/18 bg-white/8 px-3 py-2">
+                    {formatArs(settings.defaultSalePriceArs)}
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex flex-wrap gap-3">
+                <a
+                  href="#catalogo"
+                  className="rounded-[8px] bg-white px-4 py-3 text-sm font-semibold text-[#111820]"
+                >
+                  Ver catalogo
+                </a>
+                <a
+                  href={otherJerseyHref}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="rounded-[8px] border border-white/20 bg-white/8 px-4 py-3 text-sm font-semibold text-white"
+                >
+                  Pedir otra remera
+                </a>
+                <a
+                  href={otherJerseyHref}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="rounded-[8px] bg-[var(--accent)] px-4 py-3 text-sm font-semibold text-white"
+                >
+                  WhatsApp {whatsappDisplay}
+                </a>
+              </div>
+
+              <div className="grid gap-3 sm:grid-cols-3">
+                {featuredProducts.map((product) => (
+                  <button
+                    key={product.id}
+                    type="button"
+                    onClick={() => openGallery(product)}
+                    className="group relative min-h-[11rem] overflow-hidden rounded-[8px] border border-white/12 text-left"
+                  >
+                    {product.image ? (
+                      <Image
+                        src={product.image}
+                        alt={product.shortName}
+                        fill
+                        className="object-cover transition duration-300 group-hover:scale-[1.02]"
+                        sizes="(max-width: 640px) 100vw, 33vw"
+                      />
+                    ) : null}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
+                    <div className="absolute inset-x-0 bottom-0 p-4">
+                      <p className="text-xs uppercase tracking-[0.16em] text-white/70">{product.collection}</p>
+                      <p className="mt-1 text-sm font-semibold text-white">{product.shortName}</p>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
-          <a
-            href={otherJerseyHref}
-            target="_blank"
-            rel="noreferrer"
-            className="rounded-[8px] bg-[var(--accent)] px-4 py-3 text-sm font-semibold text-white transition hover:brightness-95"
-          >
-            WhatsApp {whatsappDisplay}
-          </a>
         </div>
       </header>
 
       <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <section className="grid gap-6 border-b border-[var(--line)] pb-8 lg:grid-cols-[minmax(0,1fr)_23rem]">
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--accent)]">
-              Retro, clasicas y mundialistas
-            </p>
-            <h2 className="mt-3 max-w-3xl text-4xl font-semibold leading-tight sm:text-5xl">
-              Reserva en pesos, deja la sena y cerralo por WhatsApp.
-            </h2>
-            <p className="mt-4 max-w-2xl text-base text-[var(--muted)]">
-              Elegi el modelo, elegi el talle, transferi el 50% y mandanos el comprobante. El saldo
-              se paga al entregar en Salta.
-            </p>
-
-            <div className="mt-6 flex flex-wrap gap-3 text-sm">
-              <span className="rounded-[8px] border border-[var(--line)] bg-[var(--surface)] px-3 py-2">
-                {settings.unitsForSale} listas
-              </span>
-              <span className="rounded-[8px] border border-[var(--line)] bg-[var(--surface)] px-3 py-2">
-                {products.length} modelos
-              </span>
-              <span className="rounded-[8px] border border-[var(--line)] bg-[var(--surface)] px-3 py-2">
-                {settings.unitsPurchased} prendas
-              </span>
-              <span className="rounded-[8px] border border-[var(--line)] bg-[var(--surface)] px-3 py-2">
-                {formatArs(settings.defaultSalePriceArs)} por remera
-              </span>
-            </div>
-
-            <div className="mt-6 flex flex-wrap gap-3">
-              <a
-                href="#catalogo"
-                className="rounded-[8px] bg-[var(--foreground)] px-4 py-3 text-sm font-semibold text-[var(--surface)]"
-              >
-                Ver catalogo
-              </a>
-              <a
-                href={otherJerseyHref}
-                target="_blank"
-                rel="noreferrer"
-                className="rounded-[8px] border border-[var(--line)] bg-[var(--surface)] px-4 py-3 text-sm font-semibold"
-              >
-                Pedir otra remera
-              </a>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-2">
-            {featuredProducts.map((product, index) => (
-              <button
-                key={product.id}
-                type="button"
-                onClick={() => openGallery(product)}
-                className={`group relative overflow-hidden rounded-[8px] border border-[var(--line)] bg-[var(--surface)] text-left ${
-                  index === 0 ? "col-span-2 row-span-2 min-h-[20rem]" : "min-h-[9.5rem]"
-                }`}
-              >
-                {product.image ? (
-                  <Image
-                    src={product.image}
-                    alt={product.shortName}
-                    fill
-                    className="object-cover transition duration-300 group-hover:scale-[1.02]"
-                    sizes="(max-width: 1024px) 33vw, 22vw"
-                  />
-                ) : null}
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 to-transparent p-4 text-white">
-                  <p className="text-xs uppercase tracking-[0.16em] text-white/70">{product.collection}</p>
-                  <p className="mt-1 text-sm font-semibold">{product.shortName}</p>
-                </div>
-              </button>
-            ))}
-          </div>
-        </section>
 
         <section className="mt-8 rounded-[8px] bg-[var(--accent)] px-6 py-7 text-white sm:px-8">
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-white/75">Pedido especial</p>
