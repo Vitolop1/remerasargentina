@@ -218,6 +218,8 @@ export function getCatalogData(): CatalogSummary {
   const topPickProducts: CatalogProduct[] = supplierTopPickPayload.products.map((product) => {
     const priceArs = PROMO_PRICE_ARS;
     const priceUsd = Number((priceArs / catalogPayload.settings.exchangeRateArsPerUsd).toFixed(2));
+    const heroImage = product.image ?? choosePrimaryImage(product.gallery);
+    const gallery = heroImage ? [heroImage] : [];
 
     return {
       id: product.id,
@@ -230,8 +232,8 @@ export function getCatalogData(): CatalogSummary {
       player: product.player,
       totalStock: 999,
       sizeOptions: PREORDER_SIZES.map((size) => ({ size, stock: 999 })),
-      image: choosePrimaryImage(product.gallery),
-      gallery: product.gallery,
+      image: heroImage,
+      gallery,
       priceUsd,
       priceArs,
       featured: true,

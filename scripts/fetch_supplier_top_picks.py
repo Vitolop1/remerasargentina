@@ -14,6 +14,10 @@ ROOT = Path(__file__).resolve().parent.parent
 OUTPUT_DIR = ROOT / "public" / "top-picks"
 OUTPUT_JSON = ROOT / "src" / "data" / "supplier-top-picks.json"
 SCRIPT_PATTERN = re.compile(r'<script type="application/ld\+json">\s*(?P<json>.*?)\s*</script>', re.S)
+OG_IMAGE_PATTERN = re.compile(
+    r'<meta\s+property="og:image"\s+content="(?P<url>https?://[^"]+)"',
+    re.I,
+)
 
 PICKS = [
     {
@@ -229,6 +233,13 @@ def extract_image_urls(html: str) -> list[str]:
     return urls
 
 
+def extract_og_image_url(html: str) -> str | None:
+    match = OG_IMAGE_PATTERN.search(html)
+    if not match:
+        return None
+    return match.group("url")
+
+
 def file_extension(image_url: str) -> str:
     path = urlparse(image_url).path.lower()
     suffix = Path(path).suffix
@@ -274,7 +285,21 @@ def main() -> None:
         destination_dir.mkdir(parents=True, exist_ok=True)
 
         html = session.get(pick["url"], timeout=30).text
-        image_urls = extract_image_urls(html)[:6]
+        image_urls: list[str] = []
+        seen_urls: set[str] = set()
+
+        og_image = extract_og_image_url(html)
+        if og_image:
+            image_urls.append(og_image)
+            seen_urls.add(og_image)
+
+        for image_url in extract_image_urls(html):
+            if image_url in seen_urls:
+                continue
+            seen_urls.add(image_url)
+            image_urls.append(image_url)
+
+        image_urls = image_urls[:12]
         gallery = []
 
         for index, image_url in enumerate(image_urls, start=1):
