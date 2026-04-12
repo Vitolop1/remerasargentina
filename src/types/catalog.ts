@@ -32,6 +32,7 @@ export type CatalogProduct = {
   shortName: string;
   eraLabel: string;
   team: string;
+  teamLogo: string | null;
   collection: string;
   player: string;
   totalStock: number;
@@ -41,6 +42,8 @@ export type CatalogProduct = {
   priceUsd: number;
   priceArs: number;
   featured: boolean;
+  isTopPick: boolean;
+  sourceUrl: string | null;
   tags: string[];
   searchText: string;
 };
@@ -49,5 +52,6 @@ export type CatalogSummary = {
   settings: CatalogSettings;
   products: CatalogProduct[];
   teams: string[];
+  teamLogos: Record<string, string | null>;
   sizes: string[];
 };

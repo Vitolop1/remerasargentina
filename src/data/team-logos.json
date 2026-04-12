@@ -1,0 +1,81 @@
+{
+  "generatedAt": "2026-04-12T16:26:57.478943+00:00",
+  "source": "wikipedia.org",
+  "teams": {
+    "Argentina": {
+      "sourcePage": "https://en.wikipedia.org/wiki/Argentina_national_football_team",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/c/c1/Argentina_national_football_team_logo.svg/960px-Argentina_national_football_team_logo.svg.png",
+      "path": "/crests/argentina.png"
+    },
+    "Boca Juniors": {
+      "sourcePage": "https://en.wikipedia.org/wiki/Boca_Juniors",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Boca_Juniors_logo18.svg/1280px-Boca_Juniors_logo18.svg.png",
+      "path": "/crests/boca-juniors.png"
+    },
+    "River Plate": {
+      "sourcePage": "https://en.wikipedia.org/wiki/Club_Atl%C3%A9tico_River_Plate",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Club_Atl%C3%A9tico_River_Plate_logo.svg/1280px-Club_Atl%C3%A9tico_River_Plate_logo.svg.png",
+      "path": "/crests/river-plate.png"
+    },
+    "Barcelona": {
+      "sourcePage": "https://en.wikipedia.org/wiki/FC_Barcelona",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/4/47/FC_Barcelona_%28crest%29.svg/1280px-FC_Barcelona_%28crest%29.svg.png",
+      "path": "/crests/barcelona.png"
+    },
+    "Brazil": {
+      "sourcePage": "https://en.wikipedia.org/wiki/Brazil_national_football_team",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Brazilian_Football_Confederation_logo.svg/960px-Brazilian_Football_Confederation_logo.svg.png",
+      "path": "/crests/brazil.png"
+    },
+    "AC Milan": {
+      "sourcePage": "https://en.wikipedia.org/wiki/AC_Milan",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Logo_of_AC_Milan.svg/960px-Logo_of_AC_Milan.svg.png",
+      "path": "/crests/ac-milan.png"
+    },
+    "Real Madrid": {
+      "sourcePage": "https://en.wikipedia.org/wiki/Real_Madrid_CF",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Real_Madrid_CF.svg/960px-Real_Madrid_CF.svg.png",
+      "path": "/crests/real-madrid.png"
+    },
+    "France": {
+      "sourcePage": "https://en.wikipedia.org/wiki/France_national_football_team",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/1/12/France_national_football_team_seal.svg/960px-France_national_football_team_seal.svg.png",
+      "path": "/crests/france.png"
+    },
+    "Spain": {
+      "sourcePage": "https://en.wikipedia.org/wiki/Spain_national_football_team",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/3/39/Spain_national_football_team_crest.svg/960px-Spain_national_football_team_crest.svg.png",
+      "path": "/crests/spain.png"
+    },
+    "Germany": {
+      "sourcePage": "https://en.wikipedia.org/wiki/Germany_national_football_team",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/e/e3/DFBEagle.svg/1280px-DFBEagle.svg.png",
+      "path": "/crests/germany.png"
+    },
+    "Portugal": {
+      "sourcePage": "https://en.wikipedia.org/wiki/Portugal_national_football_team",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Portugal_National_Team_logo.png/960px-Portugal_National_Team_logo.png",
+      "path": "/crests/portugal.png"
+    },
+    "Manchester City": {
+      "sourcePage": "https://en.wikipedia.org/wiki/Manchester_City_F.C.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/e/eb/Manchester_City_FC_badge.svg/1280px-Manchester_City_FC_badge.svg.png",
+      "path": "/crests/manchester-city.png"
+    },
+    "PSG": {
+      "sourcePage": "https://en.wikipedia.org/wiki/Paris_Saint-Germain_F.C.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/a/a7/Paris_Saint-Germain_F.C..svg/1280px-Paris_Saint-Germain_F.C..svg.png",
+      "path": "/crests/psg.png"
+    },
+    "Inter Miami": {
+      "sourcePage": "https://en.wikipedia.org/wiki/Inter_Miami_CF",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/5/5c/Inter_Miami_CF_logo.svg/1280px-Inter_Miami_CF_logo.svg.png",
+      "path": "/crests/inter-miami.png"
+    },
+    "Bayern Munich": {
+      "sourcePage": "https://en.wikipedia.org/wiki/FC_Bayern_Munich",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/FC_Bayern_M%C3%BCnchen_logo_%282024%29.svg/1280px-FC_Bayern_M%C3%BCnchen_logo_%282024%29.svg.png",
+      "path": "/crests/bayern-munich.png"
+    }
+  }
+}

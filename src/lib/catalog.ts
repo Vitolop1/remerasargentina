@@ -1,10 +1,30 @@
 import catalog from "@/data/catalog.json";
 import supplierImages from "@/data/supplier-images.json";
+import supplierTopPicks from "@/data/supplier-top-picks.json";
+import teamLogos from "@/data/team-logos.json";
 import type { CatalogOrderLine, CatalogPayload, CatalogProduct, CatalogSummary } from "@/types/catalog";
 
 const catalogPayload = catalog as CatalogPayload;
 const supplierImagePayload = supplierImages as {
-  products: Record<string, { images: Array<{ path: string }> }>;
+  products: Record<string, { images: Array<{ path: string }>; sources?: Array<{ url: string }> }>;
+};
+const supplierTopPickPayload = supplierTopPicks as {
+  products: Array<{
+    id: string;
+    name: string;
+    shortName: string;
+    team: string;
+    collection: string;
+    player: string;
+    eraLabel: string;
+    tags: string[];
+    sourceUrl: string;
+    image: string | null;
+    gallery: string[];
+  }>;
+};
+const teamLogoPayload = teamLogos as {
+  teams: Record<string, { path: string }>;
 };
 const SIZE_ORDER = ["S", "M", "L", "XL", "XXL", "XXXL"];
 const PREORDER_SIZES = ["S", "M", "L", "XL", "XXL"] as const;
@@ -14,16 +34,12 @@ const REMOVED_PRODUCTS = new Set([
   "2005-06 BAR Away UCL #10 Ronaldinho",
 ]);
 const PROMO_PRICE_ARS = 64999;
+const NATIONAL_TEAMS = new Set(["Argentina", "Brazil", "France", "Germany", "Portugal", "Spain"]);
 
-const TEAM_RULES = [
-  "Argentina",
-  "Boca Juniors",
-  "River Plate",
-  "Barcelona",
-  "Brazil",
-  "AC Milan",
-  "Real Madrid",
-] as const;
+const TEAM_RULES = Object.keys(teamLogoPayload.teams).sort((a, b) => b.length - a.length);
+const TEAM_LOGOS = Object.fromEntries(
+  Object.entries(teamLogoPayload.teams).map(([team, data]) => [team, data.path]),
+);
 
 function slugify(value: string) {
   return value
@@ -51,7 +67,7 @@ function detectTeam(name: string) {
 }
 
 function detectCollection(team: string) {
-  if (team === "Argentina" || team === "Brazil") {
+  if (NATIONAL_TEAMS.has(team)) {
     return "Selecciones";
   }
 
@@ -161,7 +177,7 @@ export function getCatalogData(): CatalogSummary {
     });
   }
 
-  const products: CatalogProduct[] = [...grouped.values()]
+  const stockProducts: CatalogProduct[] = [...grouped.values()]
     .map(({ baseLine }) => {
       const team = detectTeam(baseLine.name);
       const player = extractPlayer(baseLine.name);
@@ -178,6 +194,7 @@ export function getCatalogData(): CatalogSummary {
         shortName: buildShortName(baseLine.name.replace(/\bBAR\b/g, "Barcelona")),
         eraLabel,
         team,
+        teamLogo: TEAM_LOGOS[team] ?? null,
         collection: detectCollection(team),
         player,
         totalStock: 999,
@@ -191,11 +208,47 @@ export function getCatalogData(): CatalogSummary {
           team === "Boca Juniors" ||
           player.includes("MESSI") ||
           player.includes("MARADONA"),
+        isTopPick: false,
+        sourceUrl: supplierMatch?.sources?.[0]?.url ?? null,
         tags,
         searchText: [baseLine.name, team, player, eraLabel, ...tags].join(" ").toLowerCase(),
       };
-    })
+    });
+
+  const topPickProducts: CatalogProduct[] = supplierTopPickPayload.products.map((product) => {
+    const priceArs = PROMO_PRICE_ARS;
+    const priceUsd = Number((priceArs / catalogPayload.settings.exchangeRateArsPerUsd).toFixed(2));
+
+    return {
+      id: product.id,
+      name: product.name,
+      shortName: product.shortName,
+      eraLabel: product.eraLabel,
+      team: product.team,
+      teamLogo: TEAM_LOGOS[product.team] ?? null,
+      collection: product.collection,
+      player: product.player,
+      totalStock: 999,
+      sizeOptions: PREORDER_SIZES.map((size) => ({ size, stock: 999 })),
+      image: choosePrimaryImage(product.gallery),
+      gallery: product.gallery,
+      priceUsd,
+      priceArs,
+      featured: true,
+      isTopPick: true,
+      sourceUrl: product.sourceUrl,
+      tags: product.tags,
+      searchText: [product.name, product.team, product.player, product.eraLabel, ...product.tags]
+        .join(" ")
+        .toLowerCase(),
+    };
+  });
+
+  const products: CatalogProduct[] = [...topPickProducts, ...stockProducts]
     .sort((a, b) => {
+      if (a.isTopPick !== b.isTopPick) {
+        return a.isTopPick ? -1 : 1;
+      }
       if (a.featured !== b.featured) {
         return a.featured ? -1 : 1;
       }
@@ -215,6 +268,9 @@ export function getCatalogData(): CatalogSummary {
     },
     products,
     teams: [...new Set(products.map((product) => product.team))],
+    teamLogos: Object.fromEntries(
+      [...new Set(products.map((product) => product.team))].map((team) => [team, TEAM_LOGOS[team] ?? null]),
+    ),
     sizes: SIZE_ORDER.filter((size) => PREORDER_SIZES.includes(size as (typeof PREORDER_SIZES)[number])),
   };
 }

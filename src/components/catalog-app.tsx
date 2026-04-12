@@ -43,6 +43,11 @@ function depositFor(amount: number) {
 
 function translateProductName(value: string) {
   return value
+    .replace(/\bRMA\b/gi, "Real Madrid")
+    .replace(/\bBAR\b/gi, "Barcelona")
+    .replace(/\bINT\b/gi, "Inter")
+    .replace(/\bJUV\b/gi, "Juventus")
+    .replace(/\bMan City\b/gi, "Manchester City")
     .replace(/\bHome\b/gi, "Titular")
     .replace(/\bAway\b/gi, "Alternativa")
     .replace(/\bThird\b/gi, "Tercera")
@@ -51,8 +56,28 @@ function translateProductName(value: string) {
     .replace(/\bUCL\b/gi, "Champions")
     .replace(/\bWC2022\b/gi, "Mundial 2022")
     .replace(/\bWC\b/gi, "Mundial")
+    .replace(/\b1:1\b/gi, "")
+    .replace(/\bFans Soccer Jersey\b/gi, "")
+    .replace(/\bSoccer Jersey\b/gi, "")
+    .replace(/\bFans\b/gi, "")
+    .replace(/\bJersey\b/gi, "")
     .replace(/\s+/g, " ")
     .trim();
+}
+
+function translateTeamName(team: string) {
+  switch (team) {
+    case "Brazil":
+      return "Brasil";
+    case "Spain":
+      return "España";
+    case "France":
+      return "Francia";
+    case "Germany":
+      return "Alemania";
+    default:
+      return team;
+  }
 }
 
 function translateTag(tag: string) {
@@ -68,7 +93,7 @@ function translateTag(tag: string) {
     case "UCL":
       return "Champions";
     default:
-      return tag;
+      return translateTeamName(tag);
   }
 }
 
@@ -114,6 +139,7 @@ function buildOrderText(
 export function CatalogApp({
   products,
   teams,
+  teamLogos,
   sizes,
   settings,
   orderEmail,
@@ -147,6 +173,10 @@ export function CatalogApp({
 
   const featuredProducts = useMemo(() => {
     return products.filter((product) => product.image).slice(0, 3);
+  }, [products]);
+
+  const topPickProducts = useMemo(() => {
+    return products.filter((product) => product.isTopPick).slice(0, 12);
   }, [products]);
 
   const collectionShowcases = useMemo(() => {
@@ -451,6 +481,76 @@ export function CatalogApp({
         </section>
 
         <section className="mt-8 rounded-[8px] border border-[var(--line)] bg-[var(--surface)] p-6">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">Curado desde GM Kits</p>
+              <h2 className="mt-1 text-2xl font-semibold">Las camisetas mas top para sumar</h2>
+            </div>
+            <a
+              href="https://www.gmkitsc.com/New-Arrivals-rc240291.html"
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-[8px] border border-[var(--line)] px-3 py-2 text-sm font-semibold"
+            >
+              Ver novedades del proveedor
+            </a>
+          </div>
+
+          <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            {topPickProducts.map((product) => (
+              <article
+                key={product.id}
+                className="flex h-full flex-col rounded-[8px] border border-[var(--line)] bg-[var(--background)] p-4"
+              >
+                <button
+                  type="button"
+                  onClick={() => openGallery(product)}
+                  className="group relative mb-4 aspect-[4/5] overflow-hidden rounded-[8px] border border-[var(--line)] bg-white"
+                >
+                  {product.image ? (
+                    <Image
+                      src={product.image}
+                      alt={translateProductName(product.shortName)}
+                      fill
+                      className="object-cover transition duration-300 group-hover:scale-[1.02]"
+                      sizes="(max-width: 768px) 100vw, 25vw"
+                    />
+                  ) : null}
+                </button>
+
+                <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">
+                  {translateTeamName(product.team)}
+                </p>
+                <h3 className="mt-1 text-lg font-semibold leading-6">
+                  {translateProductName(product.shortName)}
+                </h3>
+                <p className="mt-3 text-sm text-[var(--muted)] line-through">{formatArs(ORIGINAL_PRICE_ARS)}</p>
+                <p className="mt-1 text-2xl font-semibold">{formatArs(product.priceArs)}</p>
+
+                <div className="mt-auto pt-4">
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    <button
+                      type="button"
+                      onClick={() => openGallery(product)}
+                      className="rounded-[8px] border border-[var(--line)] px-4 py-3 text-sm font-semibold"
+                    >
+                      Ver foto
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => addToCart(product)}
+                      className="rounded-[8px] bg-[var(--accent-2)] px-4 py-3 text-sm font-semibold text-white"
+                    >
+                      Agregar
+                    </button>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="mt-8 rounded-[8px] border border-[var(--line)] bg-[var(--surface)] p-6">
           <div className="grid gap-8 xl:grid-cols-[0.95fr_1.25fr]">
             <div>
               <div className="mb-4 flex items-center justify-between gap-3">
@@ -526,22 +626,19 @@ export function CatalogApp({
                       setTeamFilter(product.team);
                       document.getElementById("catalogo")?.scrollIntoView({ behavior: "smooth" });
                     }}
-                    className="group relative min-h-[8.5rem] overflow-hidden rounded-[8px] border border-[var(--line)] text-left"
+                    className="group flex min-h-[8.5rem] flex-col items-center justify-center overflow-hidden rounded-[8px] border border-[var(--line)] bg-[var(--background)] px-4 py-5 text-center"
                   >
-                    {product.image ? (
+                    <div className="relative h-20 w-20">
                       <Image
-                        src={product.image}
-                        alt={product.team}
+                        src={product.teamLogo ?? teamLogos[product.team] ?? product.image ?? "/next.svg"}
+                        alt={translateTeamName(product.team)}
                         fill
-                        className="object-cover transition duration-300 group-hover:scale-[1.02]"
-                        sizes="(max-width: 1024px) 50vw, 33vw"
+                        className="object-contain transition duration-300 group-hover:scale-[1.04]"
+                        sizes="80px"
                       />
-                    ) : null}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
-                    <div className="absolute inset-x-0 bottom-0 p-4">
-                      <p className="text-xs uppercase tracking-[0.16em] text-white/70">Equipo</p>
-                      <p className="mt-1 text-lg font-semibold text-white">{product.team}</p>
                     </div>
+                    <p className="mt-4 text-xs uppercase tracking-[0.16em] text-[var(--muted)]">Equipo</p>
+                    <p className="mt-1 text-lg font-semibold">{translateTeamName(product.team)}</p>
                   </button>
                 ))}
               </div>
@@ -578,7 +675,7 @@ export function CatalogApp({
                 <option value="Todos">Todos los equipos</option>
                 {teams.map((team) => (
                   <option key={team} value={team}>
-                    {team}
+                    {translateTeamName(team)}
                   </option>
                 ))}
               </select>
@@ -639,7 +736,7 @@ export function CatalogApp({
                     <div className="mt-3 flex flex-wrap gap-2 text-xs text-[var(--muted)]">
                       <span>{product.eraLabel}</span>
                       <span>/</span>
-                      <span>{product.team}</span>
+                      <span>{translateTeamName(product.team)}</span>
                       <span>/</span>
                       <span>{product.player}</span>
                     </div>
