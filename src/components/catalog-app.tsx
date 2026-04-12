@@ -26,6 +26,8 @@ type GalleryState = {
   index: number;
 };
 
+type ThemeMode = "light" | "dark";
+
 type CatalogAppProps = CatalogSummary & {
   orderEmail?: string;
   whatsappNumber?: string;
@@ -38,6 +40,7 @@ type CatalogAppProps = CatalogSummary & {
 
 const DEPOSIT_RATE = 0.5;
 const ORIGINAL_PRICE_ARS = 79000;
+const THEME_STORAGE_KEY = "remeras-theme";
 const FEATURED_NATIONAL_TEAMS = ["Argentina", "Brazil", "France", "Italy", "Croatia", "Spain", "Portugal"] as const;
 const FEATURED_CLUB_TEAMS = [
   "Liverpool",
@@ -64,6 +67,19 @@ const FEATURED_CLUB_TEAMS = [
   "Santos FC",
   "Aston Villa",
 ] as const;
+
+function resolveThemePreference(): ThemeMode {
+  if (typeof window === "undefined") {
+    return "light";
+  }
+
+  const saved = window.localStorage.getItem(THEME_STORAGE_KEY);
+  if (saved === "light" || saved === "dark") {
+    return saved;
+  }
+
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
 
 const REQUIRED_RETRO_GROUPS = [
   {
@@ -250,6 +266,16 @@ export function CatalogApp({
   paymentAccountName,
   paymentQrPath,
 }: CatalogAppProps) {
+  const [theme, setTheme] = useState<ThemeMode>(() => {
+    if (typeof document !== "undefined") {
+      const currentTheme = document.documentElement.dataset.theme;
+      if (currentTheme === "light" || currentTheme === "dark") {
+        return currentTheme;
+      }
+    }
+
+    return resolveThemePreference();
+  });
   const [query, setQuery] = useState("");
   const [collectionFilter, setCollectionFilter] = useState("Todas");
   const [teamFilter, setTeamFilter] = useState("Todos");
@@ -387,6 +413,11 @@ export function CatalogApp({
 
     return activeGalleryProduct.gallery[gallery.index] ?? activeGalleryProduct.image;
   }, [activeGalleryProduct, gallery]);
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    window.localStorage.setItem(THEME_STORAGE_KEY, theme);
+  }, [theme]);
 
   useEffect(() => {
     if (!gallery) {
@@ -533,94 +564,161 @@ export function CatalogApp({
 
   return (
     <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)]">
-      <header className="border-b border-[var(--line)] bg-[var(--surface)]">
+      <header className="border-b border-[var(--line)] bg-[var(--background)]">
+        <div className="mx-auto max-w-7xl px-4 pt-4 sm:px-6 lg:px-8">
+          <div className="grid gap-3 lg:grid-cols-[1fr_auto_1fr] lg:items-center">
+            <div className="flex justify-center lg:justify-start">
+              <div className="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--surface)] px-4 py-2 shadow-[var(--soft-shadow)]">
+                <span className="h-2.5 w-2.5 rounded-full bg-[var(--accent)]" />
+                <span className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
+                  Salta Importando
+                </span>
+              </div>
+            </div>
+
+            <div className="flex justify-center">
+              <div className="inline-flex max-w-full items-center gap-3 rounded-full border border-[var(--line)] bg-[var(--surface)] px-4 py-3 shadow-[var(--soft-shadow)]">
+                <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-full bg-[var(--background)]">
+                  <Image
+                    src="/images/logo-remeras-argentina.svg"
+                    alt="Logo Salta Importando"
+                    fill
+                    className="object-contain p-2"
+                    sizes="44px"
+                  />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--muted)]">
+                    Catalogo de remeras en Salta
+                  </p>
+                  <p className="truncate text-lg font-black leading-none sm:text-xl">Salta Importando</p>
+                  <p className="mt-1 text-xs text-[var(--muted)]">Remeras Argentina</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-center lg:justify-end">
+              <div
+                suppressHydrationWarning
+                className="inline-flex items-center gap-1 rounded-full border border-[var(--line)] bg-[var(--surface)] p-1 shadow-[var(--soft-shadow)]"
+              >
+                <span className="hidden pl-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--muted)] sm:block">
+                  Tema
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setTheme("light")}
+                  aria-pressed={theme === "light"}
+                  className={`rounded-full px-4 py-2 text-sm font-semibold ${
+                    theme === "light" ? "bg-[var(--accent)] text-white" : "text-[var(--muted)]"
+                  }`}
+                >
+                  Claro
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setTheme("dark")}
+                  aria-pressed={theme === "dark"}
+                  className={`rounded-full px-4 py-2 text-sm font-semibold ${
+                    theme === "dark" ? "bg-[var(--accent)] text-white" : "text-[var(--muted)]"
+                  }`}
+                >
+                  Oscuro
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
-          <div className="rounded-[8px] bg-[#111820] px-4 py-5 text-white sm:px-6">
-            <div className="flex flex-col gap-5">
-              <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
-                <div className="flex items-center gap-4">
-                  <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-[8px] bg-white p-2">
-                    <Image
-                      src="/images/logo-remeras-argentina.png"
-                      alt="Logo Remeras Argentina"
-                      fill
-                      className="object-contain p-2"
-                      sizes="64px"
-                    />
-                  </div>
-                  <div>
-                    <p className="text-xs uppercase tracking-[0.18em] text-white/60">Remeras en Salta</p>
-                    <h1 className="mt-1 text-2xl font-semibold sm:text-3xl">Remeras Argentina</h1>
-                    <p className="mt-1 text-sm text-white/75">
-                      Retro, seleccion y clubes. Reserva facil y coordinacion por WhatsApp.
+          <div
+            className="overflow-hidden rounded-[8px] border border-[var(--hero-line)] shadow-[var(--soft-shadow)]"
+            style={{ backgroundImage: "linear-gradient(135deg, var(--hero-start), var(--hero-end))" }}
+          >
+            <div className="px-4 py-5 text-[var(--hero-foreground)] sm:px-6 sm:py-6">
+              <div className="flex flex-col gap-6">
+                <div className="flex flex-col gap-5 xl:flex-row xl:items-end xl:justify-between">
+                  <div className="max-w-3xl">
+                    <p className="text-xs uppercase tracking-[0.18em] text-[var(--hero-muted)]">
+                      Entrega en Salta, reserva facil y seña del 50%
+                    </p>
+                    <h1 className="mt-2 text-3xl font-semibold leading-tight sm:text-4xl lg:text-5xl">
+                      Remeras retro, de seleccion y de clubes listas para vender en Salta.
+                    </h1>
+                    <p className="mt-3 max-w-2xl text-sm leading-6 text-[var(--hero-muted)]">
+                      Elegis el modelo, armas el pedido y coordinamos la reserva por WhatsApp. Todo en
+                      pesos y sin vueltas.
                     </p>
                   </div>
+
+                  <div className="flex flex-wrap gap-2 text-sm">
+                    <span className="rounded-[8px] border border-white/18 bg-white/8 px-3 py-2">
+                      {teams.length} equipos
+                    </span>
+                    <span className="rounded-[8px] border border-white/18 bg-white/8 px-3 py-2">
+                      {products.length} modelos
+                    </span>
+                    <span className="rounded-[8px] border border-white/18 bg-white/8 px-3 py-2">
+                      {formatArs(settings.defaultSalePriceArs)} promo
+                    </span>
+                    <span className="rounded-[8px] border border-white/18 bg-white/8 px-3 py-2">Sena 50%</span>
+                  </div>
                 </div>
 
-                <div className="flex flex-wrap gap-2 text-sm">
-                  <span className="rounded-[8px] border border-white/18 bg-white/8 px-3 py-2">
-                    {teams.length} equipos
-                  </span>
-                  <span className="rounded-[8px] border border-white/18 bg-white/8 px-3 py-2">
-                    {products.length} modelos
-                  </span>
-                  <span className="rounded-[8px] border border-white/18 bg-white/8 px-3 py-2">
-                    {formatArs(settings.defaultSalePriceArs)} promo
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex flex-wrap gap-3">
-                <a
-                  href="#catalogo"
-                  className="rounded-[8px] bg-white px-4 py-3 text-sm font-semibold text-[#111820]"
-                >
-                  Ver catalogo
-                </a>
-                <a
-                  href={otherJerseyHref}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="rounded-[8px] border border-white/20 bg-white/8 px-4 py-3 text-sm font-semibold text-white"
-                >
-                  Pedir otra remera
-                </a>
-                <a
-                  href={otherJerseyHref}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="rounded-[8px] bg-[var(--accent)] px-4 py-3 text-sm font-semibold text-white"
-                >
-                  WhatsApp {whatsappDisplay}
-                </a>
-              </div>
-
-              <div className="grid gap-3 sm:grid-cols-3">
-                {featuredProducts.map((product) => (
-                  <button
-                    key={product.id}
-                    type="button"
-                    onClick={() => openGallery(product)}
-                    className="group relative min-h-[11rem] overflow-hidden rounded-[8px] border border-white/12 text-left"
+                <div className="flex flex-wrap gap-3">
+                  <a
+                    href="#catalogo"
+                    className="rounded-[8px] bg-white px-4 py-3 text-sm font-semibold text-[#111820]"
                   >
-                    {product.image ? (
-                      <Image
-                        src={product.image}
-                        alt={product.shortName}
-                        fill
-                        className="object-cover transition duration-300 group-hover:scale-[1.02]"
-                        sizes="(max-width: 640px) 100vw, 33vw"
-                      />
-                    ) : null}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
-                    <div className="absolute inset-x-0 bottom-0 p-4">
-                      <p className="text-xs uppercase tracking-[0.16em] text-white/70">{product.collection}</p>
-                      <p className="mt-1 text-sm font-semibold text-white">
-                        {translateProductName(product.shortName)}
-                      </p>
-                    </div>
-                  </button>
-                ))}
+                    Ver catalogo
+                  </a>
+                  <a
+                    href={otherJerseyHref}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="rounded-[8px] border border-white/20 bg-white/8 px-4 py-3 text-sm font-semibold text-white"
+                  >
+                    Pedir otra remera
+                  </a>
+                  <a
+                    href={otherJerseyHref}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="rounded-[8px] bg-[var(--accent)] px-4 py-3 text-sm font-semibold text-white"
+                  >
+                    WhatsApp {whatsappDisplay}
+                  </a>
+                </div>
+
+                <div className="grid gap-3 sm:grid-cols-3">
+                  {featuredProducts.map((product) => (
+                    <button
+                      key={product.id}
+                      type="button"
+                      onClick={() => openGallery(product)}
+                      className="group relative min-h-[11rem] overflow-hidden rounded-[8px] border border-white/12 bg-white/5 text-left"
+                    >
+                      {product.image ? (
+                        <Image
+                          src={product.image}
+                          alt={product.shortName}
+                          fill
+                          className="object-cover transition duration-300 group-hover:scale-[1.02]"
+                          sizes="(max-width: 640px) 100vw, 33vw"
+                        />
+                      ) : null}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
+                      <div className="absolute inset-x-0 bottom-0 p-4">
+                        <p className="text-xs uppercase tracking-[0.16em] text-white/70">
+                          {product.collection}
+                        </p>
+                        <p className="mt-1 text-sm font-semibold text-white">
+                          {translateProductName(product.shortName)}
+                        </p>
+                      </div>
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

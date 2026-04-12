@@ -10,6 +10,49 @@
   --muted: #5d6670;
   --accent: #0f7b59;
   --accent-2: #c63e2a;
+  --hero-start: #12352d;
+  --hero-end: #111820;
+  --hero-foreground: #f7faf9;
+  --hero-muted: rgb(247 250 249 / 0.76);
+  --hero-line: rgb(255 255 255 / 0.12);
+  --soft-shadow: 0 20px 60px rgb(17 24 32 / 0.08);
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --background: #0e1418;
+  --foreground: #ecf1f4;
+  --surface: #141c21;
+  --line: #26323a;
+  --muted: #97a4ae;
+  --accent: #18a77e;
+  --accent-2: #de5a43;
+  --hero-start: #123d31;
+  --hero-end: #0d1216;
+  --hero-foreground: #f3f8f6;
+  --hero-muted: rgb(243 248 246 / 0.76);
+  --hero-line: rgb(255 255 255 / 0.08);
+  --soft-shadow: 0 24px 70px rgb(0 0 0 / 0.34);
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --background: #0e1418;
+    --foreground: #ecf1f4;
+    --surface: #141c21;
+    --line: #26323a;
+    --muted: #97a4ae;
+    --accent: #18a77e;
+    --accent-2: #de5a43;
+    --hero-start: #123d31;
+    --hero-end: #0d1216;
+    --hero-foreground: #f3f8f6;
+    --hero-muted: rgb(243 248 246 / 0.76);
+    --hero-line: rgb(255 255 255 / 0.08);
+    --soft-shadow: 0 24px 70px rgb(0 0 0 / 0.34);
+    color-scheme: dark;
+  }
 }
 
 * {
@@ -25,6 +68,9 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
   line-height: 1.4;
+  transition:
+    background-color 180ms ease,
+    color 180ms ease;
 }
 
 a {
@@ -37,6 +83,11 @@ input,
 select,
 textarea {
   font: inherit;
+  transition:
+    background-color 180ms ease,
+    color 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
 }
 
 ::selection {
