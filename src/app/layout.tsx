@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Remeras Argentina",
-  description: "Catalogo de remeras de futbol con reserva por WhatsApp para Salta.",
+  title: "La Linda Retro",
+  description: "La Linda Retro: catalogo de remeras de futbol con reserva por WhatsApp para Salta.",
 };
 
 const themeScript = `

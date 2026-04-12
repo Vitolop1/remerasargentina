@@ -571,7 +571,7 @@ export function CatalogApp({
               <div className="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--surface)] px-4 py-2 shadow-[var(--soft-shadow)]">
                 <span className="h-2.5 w-2.5 rounded-full bg-[var(--accent)]" />
                 <span className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
-                  Salta Importando
+                  Hecho para Salta
                 </span>
               </div>
             </div>
@@ -581,7 +581,7 @@ export function CatalogApp({
                 <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-full bg-[var(--background)]">
                   <Image
                     src="/images/logo-remeras-argentina.svg"
-                    alt="Logo Salta Importando"
+                    alt="Logo La Linda Retro"
                     fill
                     className="object-contain p-2"
                     sizes="44px"
@@ -589,10 +589,10 @@ export function CatalogApp({
                 </div>
                 <div className="min-w-0">
                   <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--muted)]">
-                    Catalogo de remeras en Salta
+                    Catalogo retro del norte
                   </p>
-                  <p className="truncate text-lg font-black leading-none sm:text-xl">Salta Importando</p>
-                  <p className="mt-1 text-xs text-[var(--muted)]">Remeras Argentina</p>
+                  <p className="truncate text-lg font-black leading-none sm:text-xl">La Linda Retro</p>
+                  <p className="mt-1 text-xs text-[var(--muted)]">Remeras de futbol en Salta</p>
                 </div>
               </div>
             </div>
@@ -640,14 +640,14 @@ export function CatalogApp({
                 <div className="flex flex-col gap-5 xl:flex-row xl:items-end xl:justify-between">
                   <div className="max-w-3xl">
                     <p className="text-xs uppercase tracking-[0.18em] text-[var(--hero-muted)]">
-                      Entrega en Salta, reserva facil y seña del 50%
+                      Reserva facil, entrega en Salta y sena del 50%
                     </p>
                     <h1 className="mt-2 text-3xl font-semibold leading-tight sm:text-4xl lg:text-5xl">
-                      Remeras retro, de seleccion y de clubes listas para vender en Salta.
+                      La Linda Retro: camisetas que se hacen mirar apenas las ves.
                     </h1>
                     <p className="mt-3 max-w-2xl text-sm leading-6 text-[var(--hero-muted)]">
-                      Elegis el modelo, armas el pedido y coordinamos la reserva por WhatsApp. Todo en
-                      pesos y sin vueltas.
+                      Retro, seleccion, clubes y modelos importados para vender en Salta. Elegis la que
+                      te gusta, reservas por WhatsApp y coordinamos la sena.
                     </p>
                   </div>
 
@@ -661,7 +661,7 @@ export function CatalogApp({
                     <span className="rounded-[8px] border border-white/18 bg-white/8 px-3 py-2">
                       {formatArs(settings.defaultSalePriceArs)} promo
                     </span>
-                    <span className="rounded-[8px] border border-white/18 bg-white/8 px-3 py-2">Sena 50%</span>
+                    <span className="rounded-[8px] border border-white/18 bg-white/8 px-3 py-2">Seleccion y clubes</span>
                   </div>
                 </div>
 
