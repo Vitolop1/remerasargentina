@@ -41,31 +41,13 @@ type CatalogAppProps = CatalogSummary & {
 const DEPOSIT_RATE = 0.5;
 const ORIGINAL_PRICE_ARS = 79000;
 const THEME_STORAGE_KEY = "remeras-theme";
-const FEATURED_NATIONAL_TEAMS = ["Argentina", "Brazil", "France", "Italy", "Croatia", "Spain", "Portugal"] as const;
-const FEATURED_CLUB_TEAMS = [
-  "Liverpool",
-  "Manchester City",
-  "Manchester United",
-  "Chelsea",
-  "Arsenal",
-  "Boca Juniors",
-  "River Plate",
-  "Juventus",
-  "Barcelona",
-  "Real Madrid",
-  "Atletico Madrid",
-  "Borussia Dortmund",
-  "Bayern Munich",
-  "Flamengo",
-  "PSG",
-  "Inter",
-  "AC Milan",
-  "Leverkusen",
-  "Napoli",
-  "Racing Club",
-  "CA Independiente",
-  "Santos FC",
-  "Aston Villa",
+
+const HOME_TEAM_PRIORITY = [
+  { team: "Argentina", label: "Argentina" },
+  { team: "Boca Juniors", label: "Boca Juniors" },
+  { team: "River Plate", label: "River Plate" },
+  { team: "Barcelona", label: "Barcelona" },
+  { team: "Real Madrid", label: "Real Madrid" },
 ] as const;
 
 function resolveThemePreference(): ThemeMode {
@@ -80,53 +62,6 @@ function resolveThemePreference(): ThemeMode {
 
   return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
-
-const REQUIRED_RETRO_GROUPS = [
-  {
-    title: "Argentina y locales",
-    items: [
-      "Argentina alternativa 1994 #10 Maradona",
-      "Argentina titular 1986 #10 Maradona",
-      "Argentina titular 1990",
-      "Boca Juniors 2001 #10 Riquelme",
-      "Boca Juniors 2003 Tevez",
-      "Boca Juniors 1997 #10 Maradona",
-      "River Plate 1996 Libertadores",
-      "River Plate 2001 #10 Aimar",
-    ],
-  },
-  {
-    title: "Selecciones",
-    items: [
-      "Francia 1998 #10 Zidane",
-      "Francia 2006 #10 Zidane",
-      "Brasil 1994 Romario",
-      "Brasil 2002 #9 Ronaldo",
-      "Croacia 1998 Suker",
-      "Colombia 1998 Valderrama",
-      "Japon 1998 Nakata",
-    ],
-  },
-  {
-    title: "Clubes de Europa",
-    items: [
-      "Manchester United 2008 #7 Cristiano Ronaldo",
-      "Manchester United 1999 #7 Beckham",
-      "Barcelona 2009 #10 Messi",
-      "Barcelona 2006 #10 Ronaldinho",
-      "AC Milan 2006 #22 Kaka",
-    ],
-  },
-  {
-    title: "Diferenciadoras",
-    items: [
-      "Inter 2010 #22 Milito",
-      "Fiorentina 1998 #9 Batistuta",
-      "Real Madrid 1999 #6 Redondo",
-      "Santos 2012 #11 Neymar",
-    ],
-  },
-] as const;
 
 function depositFor(amount: number) {
   return Math.round(amount * DEPOSIT_RATE);
@@ -242,16 +177,6 @@ function buildOrderText(
   ].join("\n");
 }
 
-function buildRetroRequestHref(cleanWhatsapp: string, item: string) {
-  if (!cleanWhatsapp) {
-    return "#";
-  }
-
-  return `https://wa.me/${cleanWhatsapp}?text=${encodeURIComponent(
-    `Hola, quiero pedir esta retro: ${item}. Me confirmas precio y tiempo de llegada?`,
-  )}`;
-}
-
 export function CatalogApp({
   products,
   teams,
@@ -296,43 +221,53 @@ export function CatalogApp({
   const [copiedAlias, setCopiedAlias] = useState(false);
   const [copiedCvu, setCopiedCvu] = useState(false);
   const [gallery, setGallery] = useState<GalleryState | null>(null);
+  const [catalogMenuOpen, setCatalogMenuOpen] = useState(false);
 
   const cleanWhatsapp = normalizeWhatsapp(whatsappNumber);
-  const collections = useMemo(() => [...new Set(products.map((product) => product.collection))], [products]);
+  const homeFeaturedSections = useMemo(() => {
+    return HOME_TEAM_PRIORITY.map(({ team, label }) => {
+      const sectionProducts = products
+        .filter((product) => product.team === team && product.image)
+        .sort((left, right) => Number(right.isTopPick) - Number(left.isTopPick))
+        .slice(0, 6);
+
+      return {
+        team,
+        label,
+        collection: sectionProducts[0]?.collection ?? "Clubes",
+        products: sectionProducts,
+      };
+    }).filter((section) => section.products.length > 0);
+  }, [products]);
 
   const featuredProducts = useMemo(() => {
-    const seenTeams = new Set<string>();
+    return homeFeaturedSections.flatMap((section) => section.products.slice(0, 1)).slice(0, 3);
+  }, [homeFeaturedSections]);
 
-    return products
-      .filter((product) => product.image)
-      .filter((product) => {
-        if (seenTeams.has(product.team)) {
-          return false;
-        }
-
-        seenTeams.add(product.team);
-        return true;
-      })
-      .slice(0, 3);
-  }, [products]);
-
-  const topPickProducts = useMemo(() => {
-    return products.filter((product) => product.isTopPick).slice(0, 18);
-  }, [products]);
-
-  const nationalFilterItems = useMemo(() => {
-    return FEATURED_NATIONAL_TEAMS.map((team) => ({
+  const drawerItems = useMemo(() => {
+    const teamOrder = new Map<string, number>(
+      HOME_TEAM_PRIORITY.map((item, index) => [item.team, index]),
+    );
+    const teamDetails = teams.map((team) => ({
       team,
+      collection: products.find((product) => product.team === team)?.collection ?? "Clubes",
       logo: teamLogos[team] ?? products.find((product) => product.team === team)?.teamLogo ?? null,
-    })).filter((item) => item.logo);
-  }, [products, teamLogos]);
+    }));
 
-  const clubFilterItems = useMemo(() => {
-    return FEATURED_CLUB_TEAMS.map((team) => ({
-      team,
-      logo: teamLogos[team] ?? products.find((product) => product.team === team)?.teamLogo ?? null,
-    })).filter((item) => item.logo);
-  }, [products, teamLogos]);
+    const sorter = (left: { team: string }, right: { team: string }) => {
+      const leftPriority = teamOrder.get(left.team) ?? Number.MAX_SAFE_INTEGER;
+      const rightPriority = teamOrder.get(right.team) ?? Number.MAX_SAFE_INTEGER;
+      if (leftPriority !== rightPriority) {
+        return leftPriority - rightPriority;
+      }
+      return translateTeamName(left.team).localeCompare(translateTeamName(right.team), "es");
+    };
+
+    return {
+      national: teamDetails.filter((item) => item.collection === "Selecciones").sort(sorter),
+      clubs: teamDetails.filter((item) => item.collection === "Clubes").sort(sorter),
+    };
+  }, [products, teamLogos, teams]);
 
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
@@ -398,6 +333,40 @@ export function CatalogApp({
       )}`
     : "#";
 
+  function scrollToCatalog() {
+    window.setTimeout(() => {
+      document.getElementById("catalogo")?.scrollIntoView({ behavior: "smooth" });
+    }, 20);
+  }
+
+  function openCatalogWithTeam(team: string) {
+    const nextCollection = products.find((product) => product.team === team)?.collection ?? "Todas";
+    setCollectionFilter(nextCollection);
+    setTeamFilter(team);
+    setSizeFilter("Todos");
+    setQuery("");
+    setCatalogMenuOpen(false);
+    scrollToCatalog();
+  }
+
+  function openCatalogWithCollection(collection: string) {
+    setCollectionFilter(collection);
+    setTeamFilter("Todos");
+    setSizeFilter("Todos");
+    setQuery("");
+    setCatalogMenuOpen(false);
+    scrollToCatalog();
+  }
+
+  function resetCatalogFilters() {
+    setCollectionFilter("Todas");
+    setTeamFilter("Todos");
+    setSizeFilter("Todos");
+    setQuery("");
+    setCatalogMenuOpen(false);
+    scrollToCatalog();
+  }
+
   const activeGalleryProduct = useMemo(() => {
     if (!gallery) {
       return null;
@@ -420,7 +389,7 @@ export function CatalogApp({
   }, [theme]);
 
   useEffect(() => {
-    if (!gallery) {
+    if (!gallery && !catalogMenuOpen) {
       return undefined;
     }
 
@@ -428,7 +397,12 @@ export function CatalogApp({
 
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
-        setGallery(null);
+        if (gallery) {
+          setGallery(null);
+        }
+        if (catalogMenuOpen) {
+          setCatalogMenuOpen(false);
+        }
       }
       if (event.key === "ArrowLeft" && activeGalleryProduct && activeGalleryProduct.gallery.length > 0) {
         event.preventDefault();
@@ -463,7 +437,7 @@ export function CatalogApp({
       document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [gallery, activeGalleryProduct]);
+  }, [gallery, activeGalleryProduct, catalogMenuOpen]);
 
   function getSelectedSize(product: CatalogProduct) {
     return selectedSizes[product.id] ?? product.sizeOptions[0]?.size ?? "";
@@ -667,19 +641,21 @@ export function CatalogApp({
 
                 <div className="flex flex-wrap gap-3">
                   <a
-                    href="#catalogo"
+                    href="#destacados"
                     className="rounded-[8px] bg-white px-4 py-3 text-sm font-semibold text-[#111820]"
                   >
-                    Ver catalogo
+                    Lo mas vendido
                   </a>
-                  <a
-                    href={otherJerseyHref}
-                    target="_blank"
-                    rel="noreferrer"
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCatalogMenuOpen(true);
+                      scrollToCatalog();
+                    }}
                     className="rounded-[8px] border border-white/20 bg-white/8 px-4 py-3 text-sm font-semibold text-white"
                   >
-                    Pedir otra remera
-                  </a>
+                    Catalogo completo
+                  </button>
                   <a
                     href={otherJerseyHref}
                     target="_blank"
@@ -726,292 +702,189 @@ export function CatalogApp({
       </header>
 
       <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <section className="rounded-[8px] border border-[var(--line)] bg-[var(--surface)] p-4 sm:p-6">
+        <section id="destacados" className="rounded-[8px] border border-[var(--line)] bg-[var(--surface)] p-4 sm:p-6">
           <div className="flex flex-wrap items-end justify-between gap-3">
-            <div>
-              <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">Filtros rapidos</p>
-              <h2 className="mt-1 text-2xl font-semibold">Explora por seleccion o club</h2>
+            <div className="max-w-2xl">
+              <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">Lo mas vendido primero</p>
+              <h2 className="mt-1 text-2xl font-semibold">Argentina, Boca, River, Barca y Real Madrid</h2>
+              <p className="mt-2 text-sm text-[var(--muted)]">
+                Apenas entran, que vean primero lo que mas te conviene vender.
+              </p>
             </div>
             <button
               type="button"
               onClick={() => {
-                setCollectionFilter("Todas");
-                setTeamFilter("Todos");
-                document.getElementById("catalogo")?.scrollIntoView({ behavior: "smooth" });
+                setCatalogMenuOpen(true);
+                scrollToCatalog();
               }}
-              className="rounded-[8px] border border-[var(--line)] px-4 py-2 text-sm font-semibold"
+              className="rounded-[8px] bg-[var(--foreground)] px-4 py-3 text-sm font-semibold text-[var(--surface)]"
             >
-              Ver todo el catalogo
+              Catalogo completo
             </button>
           </div>
 
-          <div className="mt-6 overflow-hidden rounded-[8px] border border-[var(--line)]">
-            <div className="flex items-center justify-between gap-3 bg-[#303030] px-4 py-3 text-white">
-              <h2 className="text-lg font-semibold">Selecciones</h2>
-              <button
-                type="button"
-                onClick={() => {
-                  setCollectionFilter("Selecciones");
-                  setTeamFilter("Todos");
-                  document.getElementById("catalogo")?.scrollIntoView({ behavior: "smooth" });
-                }}
-                className="text-sm font-semibold text-white/85"
-              >
-                Ver todas
-              </button>
-            </div>
-
-            <div className="overflow-x-auto bg-[var(--crest-panel)] px-4 py-5">
-              <div className="grid min-w-max grid-flow-col gap-3 md:min-w-0 md:grid-flow-row md:grid-cols-3 lg:grid-cols-5">
-                {nationalFilterItems.map((item) => (
-                  <button
-                    key={item.team}
-                    type="button"
-                    onClick={() => {
-                      setCollectionFilter("Selecciones");
-                      setTeamFilter(item.team);
-                      document.getElementById("catalogo")?.scrollIntoView({ behavior: "smooth" });
-                    }}
-                    className="group flex min-h-[8.5rem] w-[6.6rem] flex-col items-center justify-center rounded-[8px] border border-transparent px-3 py-3 text-center transition hover:border-[var(--line)] hover:bg-[var(--background)] md:min-h-[9rem] md:w-auto"
-                  >
-                    <div className="flex h-20 w-20 items-center justify-center rounded-[8px] border border-[var(--crest-tile-line)] bg-[var(--crest-tile)] p-3 shadow-sm md:h-24 md:w-24">
-                      <div className="relative h-full w-full">
-                      <Image
-                        src={item.logo ?? "/images/logo-remeras-argentina.svg"}
-                        alt={translateTeamName(item.team)}
-                        fill
-                        className="object-contain transition duration-300 group-hover:scale-[1.04]"
-                        sizes="96px"
-                      />
-                      </div>
-                    </div>
-                    <p className="mt-3 text-sm font-semibold md:text-base">{translateTeamName(item.team)}</p>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-6 overflow-hidden rounded-[8px] border border-[var(--line)]">
-            <div className="flex items-center justify-between gap-3 bg-[#303030] px-4 py-3 text-white">
-              <h2 className="text-lg font-semibold">Clubes</h2>
-              <button
-                type="button"
-                onClick={() => {
-                  setCollectionFilter("Clubes");
-                  setTeamFilter("Todos");
-                  document.getElementById("catalogo")?.scrollIntoView({ behavior: "smooth" });
-                }}
-                className="text-sm font-semibold text-white/85"
-              >
-                Ver todos
-              </button>
-            </div>
-
-            <div className="overflow-x-auto bg-[var(--crest-panel)] px-4 py-5">
-              <div className="grid min-w-max grid-flow-col gap-3 md:min-w-0 md:grid-flow-row md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
-                {clubFilterItems.map((item) => (
-                  <button
-                    key={item.team}
-                    type="button"
-                    onClick={() => {
-                      setCollectionFilter("Clubes");
-                      setTeamFilter(item.team);
-                      document.getElementById("catalogo")?.scrollIntoView({ behavior: "smooth" });
-                    }}
-                    className="group flex min-h-[8.4rem] w-[6.3rem] flex-col items-center justify-center rounded-[8px] border border-transparent px-2 py-3 text-center transition hover:border-[var(--line)] hover:bg-[var(--background)] md:min-h-[8.8rem] md:w-auto"
-                  >
-                    <div className="flex h-16 w-16 items-center justify-center rounded-[8px] border border-[var(--crest-tile-line)] bg-[var(--crest-tile)] p-2 shadow-sm md:h-20 md:w-20">
-                      <div className="relative h-full w-full">
-                      <Image
-                        src={item.logo ?? "/images/logo-remeras-argentina.svg"}
-                        alt={translateTeamName(item.team)}
-                        fill
-                        className="object-contain transition duration-300 group-hover:scale-[1.04]"
-                        sizes="80px"
-                      />
-                      </div>
-                    </div>
-                    <p className="mt-3 text-sm font-semibold">{translateTeamName(item.team)}</p>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="mt-8 rounded-[8px] border border-[var(--line)] bg-[var(--surface)] p-5 sm:p-6">
-          <div className="flex flex-wrap items-end justify-between gap-3">
-            <div>
-              <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">Base de ventas</p>
-              <h2 className="mt-1 text-2xl font-semibold">Retros que no pueden faltar</h2>
-            </div>
-            <a
-              href={otherJerseyHref}
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-[8px] border border-[var(--line)] px-4 py-2 text-sm font-semibold"
-            >
-              Pedir una que no ves
-            </a>
-          </div>
-
-          <div className="mt-6 grid gap-4 lg:grid-cols-2">
-            {REQUIRED_RETRO_GROUPS.map((group) => (
-              <div
-                key={group.title}
-                className="rounded-[8px] border border-[var(--line)] bg-[var(--background)] p-4"
-              >
-                <h3 className="text-lg font-semibold">{group.title}</h3>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {group.items.map((item) => (
-                    <a
-                      key={item}
-                      href={buildRetroRequestHref(cleanWhatsapp, item)}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="rounded-[8px] border border-[var(--line)] bg-[var(--surface)] px-3 py-3 text-sm font-semibold leading-5 transition hover:border-[var(--foreground)]"
-                    >
-                      {item}
-                    </a>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="mt-8 rounded-[8px] bg-[var(--accent)] px-6 py-7 text-white sm:px-8">
-          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-white/75">Pedido especial</p>
-          <h2 className="mt-2 text-3xl font-semibold leading-tight sm:text-4xl">
-            Te interesa otra remera que no esta en el catalogo?
-          </h2>
-          <p className="mt-3 max-w-2xl text-sm leading-6 text-white/85">
-            Escribinos por WhatsApp y te buscamos el club, la seleccion, el jugador o la temporada que
-            quieras.
-          </p>
-          <div className="mt-5 flex flex-wrap items-center gap-3">
-            <a
-              href={otherJerseyHref}
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-[8px] bg-white px-4 py-3 text-sm font-semibold text-[var(--accent)]"
-            >
-              Chatear al WhatsApp
-            </a>
-            <span className="rounded-[8px] border border-white/35 px-4 py-3 text-sm font-semibold">
-              {whatsappDisplay}
-            </span>
-          </div>
-        </section>
-
-        <section className="mt-8 rounded-[8px] border border-[var(--line)] bg-[var(--surface)] p-6">
-          <div className="flex flex-wrap items-end justify-between gap-4">
-            <div>
-              <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">Modelos destacados</p>
-              <h2 className="mt-1 text-2xl font-semibold">Las camisetas mas top para sumar</h2>
-            </div>
-          </div>
-
-          <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            {topPickProducts.map((product) => (
-              <article
-                key={product.id}
-                className="flex h-full flex-col rounded-[8px] border border-[var(--line)] bg-[var(--background)] p-4"
-              >
-                <button
-                  type="button"
-                  onClick={() => openGallery(product)}
-                  className="group relative mb-4 aspect-[4/5] overflow-hidden rounded-[8px] border border-[var(--line)] bg-white"
-                >
-                  {product.image ? (
-                    <Image
-                      src={product.image}
-                      alt={translateProductName(product.shortName)}
-                      fill
-                      className="object-cover transition duration-300 group-hover:scale-[1.02]"
-                      sizes="(max-width: 768px) 100vw, 25vw"
-                    />
-                  ) : null}
-                </button>
-
-                <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">
-                  {translateTeamName(product.team)}
-                </p>
-                <h3 className="mt-1 text-lg font-semibold leading-6">
-                  {translateProductName(product.shortName)}
-                </h3>
-                <p className="mt-3 text-sm text-[var(--muted)] line-through">{formatArs(ORIGINAL_PRICE_ARS)}</p>
-                <p className="mt-1 text-2xl font-semibold">{formatArs(product.priceArs)}</p>
-
-                <div className="mt-auto pt-4">
-                  <div className="grid gap-3 sm:grid-cols-2">
-                    <button
-                      type="button"
-                      onClick={() => openGallery(product)}
-                      className="rounded-[8px] border border-[var(--line)] px-4 py-3 text-sm font-semibold"
-                    >
-                      Ver foto
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => addToCart(product)}
-                      className="rounded-[8px] bg-[var(--accent-2)] px-4 py-3 text-sm font-semibold text-white"
-                    >
-                      Agregar
-                    </button>
+          <div className="mt-6 space-y-7">
+            {homeFeaturedSections.map((section) => (
+              <div key={section.team}>
+                <div className="flex items-end justify-between gap-3">
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">
+                      {section.collection}
+                    </p>
+                    <h3 className="mt-1 text-xl font-semibold">{translateTeamName(section.label)}</h3>
                   </div>
+                  <button
+                    type="button"
+                    onClick={() => openCatalogWithTeam(section.team)}
+                    className="rounded-[8px] border border-[var(--line)] px-3 py-2 text-sm font-semibold"
+                  >
+                    Ver todo
+                  </button>
                 </div>
-              </article>
+
+                <div className="mt-4 flex gap-4 overflow-x-auto pb-2">
+                  {section.products.map((product) => {
+                    const selectedSize = getSelectedSize(product);
+                    const soldOut = availableForSelection(product, selectedSize) === 0;
+
+                    return (
+                      <article
+                        key={product.id}
+                        className="flex min-w-[17rem] max-w-[17rem] shrink-0 snap-start flex-col rounded-[8px] border border-[var(--line)] bg-[var(--background)] p-4"
+                      >
+                        <button
+                          type="button"
+                          onClick={() => openGallery(product)}
+                          className="group relative mb-4 aspect-[4/5] overflow-hidden rounded-[8px] border border-[var(--line)] bg-white"
+                        >
+                          {product.image ? (
+                            <Image
+                              src={product.image}
+                              alt={product.shortName}
+                              fill
+                              className="object-cover transition duration-300 group-hover:scale-[1.02]"
+                              sizes="280px"
+                            />
+                          ) : null}
+                        </button>
+
+                        <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">
+                          {translateTeamName(product.team)}
+                        </p>
+                        <h3 className="mt-1 text-lg font-semibold leading-6">
+                          {translateProductName(product.shortName)}
+                        </h3>
+                        <p className="mt-3 text-sm text-[var(--muted)] line-through">{formatArs(ORIGINAL_PRICE_ARS)}</p>
+                        <p className="mt-1 text-2xl font-semibold">{formatArs(product.priceArs)}</p>
+                        <p className="mt-1 text-sm text-[var(--muted)]">
+                          Sena estimada: {formatArs(depositFor(product.priceArs))}
+                        </p>
+
+                        <div className="mt-4 grid gap-2">
+                          <select
+                            value={selectedSize}
+                            onChange={(event) =>
+                              setSelectedSizes((current) => ({
+                                ...current,
+                                [product.id]: event.target.value,
+                              }))
+                            }
+                            className="rounded-[8px] border border-[var(--line)] bg-[var(--surface)] px-3 py-3 text-sm"
+                          >
+                            {product.sizeOptions.map((option) => (
+                              <option key={option.size} value={option.size}>
+                                {option.size}
+                              </option>
+                            ))}
+                          </select>
+
+                          <div className="grid grid-cols-2 gap-2">
+                            <button
+                              type="button"
+                              onClick={() => openGallery(product)}
+                              className="rounded-[8px] border border-[var(--line)] px-4 py-3 text-sm font-semibold"
+                            >
+                              Ver foto
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => addToCart(product)}
+                              disabled={soldOut}
+                              className={`rounded-[8px] px-4 py-3 text-sm font-semibold text-white ${
+                                soldOut
+                                  ? "cursor-not-allowed bg-[var(--line)] text-[var(--muted)]"
+                                  : "bg-[var(--accent-2)]"
+                              }`}
+                            >
+                              {soldOut ? "Sin stock" : "Agregar"}
+                            </button>
+                          </div>
+                        </div>
+                      </article>
+                    );
+                  })}
+                </div>
+              </div>
             ))}
           </div>
         </section>
 
         <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_25rem]">
           <section id="catalogo" className="min-w-0">
-            <div className="grid gap-3 border-y border-[var(--line)] py-4 xl:grid-cols-[minmax(0,1fr)_12rem_12rem_10rem]">
-              <input
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                placeholder="Messi, Boca, Argentina, Milan..."
-                className="rounded-[8px] border border-[var(--line)] bg-[var(--surface)] px-4 py-3 text-sm"
-              />
-              <select
-                value={collectionFilter}
-                onChange={(event) => setCollectionFilter(event.target.value)}
-                className="rounded-[8px] border border-[var(--line)] bg-[var(--surface)] px-4 py-3 text-sm"
-              >
-                <option value="Todas">Todas las categorias</option>
-                {collections.map((collection) => (
-                  <option key={collection} value={collection}>
-                    {collection}
-                  </option>
-                ))}
-              </select>
-              <select
-                value={teamFilter}
-                onChange={(event) => setTeamFilter(event.target.value)}
-                className="rounded-[8px] border border-[var(--line)] bg-[var(--surface)] px-4 py-3 text-sm"
-              >
-                <option value="Todos">Todos los equipos</option>
-                {teams.map((team) => (
-                  <option key={team} value={team}>
-                    {translateTeamName(team)}
-                  </option>
-                ))}
-              </select>
-              <select
-                value={sizeFilter}
-                onChange={(event) => setSizeFilter(event.target.value)}
-                className="rounded-[8px] border border-[var(--line)] bg-[var(--surface)] px-4 py-3 text-sm"
-              >
-                <option value="Todos">Todos los talles</option>
-                {sizes.map((size) => (
-                  <option key={size} value={size}>
-                    {size}
-                  </option>
-                ))}
-              </select>
+            <div className="rounded-[8px] border border-[var(--line)] bg-[var(--surface)] p-4 sm:p-5">
+              <div className="flex flex-wrap items-end justify-between gap-3">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">Catalogo completo</p>
+                  <h2 className="mt-1 text-2xl font-semibold">Filtra por club, seleccion o jugador</h2>
+                  <p className="mt-2 text-sm text-[var(--muted)]">
+                    {filteredProducts.length} modelos para ver, reservar y hablar por WhatsApp.
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setCatalogMenuOpen(true)}
+                    className="rounded-[8px] bg-[var(--foreground)] px-4 py-3 text-sm font-semibold text-[var(--surface)]"
+                  >
+                    Filtros y clubes
+                  </button>
+                  <button
+                    type="button"
+                    onClick={resetCatalogFilters}
+                    className="rounded-[8px] border border-[var(--line)] px-4 py-3 text-sm font-semibold"
+                  >
+                    Limpiar
+                  </button>
+                </div>
+              </div>
+
+              <div className="mt-4 flex flex-wrap gap-2">
+                {query ? (
+                  <span className="rounded-[8px] border border-[var(--line)] bg-[var(--background)] px-3 py-2 text-sm">
+                    Busqueda: {query}
+                  </span>
+                ) : null}
+                {collectionFilter !== "Todas" ? (
+                  <span className="rounded-[8px] border border-[var(--line)] bg-[var(--background)] px-3 py-2 text-sm">
+                    Categoria: {collectionFilter}
+                  </span>
+                ) : null}
+                {teamFilter !== "Todos" ? (
+                  <span className="rounded-[8px] border border-[var(--line)] bg-[var(--background)] px-3 py-2 text-sm">
+                    Equipo: {translateTeamName(teamFilter)}
+                  </span>
+                ) : null}
+                {sizeFilter !== "Todos" ? (
+                  <span className="rounded-[8px] border border-[var(--line)] bg-[var(--background)] px-3 py-2 text-sm">
+                    Talle: {sizeFilter}
+                  </span>
+                ) : null}
+                {!query && collectionFilter === "Todas" && teamFilter === "Todos" && sizeFilter === "Todos" ? (
+                  <span className="rounded-[8px] border border-[var(--line)] bg-[var(--background)] px-3 py-2 text-sm text-[var(--muted)]">
+                    Sin filtros activos
+                  </span>
+                ) : null}
+              </div>
             </div>
 
             <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
@@ -1352,7 +1225,203 @@ export function CatalogApp({
             </div>
           </aside>
         </div>
+
+        <section className="mt-8 rounded-[8px] bg-[var(--accent)] px-6 py-7 text-white sm:px-8">
+          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-white/75">No ves tu camiseta?</p>
+          <h2 className="mt-2 text-3xl font-semibold leading-tight sm:text-4xl">
+            Contacta al vendedor y la buscamos para vos.
+          </h2>
+          <p className="mt-3 max-w-2xl text-sm leading-6 text-white/85">
+            Si no la encontraste en el catalogo, escribinos por WhatsApp y te conseguimos el club, la
+            seleccion, el jugador o la temporada que quieras.
+          </p>
+          <div className="mt-5 flex flex-wrap items-center gap-3">
+            <a
+              href={otherJerseyHref}
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-[8px] bg-white px-4 py-3 text-sm font-semibold text-[var(--accent)]"
+            >
+              Contactar al vendedor
+            </a>
+            <span className="rounded-[8px] border border-white/35 px-4 py-3 text-sm font-semibold">
+              {whatsappDisplay}
+            </span>
+          </div>
+        </section>
       </main>
+
+      {catalogMenuOpen ? (
+        <div
+          className="fixed inset-0 z-40 bg-[rgba(7,11,17,0.52)] backdrop-blur-[6px]"
+          onClick={() => setCatalogMenuOpen(false)}
+        >
+          <aside
+            className="h-full w-[23rem] max-w-[90vw] overflow-y-auto border-r border-[var(--line)] bg-[var(--surface)] p-4 shadow-[var(--soft-shadow)]"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">Catalogo completo</p>
+                <h2 className="mt-1 text-xl font-semibold">Filtros y clubes</h2>
+              </div>
+              <button
+                type="button"
+                onClick={() => setCatalogMenuOpen(false)}
+                className="rounded-[8px] border border-[var(--line)] px-3 py-2 text-sm font-semibold"
+              >
+                Cerrar
+              </button>
+            </div>
+
+            <div className="mt-5 space-y-5">
+              <div>
+                <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">Buscar</p>
+                <input
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                  placeholder="Messi, Boca, Argentina, Milan..."
+                  className="mt-2 w-full rounded-[8px] border border-[var(--line)] bg-[var(--background)] px-4 py-3 text-sm"
+                />
+              </div>
+
+              <div>
+                <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">Atajos</p>
+                <div className="mt-2 grid grid-cols-2 gap-2">
+                  {HOME_TEAM_PRIORITY.map((item) => (
+                    <button
+                      key={item.team}
+                      type="button"
+                      onClick={() => openCatalogWithTeam(item.team)}
+                      className={`rounded-[8px] border px-3 py-3 text-left text-sm font-semibold ${
+                        teamFilter === item.team
+                          ? "border-[var(--foreground)] bg-[var(--foreground)] text-[var(--surface)]"
+                          : "border-[var(--line)] bg-[var(--background)]"
+                      }`}
+                    >
+                      {translateTeamName(item.label)}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">Categorias</p>
+                <div className="mt-2 grid grid-cols-3 gap-2">
+                  {["Todas", "Selecciones", "Clubes"].map((item) => (
+                    <button
+                      key={item}
+                      type="button"
+                      onClick={() => openCatalogWithCollection(item)}
+                      className={`rounded-[8px] border px-3 py-3 text-sm font-semibold ${
+                        collectionFilter === item
+                          ? "border-[var(--foreground)] bg-[var(--foreground)] text-[var(--surface)]"
+                          : "border-[var(--line)] bg-[var(--background)]"
+                      }`}
+                    >
+                      {item}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">Talles</p>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {["Todos", ...sizes].map((size) => (
+                    <button
+                      key={size}
+                      type="button"
+                      onClick={() => setSizeFilter(size)}
+                      className={`rounded-[8px] border px-3 py-2 text-sm font-semibold ${
+                        sizeFilter === size
+                          ? "border-[var(--foreground)] bg-[var(--foreground)] text-[var(--surface)]"
+                          : "border-[var(--line)] bg-[var(--background)]"
+                      }`}
+                    >
+                      {size}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">Selecciones</p>
+                <div className="mt-2 space-y-2">
+                  {drawerItems.national.map((item) => (
+                    <button
+                      key={item.team}
+                      type="button"
+                      onClick={() => openCatalogWithTeam(item.team)}
+                      className={`flex w-full items-center gap-3 rounded-[8px] border px-3 py-3 text-left text-sm font-semibold ${
+                        teamFilter === item.team
+                          ? "border-[var(--foreground)] bg-[var(--foreground)] text-[var(--surface)]"
+                          : "border-[var(--line)] bg-[var(--background)]"
+                      }`}
+                    >
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[8px] bg-[var(--crest-tile)]">
+                        {item.logo ? (
+                          <div className="relative h-7 w-7">
+                            <Image
+                              src={item.logo}
+                              alt={translateTeamName(item.team)}
+                              fill
+                              className="object-contain"
+                              sizes="28px"
+                            />
+                          </div>
+                        ) : null}
+                      </div>
+                      <span>{translateTeamName(item.team)}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">Clubes</p>
+                <div className="mt-2 space-y-2">
+                  {drawerItems.clubs.map((item) => (
+                    <button
+                      key={item.team}
+                      type="button"
+                      onClick={() => openCatalogWithTeam(item.team)}
+                      className={`flex w-full items-center gap-3 rounded-[8px] border px-3 py-3 text-left text-sm font-semibold ${
+                        teamFilter === item.team
+                          ? "border-[var(--foreground)] bg-[var(--foreground)] text-[var(--surface)]"
+                          : "border-[var(--line)] bg-[var(--background)]"
+                      }`}
+                    >
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[8px] bg-[var(--crest-tile)]">
+                        {item.logo ? (
+                          <div className="relative h-7 w-7">
+                            <Image
+                              src={item.logo}
+                              alt={translateTeamName(item.team)}
+                              fill
+                              className="object-contain"
+                              sizes="28px"
+                            />
+                          </div>
+                        ) : null}
+                      </div>
+                      <span>{translateTeamName(item.team)}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={resetCatalogFilters}
+                className="w-full rounded-[8px] bg-[var(--accent)] px-4 py-3 text-sm font-semibold text-white"
+              >
+                Ver todo sin filtros
+              </button>
+            </div>
+          </aside>
+        </div>
+      ) : null}
 
       {activeGalleryProduct && activeGalleryImage ? (
         <div
