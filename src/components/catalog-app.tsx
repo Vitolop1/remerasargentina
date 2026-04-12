@@ -36,6 +36,26 @@ type CatalogAppProps = CatalogSummary & {
 
 const DEPOSIT_RATE = 0.5;
 const ORIGINAL_PRICE_ARS = 79000;
+const FEATURED_NATIONAL_TEAMS = ["Argentina", "Brazil", "France", "Spain", "Portugal"] as const;
+const FEATURED_CLUB_TEAMS = [
+  "Liverpool",
+  "Manchester City",
+  "Manchester United",
+  "Chelsea",
+  "Arsenal",
+  "Tottenham",
+  "Boca Juniors",
+  "Juventus",
+  "Barcelona",
+  "Real Madrid",
+  "Atletico Madrid",
+  "Borussia Dortmund",
+  "Bayern Munich",
+  "Flamengo",
+  "PSG",
+  "Inter",
+  "AC Milan",
+] as const;
 
 function depositFor(amount: number) {
   return Math.round(amount * DEPOSIT_RATE);
@@ -179,17 +199,19 @@ export function CatalogApp({
     return products.filter((product) => product.isTopPick).slice(0, 12);
   }, [products]);
 
-  const collectionShowcases = useMemo(() => {
-    return collections
-      .map((collection) => products.find((product) => product.collection === collection))
-      .filter(Boolean) as CatalogProduct[];
-  }, [collections, products]);
+  const nationalFilterItems = useMemo(() => {
+    return FEATURED_NATIONAL_TEAMS.map((team) => ({
+      team,
+      logo: teamLogos[team] ?? products.find((product) => product.team === team)?.teamLogo ?? null,
+    })).filter((item) => item.logo);
+  }, [products, teamLogos]);
 
-  const teamShowcases = useMemo(() => {
-    return teams
-      .map((team) => products.find((product) => product.team === team))
-      .filter(Boolean) as CatalogProduct[];
-  }, [products, teams]);
+  const clubFilterItems = useMemo(() => {
+    return FEATURED_CLUB_TEAMS.map((team) => ({
+      team,
+      logo: teamLogos[team] ?? products.find((product) => product.team === team)?.teamLogo ?? null,
+    })).filter((item) => item.logo);
+  }, [products, teamLogos]);
 
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
@@ -550,98 +572,90 @@ export function CatalogApp({
           </div>
         </section>
 
-        <section className="mt-8 rounded-[8px] border border-[var(--line)] bg-[var(--surface)] p-6">
-          <div className="grid gap-8 xl:grid-cols-[0.95fr_1.25fr]">
-            <div>
-              <div className="mb-4 flex items-center justify-between gap-3">
-                <div>
-                  <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">Explorar</p>
-                  <h2 className="mt-1 text-2xl font-semibold">Por categoria</h2>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setCollectionFilter("Todas")}
-                  className="rounded-[8px] border border-[var(--line)] px-3 py-2 text-sm font-semibold"
-                >
-                  Ver todo
-                </button>
-              </div>
-
-              <div className="grid gap-3 sm:grid-cols-2">
-                {collectionShowcases.map((product) => (
-                  <button
-                    key={product.collection}
-                    type="button"
-                    onClick={() => {
-                      setCollectionFilter(product.collection);
-                      setTeamFilter("Todos");
-                      document.getElementById("catalogo")?.scrollIntoView({ behavior: "smooth" });
-                    }}
-                    className="group relative min-h-[10rem] overflow-hidden rounded-[8px] border border-[var(--line)] text-left"
-                  >
-                    {product.image ? (
-                      <Image
-                        src={product.image}
-                        alt={product.collection}
-                        fill
-                        className="object-cover transition duration-300 group-hover:scale-[1.02]"
-                        sizes="(max-width: 640px) 100vw, 50vw"
-                      />
-                    ) : null}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent" />
-                    <div className="absolute inset-x-0 bottom-0 p-4">
-                      <p className="text-xs uppercase tracking-[0.16em] text-white/70">Categoria</p>
-                      <p className="mt-1 text-xl font-semibold text-white">{product.collection}</p>
-                    </div>
-                  </button>
-                ))}
-              </div>
+        <section className="mt-8 rounded-[8px] border border-[var(--line)] bg-[var(--surface)] p-4 sm:p-6">
+          <div className="overflow-hidden rounded-[8px] border border-[var(--line)]">
+            <div className="flex items-center justify-between gap-3 bg-[#303030] px-4 py-3 text-white">
+              <h2 className="text-lg font-semibold">Selecciones</h2>
+              <button
+                type="button"
+                onClick={() => {
+                  setCollectionFilter("Selecciones");
+                  setTeamFilter("Todos");
+                  document.getElementById("catalogo")?.scrollIntoView({ behavior: "smooth" });
+                }}
+                className="text-sm font-semibold text-white/85"
+              >
+                Ver todas
+              </button>
             </div>
 
-            <div>
-              <div className="mb-4 flex items-center justify-between gap-3">
-                <div>
-                  <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">Explorar</p>
-                  <h2 className="mt-1 text-2xl font-semibold">Por equipo</h2>
-                </div>
+            <div className="grid gap-4 bg-white px-4 py-5 sm:grid-cols-3 lg:grid-cols-5">
+              {nationalFilterItems.map((item) => (
                 <button
+                  key={item.team}
                   type="button"
                   onClick={() => {
-                    setCollectionFilter("Todas");
-                    setTeamFilter("Todos");
+                    setCollectionFilter("Selecciones");
+                    setTeamFilter(item.team);
+                    document.getElementById("catalogo")?.scrollIntoView({ behavior: "smooth" });
                   }}
-                  className="rounded-[8px] border border-[var(--line)] px-3 py-2 text-sm font-semibold"
+                  className="group flex flex-col items-center justify-center rounded-[8px] px-3 py-2 text-center"
                 >
-                  Limpiar filtros
+                  <div className="relative h-24 w-24">
+                    <Image
+                      src={item.logo ?? "/next.svg"}
+                      alt={translateTeamName(item.team)}
+                      fill
+                      className="object-contain transition duration-300 group-hover:scale-[1.04]"
+                      sizes="96px"
+                    />
+                  </div>
+                  <p className="mt-3 text-base font-semibold">{translateTeamName(item.team)}</p>
                 </button>
-              </div>
+              ))}
+            </div>
+          </div>
 
-              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                {teamShowcases.map((product) => (
-                  <button
-                    key={product.team}
-                    type="button"
-                    onClick={() => {
-                      setCollectionFilter("Todas");
-                      setTeamFilter(product.team);
-                      document.getElementById("catalogo")?.scrollIntoView({ behavior: "smooth" });
-                    }}
-                    className="group flex min-h-[8.5rem] flex-col items-center justify-center overflow-hidden rounded-[8px] border border-[var(--line)] bg-[var(--background)] px-4 py-5 text-center"
-                  >
-                    <div className="relative h-20 w-20">
-                      <Image
-                        src={product.teamLogo ?? teamLogos[product.team] ?? product.image ?? "/next.svg"}
-                        alt={translateTeamName(product.team)}
-                        fill
-                        className="object-contain transition duration-300 group-hover:scale-[1.04]"
-                        sizes="80px"
-                      />
-                    </div>
-                    <p className="mt-4 text-xs uppercase tracking-[0.16em] text-[var(--muted)]">Equipo</p>
-                    <p className="mt-1 text-lg font-semibold">{translateTeamName(product.team)}</p>
-                  </button>
-                ))}
-              </div>
+          <div className="mt-6 overflow-hidden rounded-[8px] border border-[var(--line)]">
+            <div className="flex items-center justify-between gap-3 bg-[#303030] px-4 py-3 text-white">
+              <h2 className="text-lg font-semibold">Clubes</h2>
+              <button
+                type="button"
+                onClick={() => {
+                  setCollectionFilter("Clubes");
+                  setTeamFilter("Todos");
+                  document.getElementById("catalogo")?.scrollIntoView({ behavior: "smooth" });
+                }}
+                className="text-sm font-semibold text-white/85"
+              >
+                Ver todos
+              </button>
+            </div>
+
+            <div className="grid gap-4 bg-white px-4 py-5 sm:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
+              {clubFilterItems.map((item) => (
+                <button
+                  key={item.team}
+                  type="button"
+                  onClick={() => {
+                    setCollectionFilter("Clubes");
+                    setTeamFilter(item.team);
+                    document.getElementById("catalogo")?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                  className="group flex flex-col items-center justify-center rounded-[8px] px-2 py-2 text-center"
+                >
+                  <div className="relative h-20 w-20">
+                    <Image
+                      src={item.logo ?? "/next.svg"}
+                      alt={translateTeamName(item.team)}
+                      fill
+                      className="object-contain transition duration-300 group-hover:scale-[1.04]"
+                      sizes="80px"
+                    />
+                  </div>
+                  <p className="mt-3 text-sm font-semibold">{translateTeamName(item.team)}</p>
+                </button>
+              ))}
             </div>
           </div>
         </section>

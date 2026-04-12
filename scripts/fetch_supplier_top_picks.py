@@ -120,6 +120,78 @@ PICKS = [
         "url": "https://www.gmkitsc.com/25-26-BAR-Black-Joint-Edition-1-1-Fans-Soccer-Jersey-p28359752.html",
         "tags": ["Barcelona", "Edicion especial", "Novedad"],
     },
+    {
+        "name": "25-26 LIV Third 1:1 Fans Soccer Jersey",
+        "team": "Liverpool",
+        "collection": "Clubes",
+        "player": "Sin nombre",
+        "url": "https://www.gmkitsc.com/25-26-LIV-Third-1-1-Fans-Soccer-Jersey-p28347266.html",
+        "tags": ["Liverpool", "Tercera", "Novedad"],
+    },
+    {
+        "name": "25-26 Man Utd Third 1:1 Fans Soccer Jersey",
+        "team": "Manchester United",
+        "collection": "Clubes",
+        "player": "Sin nombre",
+        "url": "https://www.gmkitsc.com/25-26-Man-Utd-Third-1-1-Fans-Soccer-Jersey-p28096185.html",
+        "tags": ["Manchester United", "Tercera", "Novedad"],
+    },
+    {
+        "name": "25-26 CHE Third 1:1 Fans Soccer Jersey",
+        "team": "Chelsea",
+        "collection": "Clubes",
+        "player": "Sin nombre",
+        "url": "https://www.gmkitsc.com/25-26-CHE-Third-1-1-Fans-Soccer-Jersey-p28434052.html",
+        "tags": ["Chelsea", "Tercera", "Novedad"],
+    },
+    {
+        "name": "25-26 ARS Third 1:1 Fans Soccer Jersey",
+        "team": "Arsenal",
+        "collection": "Clubes",
+        "player": "Sin nombre",
+        "url": "https://www.gmkitsc.com/25-26-ARS-Third-1-1-Fans-Soccer-Jersey-p28383465.html",
+        "tags": ["Arsenal", "Tercera", "Novedad"],
+    },
+    {
+        "name": "25-26 TOT Third Fans Soccer Jersey",
+        "team": "Tottenham",
+        "collection": "Clubes",
+        "player": "Sin nombre",
+        "url": "https://www.gmkitsc.com/25-26-TOT-Third-Fans-Soccer-Jersey-p28451243.html",
+        "tags": ["Tottenham", "Tercera", "Novedad"],
+    },
+    {
+        "name": "25-26 ATM Third Fans Soccer Jersey",
+        "team": "Atletico Madrid",
+        "collection": "Clubes",
+        "player": "Sin nombre",
+        "url": "https://www.gmkitsc.com/25-26-ATM-Third-Fans-Soccer-Jersey-VIS-NDA-p28482510.html",
+        "tags": ["Atletico Madrid", "Tercera", "Novedad"],
+    },
+    {
+        "name": "25-26 Dortmund Cup Match Home Fans Soccer Jersey",
+        "team": "Borussia Dortmund",
+        "collection": "Clubes",
+        "player": "Sin nombre",
+        "url": "https://www.gmkitsc.com/25-26-Dortmund-Cup-Match-Home-Fans-Soccer-Jersey-%E6%9D%AF%E8%B5%9B%E7%89%88-p28478445.html",
+        "tags": ["Borussia Dortmund", "Titular", "Novedad"],
+    },
+    {
+        "name": "25-26 Flamengo Third 1:1 Fans Soccer Jersey",
+        "team": "Flamengo",
+        "collection": "Clubes",
+        "player": "Sin nombre",
+        "url": "https://www.gmkitsc.com/25-26-Flamengo-Third-1-1-Fans-Soccer-Jersey-p28387852.html",
+        "tags": ["Flamengo", "Tercera", "Novedad"],
+    },
+    {
+        "name": "25-26 INT Third 1:1 Fans Soccer Jersey",
+        "team": "Inter",
+        "collection": "Clubes",
+        "player": "Sin nombre",
+        "url": "https://www.gmkitsc.com/25-26-INT-Third-1-1-Fans-Soccer-Jersey-p28478442.html",
+        "tags": ["Inter", "Tercera", "Novedad"],
+    },
 ]
 
 
@@ -172,6 +244,13 @@ def build_short_name(name: str) -> str:
         .replace(" 1:1", "")
         .replace("RMA", "Real Madrid")
         .replace("BAR", "Barcelona")
+        .replace("LIV", "Liverpool")
+        .replace("CHE", "Chelsea")
+        .replace("ARS", "Arsenal")
+        .replace("JUV", "Juventus")
+        .replace("INT", "Inter")
+        .replace("ATM", "Atletico Madrid")
+        .replace("TOT", "Tottenham")
         .strip()
     )
 

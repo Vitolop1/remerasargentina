@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-12T16:26:32.836215+00:00",
+  "generatedAt": "2026-04-12T16:33:41.782261+00:00",
   "supplier": "gmkitsc.com",
   "products": [
     {
@@ -312,6 +312,222 @@
         "/top-picks/25-26-bar-black-joint-edition-1-1-fans-soccer-jersey/04.jpg",
         "/top-picks/25-26-bar-black-joint-edition-1-1-fans-soccer-jersey/05.jpg",
         "/top-picks/25-26-bar-black-joint-edition-1-1-fans-soccer-jersey/06.jpg"
+      ]
+    },
+    {
+      "id": "25-26-liv-third-1-1-fans-soccer-jersey",
+      "name": "25-26 LIV Third 1:1 Fans Soccer Jersey",
+      "shortName": "25-26 Liverpool Third",
+      "team": "Liverpool",
+      "collection": "Clubes",
+      "player": "Sin nombre",
+      "eraLabel": "25-26",
+      "tags": [
+        "Liverpool",
+        "Tercera",
+        "Novedad"
+      ],
+      "sourceUrl": "https://www.gmkitsc.com/25-26-LIV-Third-1-1-Fans-Soccer-Jersey-p28347266.html",
+      "image": "/top-picks/25-26-liv-third-1-1-fans-soccer-jersey/01.png",
+      "gallery": [
+        "/top-picks/25-26-liv-third-1-1-fans-soccer-jersey/01.png",
+        "/top-picks/25-26-liv-third-1-1-fans-soccer-jersey/02.png",
+        "/top-picks/25-26-liv-third-1-1-fans-soccer-jersey/03.png",
+        "/top-picks/25-26-liv-third-1-1-fans-soccer-jersey/04.png",
+        "/top-picks/25-26-liv-third-1-1-fans-soccer-jersey/05.png",
+        "/top-picks/25-26-liv-third-1-1-fans-soccer-jersey/06.png"
+      ]
+    },
+    {
+      "id": "25-26-man-utd-third-1-1-fans-soccer-jersey",
+      "name": "25-26 Man Utd Third 1:1 Fans Soccer Jersey",
+      "shortName": "25-26 Man Utd Third",
+      "team": "Manchester United",
+      "collection": "Clubes",
+      "player": "Sin nombre",
+      "eraLabel": "25-26",
+      "tags": [
+        "Manchester United",
+        "Tercera",
+        "Novedad"
+      ],
+      "sourceUrl": "https://www.gmkitsc.com/25-26-Man-Utd-Third-1-1-Fans-Soccer-Jersey-p28096185.html",
+      "image": "/top-picks/25-26-man-utd-third-1-1-fans-soccer-jersey/01.png",
+      "gallery": [
+        "/top-picks/25-26-man-utd-third-1-1-fans-soccer-jersey/01.png",
+        "/top-picks/25-26-man-utd-third-1-1-fans-soccer-jersey/02.png",
+        "/top-picks/25-26-man-utd-third-1-1-fans-soccer-jersey/03.png",
+        "/top-picks/25-26-man-utd-third-1-1-fans-soccer-jersey/04.png",
+        "/top-picks/25-26-man-utd-third-1-1-fans-soccer-jersey/05.png",
+        "/top-picks/25-26-man-utd-third-1-1-fans-soccer-jersey/06.jpg"
+      ]
+    },
+    {
+      "id": "25-26-che-third-1-1-fans-soccer-jersey",
+      "name": "25-26 CHE Third 1:1 Fans Soccer Jersey",
+      "shortName": "25-26 Chelsea Third",
+      "team": "Chelsea",
+      "collection": "Clubes",
+      "player": "Sin nombre",
+      "eraLabel": "25-26",
+      "tags": [
+        "Chelsea",
+        "Tercera",
+        "Novedad"
+      ],
+      "sourceUrl": "https://www.gmkitsc.com/25-26-CHE-Third-1-1-Fans-Soccer-Jersey-p28434052.html",
+      "image": "/top-picks/25-26-che-third-1-1-fans-soccer-jersey/01.webp",
+      "gallery": [
+        "/top-picks/25-26-che-third-1-1-fans-soccer-jersey/01.webp",
+        "/top-picks/25-26-che-third-1-1-fans-soccer-jersey/02.jpg",
+        "/top-picks/25-26-che-third-1-1-fans-soccer-jersey/03.jpg",
+        "/top-picks/25-26-che-third-1-1-fans-soccer-jersey/04.png",
+        "/top-picks/25-26-che-third-1-1-fans-soccer-jersey/05.png",
+        "/top-picks/25-26-che-third-1-1-fans-soccer-jersey/06.png"
+      ]
+    },
+    {
+      "id": "25-26-ars-third-1-1-fans-soccer-jersey",
+      "name": "25-26 ARS Third 1:1 Fans Soccer Jersey",
+      "shortName": "25-26 Arsenal Third",
+      "team": "Arsenal",
+      "collection": "Clubes",
+      "player": "Sin nombre",
+      "eraLabel": "25-26",
+      "tags": [
+        "Arsenal",
+        "Tercera",
+        "Novedad"
+      ],
+      "sourceUrl": "https://www.gmkitsc.com/25-26-ARS-Third-1-1-Fans-Soccer-Jersey-p28383465.html",
+      "image": "/top-picks/25-26-ars-third-1-1-fans-soccer-jersey/01.png",
+      "gallery": [
+        "/top-picks/25-26-ars-third-1-1-fans-soccer-jersey/01.png",
+        "/top-picks/25-26-ars-third-1-1-fans-soccer-jersey/02.png",
+        "/top-picks/25-26-ars-third-1-1-fans-soccer-jersey/03.png",
+        "/top-picks/25-26-ars-third-1-1-fans-soccer-jersey/04.webp",
+        "/top-picks/25-26-ars-third-1-1-fans-soccer-jersey/05.png",
+        "/top-picks/25-26-ars-third-1-1-fans-soccer-jersey/06.png"
+      ]
+    },
+    {
+      "id": "25-26-tot-third-fans-soccer-jersey",
+      "name": "25-26 TOT Third Fans Soccer Jersey",
+      "shortName": "25-26 Tottenham Third",
+      "team": "Tottenham",
+      "collection": "Clubes",
+      "player": "Sin nombre",
+      "eraLabel": "25-26",
+      "tags": [
+        "Tottenham",
+        "Tercera",
+        "Novedad"
+      ],
+      "sourceUrl": "https://www.gmkitsc.com/25-26-TOT-Third-Fans-Soccer-Jersey-p28451243.html",
+      "image": "/top-picks/25-26-tot-third-fans-soccer-jersey/01.png",
+      "gallery": [
+        "/top-picks/25-26-tot-third-fans-soccer-jersey/01.png",
+        "/top-picks/25-26-tot-third-fans-soccer-jersey/02.png",
+        "/top-picks/25-26-tot-third-fans-soccer-jersey/03.png",
+        "/top-picks/25-26-tot-third-fans-soccer-jersey/04.png",
+        "/top-picks/25-26-tot-third-fans-soccer-jersey/05.png",
+        "/top-picks/25-26-tot-third-fans-soccer-jersey/06.png"
+      ]
+    },
+    {
+      "id": "25-26-atm-third-fans-soccer-jersey",
+      "name": "25-26 ATM Third Fans Soccer Jersey",
+      "shortName": "25-26 Atletico Madrid Third",
+      "team": "Atletico Madrid",
+      "collection": "Clubes",
+      "player": "Sin nombre",
+      "eraLabel": "25-26",
+      "tags": [
+        "Atletico Madrid",
+        "Tercera",
+        "Novedad"
+      ],
+      "sourceUrl": "https://www.gmkitsc.com/25-26-ATM-Third-Fans-Soccer-Jersey-VIS-NDA-p28482510.html",
+      "image": "/top-picks/25-26-atm-third-fans-soccer-jersey/01.jpg",
+      "gallery": [
+        "/top-picks/25-26-atm-third-fans-soccer-jersey/01.jpg",
+        "/top-picks/25-26-atm-third-fans-soccer-jersey/02.png",
+        "/top-picks/25-26-atm-third-fans-soccer-jersey/03.png",
+        "/top-picks/25-26-atm-third-fans-soccer-jersey/04.jpg",
+        "/top-picks/25-26-atm-third-fans-soccer-jersey/05.png",
+        "/top-picks/25-26-atm-third-fans-soccer-jersey/06.jpg"
+      ]
+    },
+    {
+      "id": "25-26-dortmund-cup-match-home-fans-soccer-jersey",
+      "name": "25-26 Dortmund Cup Match Home Fans Soccer Jersey",
+      "shortName": "25-26 Dortmund Cup Match Home",
+      "team": "Borussia Dortmund",
+      "collection": "Clubes",
+      "player": "Sin nombre",
+      "eraLabel": "25-26",
+      "tags": [
+        "Borussia Dortmund",
+        "Titular",
+        "Novedad"
+      ],
+      "sourceUrl": "https://www.gmkitsc.com/25-26-Dortmund-Cup-Match-Home-Fans-Soccer-Jersey-%E6%9D%AF%E8%B5%9B%E7%89%88-p28478445.html",
+      "image": "/top-picks/25-26-dortmund-cup-match-home-fans-soccer-jersey/01.png",
+      "gallery": [
+        "/top-picks/25-26-dortmund-cup-match-home-fans-soccer-jersey/01.png",
+        "/top-picks/25-26-dortmund-cup-match-home-fans-soccer-jersey/02.png",
+        "/top-picks/25-26-dortmund-cup-match-home-fans-soccer-jersey/03.png",
+        "/top-picks/25-26-dortmund-cup-match-home-fans-soccer-jersey/04.png",
+        "/top-picks/25-26-dortmund-cup-match-home-fans-soccer-jersey/05.png",
+        "/top-picks/25-26-dortmund-cup-match-home-fans-soccer-jersey/06.png"
+      ]
+    },
+    {
+      "id": "25-26-flamengo-third-1-1-fans-soccer-jersey",
+      "name": "25-26 Flamengo Third 1:1 Fans Soccer Jersey",
+      "shortName": "25-26 Flamengo Third",
+      "team": "Flamengo",
+      "collection": "Clubes",
+      "player": "Sin nombre",
+      "eraLabel": "25-26",
+      "tags": [
+        "Flamengo",
+        "Tercera",
+        "Novedad"
+      ],
+      "sourceUrl": "https://www.gmkitsc.com/25-26-Flamengo-Third-1-1-Fans-Soccer-Jersey-p28387852.html",
+      "image": "/top-picks/25-26-flamengo-third-1-1-fans-soccer-jersey/01.png",
+      "gallery": [
+        "/top-picks/25-26-flamengo-third-1-1-fans-soccer-jersey/01.png",
+        "/top-picks/25-26-flamengo-third-1-1-fans-soccer-jersey/02.png",
+        "/top-picks/25-26-flamengo-third-1-1-fans-soccer-jersey/03.png",
+        "/top-picks/25-26-flamengo-third-1-1-fans-soccer-jersey/04.png",
+        "/top-picks/25-26-flamengo-third-1-1-fans-soccer-jersey/05.png",
+        "/top-picks/25-26-flamengo-third-1-1-fans-soccer-jersey/06.jpg"
+      ]
+    },
+    {
+      "id": "25-26-int-third-1-1-fans-soccer-jersey",
+      "name": "25-26 INT Third 1:1 Fans Soccer Jersey",
+      "shortName": "25-26 Inter Third",
+      "team": "Inter",
+      "collection": "Clubes",
+      "player": "Sin nombre",
+      "eraLabel": "25-26",
+      "tags": [
+        "Inter",
+        "Tercera",
+        "Novedad"
+      ],
+      "sourceUrl": "https://www.gmkitsc.com/25-26-INT-Third-1-1-Fans-Soccer-Jersey-p28478442.html",
+      "image": "/top-picks/25-26-int-third-1-1-fans-soccer-jersey/01.png",
+      "gallery": [
+        "/top-picks/25-26-int-third-1-1-fans-soccer-jersey/01.png",
+        "/top-picks/25-26-int-third-1-1-fans-soccer-jersey/02.png",
+        "/top-picks/25-26-int-third-1-1-fans-soccer-jersey/03.png",
+        "/top-picks/25-26-int-third-1-1-fans-soccer-jersey/04.png",
+        "/top-picks/25-26-int-third-1-1-fans-soccer-jersey/05.png",
+        "/top-picks/25-26-int-third-1-1-fans-soccer-jersey/06.jpg"
       ]
     }
   ]

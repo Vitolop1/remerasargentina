@@ -15,20 +15,30 @@ OUTPUT_JSON = ROOT / "src" / "data" / "team-logos.json"
 
 TEAM_PAGES = {
     "Argentina": "https://en.wikipedia.org/wiki/Argentina_national_football_team",
+    "Arsenal": "https://en.wikipedia.org/wiki/Arsenal_F.C.",
+    "Atletico Madrid": "https://en.wikipedia.org/wiki/Atl%C3%A9tico_Madrid",
     "Boca Juniors": "https://en.wikipedia.org/wiki/Boca_Juniors",
+    "Borussia Dortmund": "https://en.wikipedia.org/wiki/Borussia_Dortmund",
     "River Plate": "https://en.wikipedia.org/wiki/Club_Atl%C3%A9tico_River_Plate",
     "Barcelona": "https://en.wikipedia.org/wiki/FC_Barcelona",
+    "Bayern Munich": "https://en.wikipedia.org/wiki/FC_Bayern_Munich",
     "Brazil": "https://en.wikipedia.org/wiki/Brazil_national_football_team",
     "AC Milan": "https://en.wikipedia.org/wiki/AC_Milan",
+    "Chelsea": "https://en.wikipedia.org/wiki/Chelsea_F.C.",
+    "Flamengo": "https://en.wikipedia.org/wiki/CR_Flamengo",
     "Real Madrid": "https://en.wikipedia.org/wiki/Real_Madrid_CF",
     "France": "https://en.wikipedia.org/wiki/France_national_football_team",
     "Spain": "https://en.wikipedia.org/wiki/Spain_national_football_team",
     "Germany": "https://en.wikipedia.org/wiki/Germany_national_football_team",
-    "Portugal": "https://en.wikipedia.org/wiki/Portugal_national_football_team",
+    "Inter": "https://en.wikipedia.org/wiki/Inter_Milan",
+    "Juventus": "https://en.wikipedia.org/wiki/Juventus_FC",
+    "Liverpool": "https://en.wikipedia.org/wiki/Liverpool_F.C.",
     "Manchester City": "https://en.wikipedia.org/wiki/Manchester_City_F.C.",
+    "Manchester United": "https://en.wikipedia.org/wiki/Manchester_United_F.C.",
+    "Portugal": "https://en.wikipedia.org/wiki/Portugal_national_football_team",
     "PSG": "https://en.wikipedia.org/wiki/Paris_Saint-Germain_F.C.",
     "Inter Miami": "https://en.wikipedia.org/wiki/Inter_Miami_CF",
-    "Bayern Munich": "https://en.wikipedia.org/wiki/FC_Bayern_Munich",
+    "Tottenham": "https://en.wikipedia.org/wiki/Tottenham_Hotspur_F.C.",
 }
 
 IMAGE_PATTERN = re.compile(r"https://upload\.wikimedia\.org/[^\"]+")
