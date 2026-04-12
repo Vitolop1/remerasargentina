@@ -806,17 +806,9 @@ export function CatalogApp({
         <section className="mt-8 rounded-[8px] border border-[var(--line)] bg-[var(--surface)] p-6">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">Curado desde GM Kits</p>
+              <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">Modelos destacados</p>
               <h2 className="mt-1 text-2xl font-semibold">Las camisetas mas top para sumar</h2>
             </div>
-            <a
-              href="https://www.gmkitsc.com/New-Arrivals-rc240291.html"
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-[8px] border border-[var(--line)] px-3 py-2 text-sm font-semibold"
-            >
-              Ver novedades del proveedor
-            </a>
           </div>
 
           <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
