@@ -70,6 +70,11 @@ function extractPlayer(name: string) {
     return compactWhitespace(match[1]).toUpperCase();
   }
 
+  const beforeNumberMatch = name.match(/([A-Z][A-Za-z.]+(?:\s+[A-Z][A-Za-z.]+)?)\s+#\d+/);
+  if (beforeNumberMatch?.[1]) {
+    return compactWhitespace(beforeNumberMatch[1]).toUpperCase();
+  }
+
   if (name.toLowerCase().includes("sin nombre")) {
     return "Sin nombre";
   }
@@ -113,6 +118,15 @@ function buildTags(line: CatalogOrderLine, team: string) {
   }
 
   return [...tags];
+}
+
+function choosePrimaryImage(gallery: string[]) {
+  return (
+    gallery.find((image) => /\.(jpg|jpeg|webp)$/i.test(image)) ??
+    gallery.find((image) => !/\/0[12]\.png$/i.test(image)) ??
+    gallery[0] ??
+    null
+  );
 }
 
 export function getCatalogData(): CatalogSummary {
@@ -163,7 +177,7 @@ export function getCatalogData(): CatalogSummary {
         player,
         totalStock,
         sizeOptions: sortSizes(sizeOptions),
-        image: gallery[0] ?? null,
+        image: choosePrimaryImage(gallery),
         gallery,
         priceUsd,
         priceArs,
