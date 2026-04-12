@@ -1,0 +1,272 @@
+{
+  "generatedAt": "2026-04-12T07:38:51.854195+00:00",
+  "sourceWorkbook": "REMERAS_SOCIOS.xlsx",
+  "settings": {
+    "exchangeRateArsPerUsd": 1400.0,
+    "unitsPurchased": 49,
+    "unitsForSale": 45,
+    "reservedUnits": 4,
+    "defaultSalePriceUsd": 46.43,
+    "defaultSalePriceArs": 65002.0
+  },
+  "orderLines": [
+    {
+      "lineNumber": 1,
+      "name": "1996-97 Argentina Home  #10 MEMI",
+      "size": "M",
+      "quantity": 1
+    },
+    {
+      "lineNumber": 2,
+      "name": "2005-06 BAR Away UCL  #10 Ronaldinho",
+      "size": "XL",
+      "quantity": 1
+    },
+    {
+      "lineNumber": 3,
+      "name": "2004 Brazil Home  Ronaldinho #10",
+      "size": "XL",
+      "quantity": 1
+    },
+    {
+      "lineNumber": 4,
+      "name": "1986 Argentina Home  #10 MARADONA",
+      "size": "XL",
+      "quantity": 1
+    },
+    {
+      "lineNumber": 5,
+      "name": "1986 Argentina Home  #10 MARADONA",
+      "size": "L",
+      "quantity": 1
+    },
+    {
+      "lineNumber": 6,
+      "name": "1978 Argentina Home  #10 KEMPES",
+      "size": "M",
+      "quantity": 1
+    },
+    {
+      "lineNumber": 7,
+      "name": "1978 Argentina Home  #10 KEMPES",
+      "size": "XL",
+      "quantity": 1
+    },
+    {
+      "lineNumber": 8,
+      "name": "1994 Argentina Away  #10 MARADONA",
+      "size": "L",
+      "quantity": 1
+    },
+    {
+      "lineNumber": 9,
+      "name": "2006 Argentina Home WC  #10 RIQUELME",
+      "size": "XL",
+      "quantity": 1
+    },
+    {
+      "lineNumber": 10,
+      "name": "2006 Argentina Home WC  #19 MESSI",
+      "size": "L",
+      "quantity": 1
+    },
+    {
+      "lineNumber": 11,
+      "name": "2006 Argentina Away WC  (sin nombre)",
+      "size": "L",
+      "quantity": 1
+    },
+    {
+      "lineNumber": 12,
+      "name": "2006-07 AC Milan Away Player UCL  #22 KAKA",
+      "size": "XL",
+      "quantity": 1
+    },
+    {
+      "lineNumber": 13,
+      "name": "2006-07 AC Milan Away Player UCL  #22 KAKA",
+      "size": "L",
+      "quantity": 1
+    },
+    {
+      "lineNumber": 14,
+      "name": "2006-07 AC Milan Home UCL  #22 KAKA",
+      "size": "L",
+      "quantity": 1
+    },
+    {
+      "lineNumber": 15,
+      "name": "2006-07 AC Milan Home UCL  #22 KAKA",
+      "size": "M",
+      "quantity": 1
+    },
+    {
+      "lineNumber": 16,
+      "name": "1998-99 Real Madrid Third  (sin nombre)",
+      "size": "L",
+      "quantity": 1
+    },
+    {
+      "lineNumber": 17,
+      "name": "2008-09 BAR Home Player UCL Final  #10 MESSI",
+      "size": "XL",
+      "quantity": 1
+    },
+    {
+      "lineNumber": 18,
+      "name": "2008-09 BAR Home Player UCL Final  #10 MESSI",
+      "size": "L",
+      "quantity": 1
+    },
+    {
+      "lineNumber": 19,
+      "name": "2008-09 BAR Home Player UCL Final  #10 MESSI",
+      "size": "M",
+      "quantity": 1
+    },
+    {
+      "lineNumber": 20,
+      "name": "1998 Argentina Away  (sin nombre)",
+      "size": "XL",
+      "quantity": 1
+    },
+    {
+      "lineNumber": 21,
+      "name": "1998 Argentina Away  (sin nombre)",
+      "size": "L",
+      "quantity": 1
+    },
+    {
+      "lineNumber": 22,
+      "name": "1998 Argentina Away  (sin nombre)",
+      "size": "M",
+      "quantity": 1
+    },
+    {
+      "lineNumber": 23,
+      "name": "1981 Boca Juniors Home  #10 MARADONA",
+      "size": "XXL",
+      "quantity": 1
+    },
+    {
+      "lineNumber": 24,
+      "name": "1981 Boca Juniors Home  #10 MARADONA",
+      "size": "XL",
+      "quantity": 2
+    },
+    {
+      "lineNumber": 25,
+      "name": "1981 Boca Juniors Home  #10 MARADONA",
+      "size": "L",
+      "quantity": 1
+    },
+    {
+      "lineNumber": 26,
+      "name": "1996-97 Boca Juniors Home  (sin nombre)",
+      "size": "XXL",
+      "quantity": 1
+    },
+    {
+      "lineNumber": 27,
+      "name": "1996-97 Boca Juniors Home  (sin nombre)",
+      "size": "XL",
+      "quantity": 1
+    },
+    {
+      "lineNumber": 28,
+      "name": "1996-97 Boca Juniors Home  (sin nombre)",
+      "size": "L",
+      "quantity": 1
+    },
+    {
+      "lineNumber": 29,
+      "name": "1996-97 Boca Juniors Home  (sin nombre)",
+      "size": "M",
+      "quantity": 1
+    },
+    {
+      "lineNumber": 30,
+      "name": "2018-19 River Plate Home  (sin nombre)",
+      "size": "XL",
+      "quantity": 1
+    },
+    {
+      "lineNumber": 31,
+      "name": "2018-19 River Plate Home  (sin nombre)",
+      "size": "L",
+      "quantity": 1
+    },
+    {
+      "lineNumber": 32,
+      "name": "2018-19 River Plate Home  (sin nombre)",
+      "size": "M",
+      "quantity": 1
+    },
+    {
+      "lineNumber": 33,
+      "name": "1998-99 River Plate Home  (sin nombre)",
+      "size": "L",
+      "quantity": 1
+    },
+    {
+      "lineNumber": 34,
+      "name": "1998-99 River Plate Home  (sin nombre)",
+      "size": "M",
+      "quantity": 1
+    },
+    {
+      "lineNumber": 35,
+      "name": "1996-97 River Plate Home  (sin nombre)",
+      "size": "L",
+      "quantity": 1
+    },
+    {
+      "lineNumber": 36,
+      "name": "26-27 Argentina Away WC2022  #10 MESSI",
+      "size": "XL",
+      "quantity": 1
+    },
+    {
+      "lineNumber": 37,
+      "name": "26-27 Argentina Away WC2022  #10 MESSI",
+      "size": "L",
+      "quantity": 1
+    },
+    {
+      "lineNumber": 38,
+      "name": "26-27 Argentina Away WC2022  #10 MESSI",
+      "size": "M",
+      "quantity": 1
+    },
+    {
+      "lineNumber": 39,
+      "name": "26-27 Argentina Home WC2022  #10 MESSI",
+      "size": "XXL",
+      "quantity": 1
+    },
+    {
+      "lineNumber": 40,
+      "name": "26-27 Argentina Home WC2022  #10 MESSI",
+      "size": "XL",
+      "quantity": 3
+    },
+    {
+      "lineNumber": 41,
+      "name": "26-27 Argentina Home WC2022  #10 MESSI",
+      "size": "L",
+      "quantity": 3
+    },
+    {
+      "lineNumber": 42,
+      "name": "26-27 Argentina Home WC2022  #10 MESSI",
+      "size": "M",
+      "quantity": 2
+    },
+    {
+      "lineNumber": 43,
+      "name": "26-27 Argentina Home WC2022  #10 MESSI",
+      "size": "S",
+      "quantity": 1
+    }
+  ]
+}
