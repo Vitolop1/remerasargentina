@@ -215,11 +215,35 @@ export function getCatalogData(): CatalogSummary {
       };
     });
 
-  const topPickProducts: CatalogProduct[] = supplierTopPickPayload.products.map((product) => {
+  const groupedTopPickProducts = new Map<
+    string,
+    Array<(typeof supplierTopPickPayload.products)[number]>
+  >();
+
+  for (const product of supplierTopPickPayload.products) {
+    const existing = groupedTopPickProducts.get(product.team) ?? [];
+    existing.push(product);
+    groupedTopPickProducts.set(product.team, existing);
+  }
+
+  const topPickGroups = Array.from(groupedTopPickProducts.values());
+  const maxTopPickGroupLength = Math.max(...topPickGroups.map((group) => group.length), 0);
+  const interleavedTopPickPayload: typeof supplierTopPickPayload.products = [];
+
+  for (let cursor = 0; cursor < maxTopPickGroupLength; cursor += 1) {
+    for (const group of topPickGroups) {
+      const candidate = group[cursor];
+      if (candidate) {
+        interleavedTopPickPayload.push(candidate);
+      }
+    }
+  }
+
+  const topPickProducts: CatalogProduct[] = interleavedTopPickPayload.map((product) => {
     const priceArs = PROMO_PRICE_ARS;
     const priceUsd = Number((priceArs / catalogPayload.settings.exchangeRateArsPerUsd).toFixed(2));
     const heroImage = product.image ?? choosePrimaryImage(product.gallery);
-    const gallery = heroImage ? [heroImage] : [];
+    const gallery = product.gallery.length > 0 ? product.gallery : heroImage ? [heroImage] : [];
 
     return {
       id: product.id,

@@ -5,6 +5,7 @@ import re
 import shutil
 from datetime import datetime, timezone
 from pathlib import Path
+from urllib.parse import unquote
 from urllib.parse import urlparse
 
 import requests
@@ -20,182 +21,58 @@ OG_IMAGE_PATTERN = re.compile(
 )
 
 PICKS = [
-    {
-        "name": "26-27 Argentina Home 1:1 Fans Soccer Jersey",
-        "team": "Argentina",
-        "collection": "Selecciones",
-        "player": "Sin nombre",
-        "url": "https://www.gmkitsc.com/26-27-Argentina-Home-1-1-Fans-Soccer-Jersey-p28642350.html",
-        "tags": ["Argentina", "Titular", "Novedad"],
-    },
-    {
-        "name": "26-27 Argentina Away 1:1 Fans Soccer Jersey",
-        "team": "Argentina",
-        "collection": "Selecciones",
-        "player": "Sin nombre",
-        "url": "https://www.gmkitsc.com/26-27-Argentina-Away-1-1-Fans-Soccer-Jersey-p28897556.html",
-        "tags": ["Argentina", "Alternativa", "Novedad"],
-    },
-    {
-        "name": "26-27 Boca Juniors Third Fans Soccer Jersey",
-        "team": "Boca Juniors",
-        "collection": "Clubes",
-        "player": "Sin nombre",
-        "url": "https://www.gmkitsc.com/26-27-Boca-Juniors-Third-Fans-Soccer-Jersey-p28884179.html",
-        "tags": ["Boca Juniors", "Tercera", "Novedad"],
-    },
-    {
-        "name": "26-27 RMA Home 1:1 Fans Soccer Jersey",
-        "team": "Real Madrid",
-        "collection": "Clubes",
-        "player": "Sin nombre",
-        "url": "https://www.gmkitsc.com/26-27-RMA-Home-1-1-Fans-Soccer-Jersey-p28715126.html",
-        "tags": ["Real Madrid", "Titular", "Novedad"],
-    },
-    {
-        "name": "25-26 PSG Jordan Night Edition Fans Soccer Jersey",
-        "team": "PSG",
-        "collection": "Clubes",
-        "player": "Sin nombre",
-        "url": "https://www.gmkitsc.com/25-26-PSG-Jordan-Night-Edition-Fans-Soccer-jersey-p28885076.html",
-        "tags": ["PSG", "Edicion especial", "Novedad"],
-    },
-    {
-        "name": "26-27 Portugal Home 1:1 Fans Soccer Jersey",
-        "team": "Portugal",
-        "collection": "Selecciones",
-        "player": "Sin nombre",
-        "url": "https://www.gmkitsc.com/26-27-Portugal-Home-1-1-Fans-Soccer-Jersey-p28437294.html",
-        "tags": ["Portugal", "Titular", "Novedad"],
-    },
-    {
-        "name": "26-27 Spain Away Fans Soccer Jersey",
-        "team": "Spain",
-        "collection": "Selecciones",
-        "player": "Sin nombre",
-        "url": "https://www.gmkitsc.com/26-27-Spain-Away-Fans-Soccer-Jersey-p28906197.html",
-        "tags": ["Spain", "Alternativa", "Novedad"],
-    },
-    {
-        "name": "26-27 France Home 1:1 Fans Soccer Jersey",
-        "team": "France",
-        "collection": "Selecciones",
-        "player": "Sin nombre",
-        "url": "https://www.gmkitsc.com/26-27-France-Home-1-1-Fans-Soccer-Jersey-p28887844.html",
-        "tags": ["France", "Titular", "Novedad"],
-    },
-    {
-        "name": "26-27 Germany Home 1:1 Fans Soccer Jersey",
-        "team": "Germany",
-        "collection": "Selecciones",
-        "player": "Sin nombre",
-        "url": "https://www.gmkitsc.com/26-27-Germany-Home-1-1-Fans-Soccer-Jersey-p28357962.html",
-        "tags": ["Germany", "Titular", "Novedad"],
-    },
-    {
-        "name": "26-27 Man City Home 1:1 Fans Soccer Jersey",
-        "team": "Manchester City",
-        "collection": "Clubes",
-        "player": "Sin nombre",
-        "url": "https://www.gmkitsc.com/26-27-Man-City-Home-1-1-Fans-Soccer-Jersey-p28747897.html",
-        "tags": ["Manchester City", "Titular", "Novedad"],
-    },
-    {
-        "name": "26-27 Inter Miami Away Fans Soccer Jersey",
-        "team": "Inter Miami",
-        "collection": "Clubes",
-        "player": "Sin nombre",
-        "url": "https://www.gmkitsc.com/26-27-Inter-Miami-Away-Fans-Soccer-Jersey-p28879175.html",
-        "tags": ["Inter Miami", "Alternativa", "Novedad"],
-    },
-    {
-        "name": "25-26 Bayern Oktoberfest 1:1 Fans Soccer Jersey",
-        "team": "Bayern Munich",
-        "collection": "Clubes",
-        "player": "Sin nombre",
-        "url": "https://www.gmkitsc.com/25-26-Bayern-Oktoberfest-1-1-Fans-Soccer-Jersey-p28496438.html",
-        "tags": ["Bayern Munich", "Edicion especial", "Novedad"],
-    },
-    {
-        "name": "25-26 BAR Black Joint Edition 1:1 Fans Soccer Jersey",
-        "team": "Barcelona",
-        "collection": "Clubes",
-        "player": "Sin nombre",
-        "url": "https://www.gmkitsc.com/25-26-BAR-Black-Joint-Edition-1-1-Fans-Soccer-Jersey-p28359752.html",
-        "tags": ["Barcelona", "Edicion especial", "Novedad"],
-    },
-    {
-        "name": "25-26 LIV Third 1:1 Fans Soccer Jersey",
-        "team": "Liverpool",
-        "collection": "Clubes",
-        "player": "Sin nombre",
-        "url": "https://www.gmkitsc.com/25-26-LIV-Third-1-1-Fans-Soccer-Jersey-p28347266.html",
-        "tags": ["Liverpool", "Tercera", "Novedad"],
-    },
-    {
-        "name": "25-26 Man Utd Third 1:1 Fans Soccer Jersey",
-        "team": "Manchester United",
-        "collection": "Clubes",
-        "player": "Sin nombre",
-        "url": "https://www.gmkitsc.com/25-26-Man-Utd-Third-1-1-Fans-Soccer-Jersey-p28096185.html",
-        "tags": ["Manchester United", "Tercera", "Novedad"],
-    },
-    {
-        "name": "25-26 CHE Third 1:1 Fans Soccer Jersey",
-        "team": "Chelsea",
-        "collection": "Clubes",
-        "player": "Sin nombre",
-        "url": "https://www.gmkitsc.com/25-26-CHE-Third-1-1-Fans-Soccer-Jersey-p28434052.html",
-        "tags": ["Chelsea", "Tercera", "Novedad"],
-    },
-    {
-        "name": "25-26 ARS Third 1:1 Fans Soccer Jersey",
-        "team": "Arsenal",
-        "collection": "Clubes",
-        "player": "Sin nombre",
-        "url": "https://www.gmkitsc.com/25-26-ARS-Third-1-1-Fans-Soccer-Jersey-p28383465.html",
-        "tags": ["Arsenal", "Tercera", "Novedad"],
-    },
-    {
-        "name": "25-26 TOT Third Fans Soccer Jersey",
-        "team": "Tottenham",
-        "collection": "Clubes",
-        "player": "Sin nombre",
-        "url": "https://www.gmkitsc.com/25-26-TOT-Third-Fans-Soccer-Jersey-p28451243.html",
-        "tags": ["Tottenham", "Tercera", "Novedad"],
-    },
-    {
-        "name": "25-26 ATM Third Fans Soccer Jersey",
-        "team": "Atletico Madrid",
-        "collection": "Clubes",
-        "player": "Sin nombre",
-        "url": "https://www.gmkitsc.com/25-26-ATM-Third-Fans-Soccer-Jersey-VIS-NDA-p28482510.html",
-        "tags": ["Atletico Madrid", "Tercera", "Novedad"],
-    },
-    {
-        "name": "25-26 Dortmund Cup Match Home Fans Soccer Jersey",
-        "team": "Borussia Dortmund",
-        "collection": "Clubes",
-        "player": "Sin nombre",
-        "url": "https://www.gmkitsc.com/25-26-Dortmund-Cup-Match-Home-Fans-Soccer-Jersey-%E6%9D%AF%E8%B5%9B%E7%89%88-p28478445.html",
-        "tags": ["Borussia Dortmund", "Titular", "Novedad"],
-    },
-    {
-        "name": "25-26 Flamengo Third 1:1 Fans Soccer Jersey",
-        "team": "Flamengo",
-        "collection": "Clubes",
-        "player": "Sin nombre",
-        "url": "https://www.gmkitsc.com/25-26-Flamengo-Third-1-1-Fans-Soccer-Jersey-p28387852.html",
-        "tags": ["Flamengo", "Tercera", "Novedad"],
-    },
-    {
-        "name": "25-26 INT Third 1:1 Fans Soccer Jersey",
-        "team": "Inter",
-        "collection": "Clubes",
-        "player": "Sin nombre",
-        "url": "https://www.gmkitsc.com/25-26-INT-Third-1-1-Fans-Soccer-Jersey-p28478442.html",
-        "tags": ["Inter", "Tercera", "Novedad"],
-    },
+    {"team": "Boca Juniors", "url": "https://www.gmkitsc.com/1986-1988-Boca-Juniors-Home-Retro-Soccer-Jersey-p28018753.html"},
+    {"team": "River Plate", "url": "https://www.gmkitsc.com/1996-1997-River-Plate-Third-Retro-Soccer-Jersey-p28857752.html"},
+    {"team": "Barcelona", "url": "https://www.gmkitsc.com/25-26-BAR-Black-Joint-Edition-1-1-Fans-Soccer-Jersey-p28359752.html"},
+    {"team": "Real Madrid", "url": "https://www.gmkitsc.com/2004-2005-RMA-Third-Retro-Soccer-Jersey-p27061835.html"},
+    {"team": "AC Milan", "url": "https://www.gmkitsc.com/1997-1998-ACM-Home-Retro-Soccer-Jersey-p28687074.html"},
+    {"team": "Inter", "url": "https://www.gmkitsc.com/1996-1997-INT-Third-Retro-Soccer-Jersey-p27975452.html"},
+    {"team": "Liverpool", "url": "https://www.gmkitsc.com/2006-2007-LIV-Yellow-Retro-Soccer-Jersey-p28746932.html"},
+    {"team": "Manchester United", "url": "https://www.gmkitsc.com/2003-2004-Man-Utd-Away-Retro-Soccer-Jersey-p25062009.html"},
+    {"team": "Manchester City", "url": "https://www.gmkitsc.com/1986-1987-Man-City-Home-Retro-Soccer-Jersey-p28511705.html"},
+    {"team": "Chelsea", "url": "https://www.gmkitsc.com/2009-2010-CHE-Home-Retro-Soccer-Jersey-p27903330.html"},
+    {"team": "Arsenal", "url": "https://www.gmkitsc.com/1992-1994-ARS-Away-Retro-Soccer-Jersey-p28843338.html"},
+    {"team": "Juventus", "url": "https://www.gmkitsc.com/2016-2017-JUV-Home-Retro-Soccer-Jersey-p28327293.html"},
+    {"team": "Atletico Madrid", "url": "https://www.gmkitsc.com/2003-2004-ATM-100th-Anniversary-Retro-Soccer-Jersey-p28202668.html"},
+    {"team": "Borussia Dortmund", "url": "https://www.gmkitsc.com/1996-1997-Dortmund-UCL-Away-Retro-Soccer-Jersey-p28018848.html"},
+    {"team": "Leverkusen", "url": "https://www.gmkitsc.com/1999-2000-LeverKusen-Home-Retro-Soccer-Jersey-p28886561.html"},
+    {"team": "Bayern Munich", "url": "https://www.gmkitsc.com/2001-2002-Bayern-Home-Retro-Soccer-Jersey-p28745212.html"},
+    {"team": "PSG", "url": "https://www.gmkitsc.com/1995-1996-PSG-Paris-Away-Retro-Soccer-Jersey-p28689882.html"},
+    {"team": "Flamengo", "url": "https://www.gmkitsc.com/2006-2007-Flamengo-Home-Retro-Soccer-Jersey-p27880844.html"},
+    {"team": "Boca Juniors", "url": "https://www.gmkitsc.com/2007-2008-Boca-Juniors-Home-Retro-Soccer-Jersey-p28204633.html"},
+    {"team": "River Plate", "url": "https://www.gmkitsc.com/1992-1993-River-Plate-Away-Retro-Soccer-Jersey-p28765078.html"},
+    {"team": "Barcelona", "url": "https://www.gmkitsc.com/25-26-BAR-Purple-Joint-Edition-Fans-Soccer-Jersey-p28478443.html"},
+    {"team": "Real Madrid", "url": "https://www.gmkitsc.com/25-26-RMA-White-125th-Anniversary-Fans-Soccer-Jersey-p28894887.html"},
+    {"team": "AC Milan", "url": "https://www.gmkitsc.com/2004-2005-ACM-Away-Retro-Soccer-Jersey-p28300840.html"},
+    {"team": "Inter", "url": "https://www.gmkitsc.com/2019-2020-INT-Third-Retro-Soccer-Jersey-p28291779.html"},
+    {"team": "Liverpool", "url": "https://www.gmkitsc.com/2008-2009-LIV-Third-Retro-Soccer-Jersey-p28687081.html"},
+    {"team": "Manchester United", "url": "https://www.gmkitsc.com/2011-2012-Man-Utd-Home-Retro-Soccer-Jersey-p28682212.html"},
+    {"team": "Manchester City", "url": "https://www.gmkitsc.com/2018-2019-Man-City-Home-Retro-Soccer-Jersey-p28089235.html"},
+    {"team": "Chelsea", "url": "https://www.gmkitsc.com/1998-CHE-White-Out-Retro-Soccer-Jersey-p28711301.html"},
+    {"team": "Arsenal", "url": "https://www.gmkitsc.com/2010-2011-ARS-Home-Retro-Soccer-Jersey-p28690922.html"},
+    {"team": "Juventus", "url": "https://www.gmkitsc.com/2014-2015-JUV-Away-Retro-Soccer-Jersey-p28600941.html"},
+    {"team": "Atletico Madrid", "url": "https://www.gmkitsc.com/2011-2012-ATM-Home-UCL-Retro-Soccer-Jersey-%E6%AC%A7%E5%86%A0%E7%89%88-p28629818.html"},
+    {"team": "Borussia Dortmund", "url": "https://www.gmkitsc.com/25-26-Dortmund-Rote-Erde-100th-Anniversary-Fans-Soccer-Jersey-p28892746.html"},
+    {"team": "Bayern Munich", "url": "https://www.gmkitsc.com/25-26-Bayern-Oktoberfest-1-1-Fans-Soccer-Jersey-p28496438.html"},
+    {"team": "PSG", "url": "https://www.gmkitsc.com/25-26-PSG-Jordan-Night-Edition-Fans-Soccer-jersey-p28885076.html"},
+    {"team": "Flamengo", "url": "https://www.gmkitsc.com/2002-2003-Flamengo-Home-Retro-Soccer-Jersey-p27966542.html"},
+    {"team": "Boca Juniors", "url": "https://www.gmkitsc.com/26-27-Boca-Juniors-Third-Fans-Soccer-Jersey-p28884179.html"},
+    {"team": "River Plate", "url": "https://www.gmkitsc.com/25-26-River-Plate-Home-Fans-Soccer-Jersey-p28096183.html"},
+    {"team": "Barcelona", "url": "https://www.gmkitsc.com/1990-1992-BAR-Away-Retro-Soccer-Jersey-p28367900.html"},
+    {"team": "Real Madrid", "url": "https://www.gmkitsc.com/26-27-RMA-Home-1-1-Fans-Soccer-Jersey-p28715126.html"},
+    {"team": "AC Milan", "url": "https://www.gmkitsc.com/25-26-ACM-Red-Special-Edition-Fans-Soccer-Jersey-p28327290.html"},
+    {"team": "Inter", "url": "https://www.gmkitsc.com/25-26-INT-Third-1-1-Fans-Soccer-Jersey-p28478442.html"},
+    {"team": "Liverpool", "url": "https://www.gmkitsc.com/25-26-LIV-Away-1-1-Fans-Soccer-Jersey-p28361214.html"},
+    {"team": "Manchester United", "url": "https://www.gmkitsc.com/26-27-Man-Utd-Red-Special-Edition-Fans-Soccer-Jersey-p28890147.html"},
+    {"team": "Manchester City", "url": "https://www.gmkitsc.com/26-27-Man-City-Home-1-1-Fans-Soccer-Jersey-p28747897.html"},
+    {"team": "Chelsea", "url": "https://www.gmkitsc.com/25-26-CHE-Home-120th-Anniversary-Fans-Soccer-Jersey-%E5%91%A8%E5%B9%B4%E7%89%88-p28408849.html"},
+    {"team": "Arsenal", "url": "https://www.gmkitsc.com/26-27-ARS-Home-Fans-Soccer-Jersey-p28884195.html"},
+    {"team": "Juventus", "url": "https://www.gmkitsc.com/25-26-JUV-Fourth-Fans-Soccer-Jersey-p28878766.html"},
+    {"team": "Atletico Madrid", "url": "https://www.gmkitsc.com/25-26-ATM-Third-Fans-Soccer-Jersey-VIS-NDA-p28482510.html"},
+    {"team": "Borussia Dortmund", "url": "https://www.gmkitsc.com/26-27-Dortmund-Home-Fans-Soccer-Jersey-p28751756.html"},
+    {"team": "Bayern Munich", "url": "https://www.gmkitsc.com/25-26-Bayern-Third-1-1-Fans-Soccer-Jersey-p28357952.html"},
+    {"team": "PSG", "url": "https://www.gmkitsc.com/25-26-PSG-Jordan-Fourth-1-1-Fans-Soccer-jersey-p28572567.html"},
+    {"team": "Flamengo", "url": "https://www.gmkitsc.com/25-26-Flamengo-Third-1-1-Fans-Soccer-Jersey-p28387852.html"},
 ]
 
 
@@ -228,8 +105,6 @@ def extract_image_urls(html: str) -> list[str]:
                     seen.add(url)
                     urls.append(url)
 
-    if not urls:
-        raise RuntimeError("No product images found.")
     return urls
 
 
@@ -261,9 +136,56 @@ def build_short_name(name: str) -> str:
         .replace("JUV", "Juventus")
         .replace("INT", "Inter")
         .replace("ATM", "Atletico Madrid")
-        .replace("TOT", "Tottenham")
+        .replace("ACM", "AC Milan")
+        .replace("LeverKusen", "Leverkusen")
         .strip()
     )
+
+
+def sanitize_product_name(name: str) -> str:
+    cleaned = name.encode("ascii", "ignore").decode()
+    cleaned = re.sub(r"\([^)]*(?:VIS|NDA)[^)]*\)", " ", cleaned, flags=re.I)
+    cleaned = cleaned.replace("()", " ")
+    cleaned = cleaned.replace("..", " ")
+    return re.sub(r"\s+", " ", cleaned).strip(" -")
+
+
+def extract_product_name(html: str, fallback_url: str) -> str:
+    for match in SCRIPT_PATTERN.findall(html):
+        try:
+            payload = json.loads(match)
+        except json.JSONDecodeError:
+            continue
+
+        items = payload if isinstance(payload, list) else [payload]
+        for item in items:
+            if isinstance(item, dict) and item.get("@type") == "Product" and item.get("name"):
+                return sanitize_product_name(str(item["name"]))
+
+    slug = unquote(Path(urlparse(fallback_url).path).name)
+    slug = re.sub(r"-p\d+\.html$", "", slug)
+    slug = slug.replace("-", " ")
+    return sanitize_product_name(slug)
+
+
+def build_tags(team: str, name: str) -> list[str]:
+    tags = {team}
+    normalized = name.lower()
+
+    if "home" in normalized:
+        tags.add("Titular")
+    if "away" in normalized:
+        tags.add("Alternativa")
+    if "third" in normalized:
+        tags.add("Tercera")
+    if "fourth" in normalized:
+        tags.add("Cuarta")
+    if "retro" in normalized:
+        tags.add("Retro")
+    if any(marker in normalized for marker in ["special edition", "anniversary", "jordan", "oktoberfest", "joint edition"]):
+        tags.add("Edicion especial")
+
+    return list(tags)
 
 
 def main() -> None:
@@ -278,13 +200,15 @@ def main() -> None:
     }
 
     for pick in PICKS:
-        slug = slugify(pick["name"])
+        source_slug = re.sub(r"-p\d+\.html$", "", unquote(Path(urlparse(pick["url"]).path).name))
+        slug = slugify(source_slug)
         destination_dir = OUTPUT_DIR / slug
         if destination_dir.exists():
             shutil.rmtree(destination_dir)
         destination_dir.mkdir(parents=True, exist_ok=True)
 
         html = session.get(pick["url"], timeout=30).text
+        product_name = extract_product_name(html, pick["url"])
         image_urls: list[str] = []
         seen_urls: set[str] = set()
 
@@ -299,7 +223,10 @@ def main() -> None:
             seen_urls.add(image_url)
             image_urls.append(image_url)
 
-        image_urls = image_urls[:12]
+        if not image_urls:
+            raise RuntimeError(f"No product images found for {pick['url']}")
+
+        image_urls = image_urls[:6]
         gallery = []
 
         for index, image_url in enumerate(image_urls, start=1):
@@ -314,19 +241,19 @@ def main() -> None:
         payload["products"].append(
             {
                 "id": slug,
-                "name": pick["name"],
-                "shortName": build_short_name(pick["name"]),
+                "name": product_name,
+                "shortName": build_short_name(product_name),
                 "team": pick["team"],
-                "collection": pick["collection"],
-                "player": pick["player"],
-                "eraLabel": pick["name"].split(" ", 1)[0],
-                "tags": pick["tags"],
+                "collection": "Clubes",
+                "player": "Sin nombre",
+                "eraLabel": product_name.split(" ", 1)[0],
+                "tags": build_tags(pick["team"], product_name),
                 "sourceUrl": pick["url"],
                 "image": gallery[0] if gallery else None,
                 "gallery": gallery,
             }
         )
-        print(f"Downloaded top pick {pick['name']}")
+        print(f"Downloaded top pick {product_name}")
 
     OUTPUT_JSON.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(f"Wrote {OUTPUT_JSON}")

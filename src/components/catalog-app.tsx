@@ -45,7 +45,6 @@ const FEATURED_CLUB_TEAMS = [
   "Manchester United",
   "Chelsea",
   "Arsenal",
-  "Tottenham",
   "Boca Juniors",
   "River Plate",
   "Juventus",
@@ -113,10 +112,15 @@ function depositFor(amount: number) {
 
 function translateProductName(value: string) {
   return value
+    .replace(/\bLIV\b/gi, "Liverpool")
+    .replace(/\bCHE\b/gi, "Chelsea")
+    .replace(/\bARS\b/gi, "Arsenal")
     .replace(/\bRMA\b/gi, "Real Madrid")
     .replace(/\bBAR\b/gi, "Barcelona")
     .replace(/\bINT\b/gi, "Inter")
     .replace(/\bJUV\b/gi, "Juventus")
+    .replace(/\bATM\b/gi, "Atletico Madrid")
+    .replace(/\bACM\b/gi, "AC Milan")
     .replace(/\bMan City\b/gi, "Manchester City")
     .replace(/\bHome\b/gi, "Titular")
     .replace(/\bAway\b/gi, "Alternativa")
@@ -255,11 +259,23 @@ export function CatalogApp({
   const collections = useMemo(() => [...new Set(products.map((product) => product.collection))], [products]);
 
   const featuredProducts = useMemo(() => {
-    return products.filter((product) => product.image).slice(0, 3);
+    const seenTeams = new Set<string>();
+
+    return products
+      .filter((product) => product.image)
+      .filter((product) => {
+        if (seenTeams.has(product.team)) {
+          return false;
+        }
+
+        seenTeams.add(product.team);
+        return true;
+      })
+      .slice(0, 3);
   }, [products]);
 
   const topPickProducts = useMemo(() => {
-    return products.filter((product) => product.isTopPick).slice(0, 12);
+    return products.filter((product) => product.isTopPick).slice(0, 18);
   }, [products]);
 
   const nationalFilterItems = useMemo(() => {
