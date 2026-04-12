@@ -287,6 +287,22 @@ export function CatalogApp({
                   key={product.id}
                   className="flex h-full flex-col rounded-[8px] border border-[var(--line)] bg-[var(--surface)] p-4"
                 >
+                  <div className="relative mb-4 aspect-[4/5] overflow-hidden rounded-[8px] border border-[var(--line)] bg-white">
+                    {product.image ? (
+                      <Image
+                        src={product.image}
+                        alt={product.shortName}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                      />
+                    ) : (
+                      <div className="flex h-full items-center justify-center px-6 text-center text-sm text-[var(--muted)]">
+                        Imagen en carga
+                      </div>
+                    )}
+                  </div>
+
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">{product.collection}</p>

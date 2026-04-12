@@ -7,7 +7,8 @@
     "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint",
-    "sync:catalog": "python scripts/export_catalog.py"
+    "sync:catalog": "python scripts/export_catalog.py",
+    "sync:supplier-images": "python scripts/fetch_supplier_images.py"
   },
   "dependencies": {
     "next": "16.2.3",

@@ -36,6 +36,8 @@ export type CatalogProduct = {
   player: string;
   totalStock: number;
   sizeOptions: ProductSizeOption[];
+  image: string | null;
+  gallery: string[];
   priceUsd: number;
   priceArs: number;
   featured: boolean;

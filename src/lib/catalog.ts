@@ -1,7 +1,11 @@
 import catalog from "@/data/catalog.json";
+import supplierImages from "@/data/supplier-images.json";
 import type { CatalogOrderLine, CatalogPayload, CatalogProduct, CatalogSummary } from "@/types/catalog";
 
 const catalogPayload = catalog as CatalogPayload;
+const supplierImagePayload = supplierImages as {
+  products: Record<string, { images: Array<{ path: string }> }>;
+};
 const SIZE_ORDER = ["S", "M", "L", "XL", "XXL", "XXXL"];
 
 const TEAM_RULES = [
@@ -146,6 +150,8 @@ export function getCatalogData(): CatalogSummary {
       const tags = buildTags(baseLine, team);
       const priceUsd = catalogPayload.settings.defaultSalePriceUsd;
       const priceArs = Math.round(priceUsd * catalogPayload.settings.exchangeRateArsPerUsd);
+      const supplierMatch = supplierImagePayload.products[baseLine.name];
+      const gallery = supplierMatch?.images.map((image) => image.path) ?? [];
 
       return {
         id: slugify(baseLine.name),
@@ -157,6 +163,8 @@ export function getCatalogData(): CatalogSummary {
         player,
         totalStock,
         sizeOptions: sortSizes(sizeOptions),
+        image: gallery[0] ?? null,
+        gallery,
         priceUsd,
         priceArs,
         featured:
