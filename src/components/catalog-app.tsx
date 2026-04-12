@@ -761,7 +761,7 @@ export function CatalogApp({
               </button>
             </div>
 
-            <div className="overflow-x-auto bg-white px-4 py-5">
+            <div className="overflow-x-auto bg-[var(--crest-panel)] px-4 py-5">
               <div className="grid min-w-max grid-flow-col gap-3 md:min-w-0 md:grid-flow-row md:grid-cols-3 lg:grid-cols-5">
                 {nationalFilterItems.map((item) => (
                   <button
@@ -774,7 +774,8 @@ export function CatalogApp({
                     }}
                     className="group flex min-h-[8.5rem] w-[6.6rem] flex-col items-center justify-center rounded-[8px] border border-transparent px-3 py-3 text-center transition hover:border-[var(--line)] hover:bg-[var(--background)] md:min-h-[9rem] md:w-auto"
                   >
-                    <div className="relative h-20 w-20 md:h-24 md:w-24">
+                    <div className="flex h-20 w-20 items-center justify-center rounded-[8px] border border-[var(--crest-tile-line)] bg-[var(--crest-tile)] p-3 shadow-sm md:h-24 md:w-24">
+                      <div className="relative h-full w-full">
                       <Image
                         src={item.logo ?? "/images/logo-remeras-argentina.svg"}
                         alt={translateTeamName(item.team)}
@@ -782,6 +783,7 @@ export function CatalogApp({
                         className="object-contain transition duration-300 group-hover:scale-[1.04]"
                         sizes="96px"
                       />
+                      </div>
                     </div>
                     <p className="mt-3 text-sm font-semibold md:text-base">{translateTeamName(item.team)}</p>
                   </button>
@@ -806,7 +808,7 @@ export function CatalogApp({
               </button>
             </div>
 
-            <div className="overflow-x-auto bg-white px-4 py-5">
+            <div className="overflow-x-auto bg-[var(--crest-panel)] px-4 py-5">
               <div className="grid min-w-max grid-flow-col gap-3 md:min-w-0 md:grid-flow-row md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
                 {clubFilterItems.map((item) => (
                   <button
@@ -819,7 +821,8 @@ export function CatalogApp({
                     }}
                     className="group flex min-h-[8.4rem] w-[6.3rem] flex-col items-center justify-center rounded-[8px] border border-transparent px-2 py-3 text-center transition hover:border-[var(--line)] hover:bg-[var(--background)] md:min-h-[8.8rem] md:w-auto"
                   >
-                    <div className="relative h-16 w-16 md:h-20 md:w-20">
+                    <div className="flex h-16 w-16 items-center justify-center rounded-[8px] border border-[var(--crest-tile-line)] bg-[var(--crest-tile)] p-2 shadow-sm md:h-20 md:w-20">
+                      <div className="relative h-full w-full">
                       <Image
                         src={item.logo ?? "/images/logo-remeras-argentina.svg"}
                         alt={translateTeamName(item.team)}
@@ -827,6 +830,7 @@ export function CatalogApp({
                         className="object-contain transition duration-300 group-hover:scale-[1.04]"
                         sizes="80px"
                       />
+                      </div>
                     </div>
                     <p className="mt-3 text-sm font-semibold">{translateTeamName(item.team)}</p>
                   </button>
