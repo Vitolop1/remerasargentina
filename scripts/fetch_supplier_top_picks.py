@@ -19,6 +19,16 @@ OG_IMAGE_PATTERN = re.compile(
     r'<meta\s+property="og:image"\s+content="(?P<url>https?://[^"]+)"',
     re.I,
 )
+NATIONAL_TEAMS = {
+    "Argentina",
+    "Brazil",
+    "Croatia",
+    "France",
+    "Germany",
+    "Italy",
+    "Portugal",
+    "Spain",
+}
 
 PICKS = [
     {"team": "Boca Juniors", "url": "https://www.gmkitsc.com/1986-1988-Boca-Juniors-Home-Retro-Soccer-Jersey-p28018753.html"},
@@ -92,6 +102,89 @@ PICKS = [
     {"team": "Bayern Munich", "url": "https://www.gmkitsc.com/25-26-Bayern-Third-1-1-Fans-Soccer-Jersey-p28357952.html"},
     {"team": "PSG", "url": "https://www.gmkitsc.com/25-26-PSG-Jordan-Fourth-1-1-Fans-Soccer-jersey-p28572567.html"},
     {"team": "Flamengo", "url": "https://www.gmkitsc.com/25-26-Flamengo-Third-1-1-Fans-Soccer-Jersey-p28387852.html"},
+    {"team": "France", "url": "https://www.gmkitsc.com/1998-ZIDANE-10-France-Home-Retro-Soccer-Jersey-%E5%8F%B3%E8%83%B8%E5%B8%A6%E5%B0%8F%E5%AD%97-p18034083.html"},
+    {"team": "France", "url": "https://www.gmkitsc.com/2006-France-Away-White-Retro-Soccer-Jersey-%E5%B8%A6%E8%83%B8%E5%89%8D%E5%B0%8F%E5%AD%97-p18034360.html"},
+    {"team": "Brazil", "url": "https://www.gmkitsc.com/1998-Brazil-Home-Retro-Soccer-Jersey-p18036283.html"},
+    {"team": "Brazil", "url": "https://www.gmkitsc.com/1993-1994-Brazil-Home-Yellow-Retro-Soccer-Jersey-p18034451.html"},
+    {"team": "Italy", "url": "https://www.gmkitsc.com/2006-Italy-Home-Blue-Retro-Soccer-Jersey-p18034133.html"},
+    {"team": "Croatia", "url": "https://www.gmkitsc.com/1998-Croatia-Away-Blue-Retro-Soccer-Jersey-p18034101.html"},
+    {"team": "Santos FC", "url": "https://www.gmkitsc.com/2012-2013-Santos-FC-Black-Retro-Soccer-Jersey-p27771274.html"},
+    {"team": "Santos FC", "url": "https://www.gmkitsc.com/2012-2013-Santos-FC-Away-Retro-Soccer-Jersey-p18043288.html"},
+    {"team": "Barcelona", "url": "https://www.gmkitsc.com/2014-2015-BAR-Home-Retro-Soccer-Jersey-p18038512.html"},
+    {"team": "Barcelona", "url": "https://www.gmkitsc.com/2012-2013-BAR-Home-Player-Version-%E7%90%83%E5%91%98-Retro-Soccer-Jersey-p27566336.html"},
+    {"team": "Barcelona", "url": "https://www.gmkitsc.com/2011-2012-BAR-Away-Player-Version-%E7%90%83%E5%91%98-Retro-Soccer-Jersey-p27959579.html"},
+    {"team": "Barcelona", "url": "https://www.gmkitsc.com/2010-2011-BAR-Away-Retro-Soccer-Jersey-p18044774.html"},
+    {"team": "Barcelona", "url": "https://www.gmkitsc.com/2010-2011-BAR-Home-Retro-Soccer-Jersey-p18038534.html"},
+    {"team": "Barcelona", "url": "https://www.gmkitsc.com/2008-2009-BAR-Home-Player-Version-%E7%90%83%E5%91%98-Retro-Soccer-Jersey-p27136811.html"},
+    {"team": "Barcelona", "url": "https://www.gmkitsc.com/2003-2004-BAR-Home-Retro-Soccer-Jersey-p18038364.html"},
+    {"team": "Real Madrid", "url": "https://www.gmkitsc.com/2019-2020-RMA-Home-Player-Version-%E9%95%BF%E8%A2%96%E7%90%83%E5%91%98-Long-Sleeve-Retro-Soccer-Jersey-p27581938.html"},
+    {"team": "Real Madrid", "url": "https://www.gmkitsc.com/2019-2020-RMA-Home-Player-Version-%E7%90%83%E5%91%98-Retro-Soccer-Jersey-p27581940.html"},
+    {"team": "Real Madrid", "url": "https://www.gmkitsc.com/2017-2018-RMA-Third-Retro-Soccer-Jersey-p18039788.html"},
+    {"team": "Real Madrid", "url": "https://www.gmkitsc.com/2017-2018-RMA-Home-Retro-Soccer-Jersey-p18034449.html"},
+    {"team": "Real Madrid", "url": "https://www.gmkitsc.com/2016-2017-RMA-Away-Player-Version-%E7%90%83%E5%91%98-Retro-Soccer-Jersey-p27959578.html"},
+    {"team": "Real Madrid", "url": "https://www.gmkitsc.com/2012-2013-RMA-Home-Player-Version-%E7%90%83%E5%91%98-Retro-Soccer-Jersey-p27477819.html"},
+    {"team": "Atletico Madrid", "url": "https://www.gmkitsc.com/2004-2005-ATM-Home-Long-Sleeve-Retro-Soccer-Jersey-%E9%95%BF%E8%A2%96-p27585840.html"},
+    {"team": "Atletico Madrid", "url": "https://www.gmkitsc.com/2016-2017-ATM-Home-Retro-Soccer-Jersey-%E5%B8%A6%E7%AB%A0-p28196514.html"},
+    {"team": "Juventus", "url": "https://www.gmkitsc.com/2018-2019-JUV-Home-Retro-Fans-Soccer-Jersey-p27764950.html"},
+    {"team": "Juventus", "url": "https://www.gmkitsc.com/2018-2019-JUV-Home-Long-Sleeve-Retro-Player-Version-Soccer-Jersey-%E9%95%BF%E8%A2%96-%E7%90%83%E5%91%98%E7%89%88-p25701815.html"},
+    {"team": "Inter", "url": "https://www.gmkitsc.com/2009-2010-INT-Away-White-Retro-Soccer-Jersey-p18034719.html"},
+    {"team": "AC Milan", "url": "https://www.gmkitsc.com/2006-2007-ACM-Away-Black-Retro-Soccer-Jersey-p18034517.html"},
+    {"team": "Napoli", "url": "https://www.gmkitsc.com/1987-1988-Napoli-Home-Blue-Retro-Soccer-Jersey-p18034625.html"},
+    {"team": "Bayern Munich", "url": "https://www.gmkitsc.com/2002-2003-Bayern-Home-Retro-Soccer-Jersey-p27748831.html"},
+    {"team": "Bayern Munich", "url": "https://www.gmkitsc.com/2014-2015-Bayern-Home-Retro-Soccer-Jersey-p25199585.html"},
+    {"team": "Bayern Munich", "url": "https://www.gmkitsc.com/2013-2014-Bayern-Home-Retro-Soccer-Jersey-%E8%83%B8%E5%89%8D%E5%86%B3%E8%B5%9B%E5%AD%97-p18036838.html"},
+    {"team": "France", "url": "https://www.gmkitsc.com/1998-France-Away-Retro-Soccer-Jersey-%E5%8F%B3%E8%83%B8%E5%B8%A6%E5%B0%8F%E5%AD%97-p18044357.html"},
+    {"team": "France", "url": "https://www.gmkitsc.com/1996-1997-France-Away-Retro-Soccer-Jersey-p27594284.html"},
+    {"team": "Brazil", "url": "https://www.gmkitsc.com/2004-Brazil-Home-Retro-Soccer-Jersey-p18041947.html"},
+    {"team": "Brazil", "url": "https://www.gmkitsc.com/2002-Brazil-Away-Retro-Soccer-Jersey-p18034410.html"},
+    {"team": "Brazil", "url": "https://www.gmkitsc.com/2002-Brazil-Home-Retro-Soccer-Jersey-p18039128.html"},
+    {"team": "Argentina", "url": "https://www.gmkitsc.com/2014-Argentina-Away-Player-Version-%E7%90%83%E5%91%98-Retro-Soccer-Jersey-p28096181.html"},
+    {"team": "Argentina", "url": "https://www.gmkitsc.com/2012-2013-Argentina-Away-Retro-Soccer-Jersey-p28303489.html"},
+    {"team": "Argentina", "url": "https://www.gmkitsc.com/1996-1997-Argentina-Home-Retro-Soccer-Jersey-p25061524.html"},
+    {"team": "Germany", "url": "https://www.gmkitsc.com/1988-1990-Germany-Home-Retro-Soccer-Jersey-p28857746.html"},
+    {"team": "Spain", "url": "https://www.gmkitsc.com/2010-Spain-Away-Royal-Blue-Retro-Soccer-Jersey-%E5%B8%A6%E8%83%B8%E5%89%8D%E5%86%B3%E8%B5%9B%E5%AD%97-p18034100.html"},
+    {"team": "Spain", "url": "https://www.gmkitsc.com/2010-Spain-Home-Retro-Soccer-Jersey-p18034611.html"},
+    {"team": "Portugal", "url": "https://www.gmkitsc.com/2006-Portugal-Home-Retro-Soccer-Jersey-p19301035.html"},
+    {"team": "Chelsea", "url": "https://www.gmkitsc.com/2014-2015-CHE-Home-Retro-Soccer-Jersey-p27023573.html"},
+    {"team": "Chelsea", "url": "https://www.gmkitsc.com/2012-2013-CHE-Home-Retro-Soccer-Jersey-p18038098.html"},
+    {"team": "Chelsea", "url": "https://www.gmkitsc.com/2011-2012-CHE-Home-Retro-Soccer-Jersey-%E5%86%B3%E8%B5%9B%E5%B0%8F%E5%AD%97-p18038135.html"},
+    {"team": "Chelsea", "url": "https://www.gmkitsc.com/2007-2008-CHE-Home-Retro-Soccer-Jersey-%E5%B8%A6%E5%86%B3%E8%B5%9B%E5%AD%97-p18038180.html"},
+    {"team": "Manchester United", "url": "https://www.gmkitsc.com/2007-2008-Man-Utd-home-Red-Retro-soccer-jersey-%E5%86%B3%E8%B5%9B%E5%AD%97-p18034342.html"},
+    {"team": "Manchester United", "url": "https://www.gmkitsc.com/2008-2009-Man-Utd-Away-Retro-Soccer-Jersey-p18042631.html"},
+    {"team": "Aston Villa", "url": "https://www.gmkitsc.com/1999-2000-Aston-Villa-Home-Retro-Soccer-Jersey-p28687075.html"},
+    {"team": "Santos FC", "url": "https://www.gmkitsc.com/2012-2013-Santos-FC-Home-Retro-Soccer-Jersey-p18040930.html"},
+    {"team": "Racing Club", "url": "https://www.gmkitsc.com/2001-2002-Racing-Club-Home-Retro-Soccer-Jersey-p28549448.html"},
+    {"team": "Racing Club", "url": "https://www.gmkitsc.com/1999-2000-Racing-Club-Home-Retro-Soccer-Jersey-p28424445.html"},
+    {"team": "Racing Club", "url": "https://www.gmkitsc.com/2007-2008-Racing-Club-Home-Retro-Soccer-Jersey-p28066199.html"},
+    {"team": "CA Independiente", "url": "https://www.gmkitsc.com/1985-1986-CA-Independiente-Red-Retro-Soccer-Jersey-TOPPER-p27846970.html"},
+    {"team": "CA Independiente", "url": "https://www.gmkitsc.com/1989-1990-CA-Independiente-Red-Retro-Soccer-Jersey-%E4%B8%89%E5%8F%B6%E8%8D%89-p27846966.html"},
+    {"team": "CA Independiente", "url": "https://www.gmkitsc.com/1986-1988-CA-Independiente-Red-Retro-Soccer-Jersey-p27830369.html"},
+    {"team": "CA Independiente", "url": "https://www.gmkitsc.com/1994-1995-CA-Independiente-Red-Retro-Soccer-Jersey-p27817767.html"},
+    {"team": "CA Independiente", "url": "https://www.gmkitsc.com/1999-2000-CA-Independiente-Red-Retro-Soccer-Jersey-p27806414.html"},
+    {"team": "PSG", "url": "https://www.gmkitsc.com/2016-2017-PSG-Paris-Home-Retro-Soccer-Jersey-p28220858.html"},
+    {"team": "Liverpool", "url": "https://www.gmkitsc.com/2009-2010-LIV-Home-Retro-Soccer-Jersey-p25827469.html"},
+    {"team": "PSG", "url": "https://www.gmkitsc.com/2004-2005-PSG-Home-Retro-Soccer-Jersey-p28579345.html"},
+    {"team": "Manchester City", "url": "https://www.gmkitsc.com/2015-2016-Man-City-Home-Retro-Soccer-Jersey-p22999451.html"},
+    {"team": "Manchester City", "url": "https://www.gmkitsc.com/2007-2008-Man-City-Home-Retro-Soccer-Jersey-p18044874.html"},
+    {"team": "River Plate", "url": "https://www.gmkitsc.com/1995-1996-River-Plate-Away-Red-Retro-Soccer-Jersey-p18034498.html"},
+    {"team": "River Plate", "url": "https://www.gmkitsc.com/1992-1994-River-Plate-Home-Retro-Soccer-Jersey-p26967080.html"},
+    {"team": "River Plate", "url": "https://www.gmkitsc.com/1986-River-Plate-White-Retro-Soccer-Jersey-p18040902.html"},
+    {"team": "River Plate", "url": "https://www.gmkitsc.com/2000-2001-River-Plate-Home-Retro-Soccer-Jersey-p27180930.html"},
+    {"team": "River Plate", "url": "https://www.gmkitsc.com/1999-2000-River-Plate-Away-Retro-Soccer-Jersey-p27357846.html"},
+    {"team": "River Plate", "url": "https://www.gmkitsc.com/1998-1999-River-Plate-Home-Retro-Soccer-Jersey-p25440119.html"},
+    {"team": "River Plate", "url": "https://www.gmkitsc.com/1996-1997-River-Plate-Home-Retro-Soccer-Jersey-p18034072.html"},
+    {"team": "River Plate", "url": "https://www.gmkitsc.com/2018-2019-River-Plate-Home-Retro-Soccer-Jersey-p27607593.html"},
+    {"team": "River Plate", "url": "https://www.gmkitsc.com/25-26-River-Plate-Third-Fans-Soccer-Jersey-p27775234.html"},
+    {"team": "River Plate", "url": "https://www.gmkitsc.com/2006-2007-River-Plate-Home-Retro-Soccer-Jersey-p27817748.html"},
+    {"team": "River Plate", "url": "https://www.gmkitsc.com/2006-2007-River-Plate-Home-Long-Sleeve-Retro-Soccer-Jersey-%E9%95%BF%E8%A2%96-p27826228.html"},
+    {"team": "River Plate", "url": "https://www.gmkitsc.com/2013-2014-River-Plate-Home-Retro-Soccer-Jersey-p27826223.html"},
+    {"team": "River Plate", "url": "https://www.gmkitsc.com/2013-2014-River-Plate-Home-Long-Sleeve-Retro-Soccer-Jersey-%E9%95%BF%E8%A2%96-p27826221.html"},
+    {"team": "River Plate", "url": "https://www.gmkitsc.com/2004-2005-River-Plate-Third-Retro-Soccer-Jersey-p28006063.html"},
+    {"team": "River Plate", "url": "https://www.gmkitsc.com/2005-2006-River-Plate-Away-Retro-Soccer-Jersey-p28006046.html"},
+    {"team": "River Plate", "url": "https://www.gmkitsc.com/2013-2014-River-Plate-75th-Anniversary-Retro-Soccer-Jersey-p27987801.html"},
+    {"team": "River Plate", "url": "https://www.gmkitsc.com/2000-2001-River-Plate-Third-Retro-Soccer-Jersey-p27957602.html"},
+    {"team": "River Plate", "url": "https://www.gmkitsc.com/2000-2001-River-Plate-Away-Retro-Soccer-Jersey-p27957601.html"},
+    {"team": "River Plate", "url": "https://www.gmkitsc.com/2003-2004-River-Plate-Away-Retro-Soccer-Jersey-Double-Layer-p27895301.html"},
 ]
 
 
@@ -220,7 +313,15 @@ def main() -> None:
         "products": [],
     }
 
+    unique_picks: list[dict[str, str]] = []
+    seen_pick_urls: set[str] = set()
     for pick in PICKS:
+        if pick["url"] in seen_pick_urls:
+            continue
+        seen_pick_urls.add(pick["url"])
+        unique_picks.append(pick)
+
+    for pick in unique_picks:
         source_slug = re.sub(r"-p\d+\.html$", "", unquote(Path(urlparse(pick["url"]).path).name))
         slug = slugify(source_slug)
         destination_dir = OUTPUT_DIR / slug
@@ -265,7 +366,7 @@ def main() -> None:
                 "name": product_name,
                 "shortName": build_short_name(product_name),
                 "team": pick["team"],
-                "collection": "Clubes",
+                "collection": "Selecciones" if pick["team"] in NATIONAL_TEAMS else "Clubes",
                 "player": "Sin nombre",
                 "eraLabel": product_name.split(" ", 1)[0],
                 "tags": build_tags(pick["team"], product_name),

@@ -38,7 +38,7 @@ type CatalogAppProps = CatalogSummary & {
 
 const DEPOSIT_RATE = 0.5;
 const ORIGINAL_PRICE_ARS = 79000;
-const FEATURED_NATIONAL_TEAMS = ["Argentina", "Brazil", "France", "Spain", "Portugal"] as const;
+const FEATURED_NATIONAL_TEAMS = ["Argentina", "Brazil", "France", "Italy", "Croatia", "Spain", "Portugal"] as const;
 const FEATURED_CLUB_TEAMS = [
   "Liverpool",
   "Manchester City",
@@ -58,6 +58,11 @@ const FEATURED_CLUB_TEAMS = [
   "Inter",
   "AC Milan",
   "Leverkusen",
+  "Napoli",
+  "Racing Club",
+  "CA Independiente",
+  "Santos FC",
+  "Aston Villa",
 ] as const;
 
 const REQUIRED_RETRO_GROUPS = [
@@ -123,12 +128,13 @@ function translateProductName(value: string) {
     .replace(/\bATM\b/gi, "Atletico Madrid")
     .replace(/\bACM\b/gi, "AC Milan")
     .replace(/\bMan City\b/gi, "Manchester City")
+    .replace(/\bPlayer Version\b/gi, "Version jugador")
+    .replace(/\bLong Sleeve\b/gi, "Manga larga")
     .replace(/\bHome\b/gi, "Titular")
     .replace(/\bAway\b/gi, "Alternativa")
     .replace(/\bThird\b/gi, "Tercera")
     .replace(/\bFourth\b/gi, "Cuarta")
     .replace(/\bPlayer\b/gi, "Version jugador")
-    .replace(/\bLong Sleeve\b/gi, "Manga larga")
     .replace(/\bSpecial Edition\b/gi, "Edicion especial")
     .replace(/\bJoint Edition\b/gi, "Edicion conjunta")
     .replace(/\bAnniversary\b/gi, "Aniversario")
@@ -155,6 +161,10 @@ function translateTeamName(team: string) {
       return "Francia";
     case "Germany":
       return "Alemania";
+    case "Italy":
+      return "Italia";
+    case "Croatia":
+      return "Croacia";
     default:
       return team;
   }

@@ -34,7 +34,16 @@ const REMOVED_PRODUCTS = new Set([
   "2005-06 BAR Away UCL #10 Ronaldinho",
 ]);
 const PROMO_PRICE_ARS = 64999;
-const NATIONAL_TEAMS = new Set(["Argentina", "Brazil", "France", "Germany", "Portugal", "Spain"]);
+const NATIONAL_TEAMS = new Set([
+  "Argentina",
+  "Brazil",
+  "Croatia",
+  "France",
+  "Germany",
+  "Italy",
+  "Portugal",
+  "Spain",
+]);
 
 const TEAM_RULES = Object.keys(teamLogoPayload.teams).sort((a, b) => b.length - a.length);
 const TEAM_LOGOS = Object.fromEntries(

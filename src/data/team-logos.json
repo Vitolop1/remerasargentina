@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-12T17:43:32.353652+00:00",
+  "generatedAt": "2026-04-12T18:07:39.603849+00:00",
   "source": "wikipedia.org",
   "teams": {
     "Argentina": {
@@ -47,10 +47,25 @@
       "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Brazilian_Football_Confederation_logo.svg/960px-Brazilian_Football_Confederation_logo.svg.png",
       "path": "/crests/brazil.png"
     },
+    "Croatia": {
+      "sourcePage": "https://en.wikipedia.org/wiki/Croatian_Football_Federation",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/8/84/Croatian_Football_Federation_logo.svg/960px-Croatian_Football_Federation_logo.svg.png",
+      "path": "/crests/croatia.png"
+    },
     "AC Milan": {
       "sourcePage": "https://en.wikipedia.org/wiki/AC_Milan",
       "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Logo_of_AC_Milan.svg/960px-Logo_of_AC_Milan.svg.png",
       "path": "/crests/ac-milan.png"
+    },
+    "Aston Villa": {
+      "sourcePage": "https://en.wikipedia.org/wiki/Aston_Villa_F.C.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/9/9a/Aston_Villa_FC_new_crest.svg/960px-Aston_Villa_FC_new_crest.svg.png",
+      "path": "/crests/aston-villa.png"
+    },
+    "CA Independiente": {
+      "sourcePage": "https://en.wikipedia.org/wiki/Club_Atl%C3%A9tico_Independiente",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Escudo_del_Club_Atl%C3%A9tico_Independiente.svg/1280px-Escudo_del_Club_Atl%C3%A9tico_Independiente.svg.png",
+      "path": "/crests/ca-independiente.png"
     },
     "Chelsea": {
       "sourcePage": "https://en.wikipedia.org/wiki/Chelsea_F.C.",
@@ -61,6 +76,11 @@
       "sourcePage": "https://en.wikipedia.org/wiki/CR_Flamengo",
       "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Clube_de_Regatas_do_Flamengo_logo.svg/1280px-Clube_de_Regatas_do_Flamengo_logo.svg.png",
       "path": "/crests/flamengo.png"
+    },
+    "Italy": {
+      "sourcePage": "https://en.wikipedia.org/wiki/Italy_national_football_team",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Logo_Italy_National_Football_Team_-_2023.svg/960px-Logo_Italy_National_Football_Team_-_2023.svg.png",
+      "path": "/crests/italy.png"
     },
     "Real Madrid": {
       "sourcePage": "https://en.wikipedia.org/wiki/Real_Madrid_CF",
@@ -112,6 +132,11 @@
       "imageUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/7/7a/Manchester_United_FC_crest.svg/1280px-Manchester_United_FC_crest.svg.png",
       "path": "/crests/manchester-united.png"
     },
+    "Napoli": {
+      "sourcePage": "https://en.wikipedia.org/wiki/SSC_Napoli",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/SSC_Napoli_2025_%28white_and_azure%29.svg/1280px-SSC_Napoli_2025_%28white_and_azure%29.svg.png",
+      "path": "/crests/napoli.png"
+    },
     "Portugal": {
       "sourcePage": "https://en.wikipedia.org/wiki/Portugal_national_football_team",
       "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Portugal_National_Team_logo.png/960px-Portugal_National_Team_logo.png",
@@ -121,6 +146,16 @@
       "sourcePage": "https://en.wikipedia.org/wiki/Paris_Saint-Germain_F.C.",
       "imageUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/a/a7/Paris_Saint-Germain_F.C..svg/1280px-Paris_Saint-Germain_F.C..svg.png",
       "path": "/crests/psg.png"
+    },
+    "Racing Club": {
+      "sourcePage": "https://en.wikipedia.org/wiki/Racing_Club_de_Avellaneda",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Escudo_de_Racing_Club_%282014%29.svg/1280px-Escudo_de_Racing_Club_%282014%29.svg.png",
+      "path": "/crests/racing-club.png"
+    },
+    "Santos FC": {
+      "sourcePage": "https://en.wikipedia.org/wiki/Santos_FC",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/1/15/Santos_Logo.png",
+      "path": "/crests/santos-fc.png"
     },
     "Inter Miami": {
       "sourcePage": "https://en.wikipedia.org/wiki/Inter_Miami_CF",
