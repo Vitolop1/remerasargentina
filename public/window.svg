@@ -1,1 +1,28 @@
-<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill-rule="evenodd" clip-rule="evenodd" d="M1.5 2.5h13v10a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1zM0 1h16v11.5a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 0 12.5zm3.75 4.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5M7 4.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0m1.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5" fill="#666"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Remeras Argentina</title>
+  <desc id="desc">Logo de Remeras Argentina con camiseta celeste y blanca y una pelota.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#8bd4ff"/>
+      <stop offset="100%" stop-color="#55acee"/>
+    </linearGradient>
+    <linearGradient id="ball" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#3b3b3b"/>
+      <stop offset="100%" stop-color="#151515"/>
+    </linearGradient>
+  </defs>
+
+  <g fill="none" stroke="#171b1d" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M178 54h156l16 42 45-23 56 97-42 24-36-47v207c0 63-31 93-95 96H234c-64-3-95-33-95-96V147l-36 47-42-24 56-97 45 23 16-42z" fill="#fff" stroke-width="18"/>
+    <path d="M206 84h34v206h-34zM239 84h34v206h-34zM272 84h34v206h-34z" fill="url(#sky)" stroke="none"/>
+    <path d="M228 54h56c0 20-11 31-28 31s-28-11-28-31z" fill="#171b1d" stroke-width="12"/>
+    <path d="M125 92l-37 63 50 28 34-45-10-34zM387 92l37 63-50 28-34-45 10-34z" fill="url(#sky)" stroke-width="14"/>
+    <circle cx="256" cy="327" r="90" fill="url(#ball)" stroke-width="16"/>
+    <path d="M256 266l32 24-12 39h-40l-12-39 32-24z" fill="#fff" stroke-width="10"/>
+    <path d="M224 329l-44 20M288 329l44 20M236 329l-13 50M276 329l13 50M224 290l-42-20M288 290l42-20" stroke="#fff" stroke-width="10"/>
+    <path d="M353 390c-12 48-47 74-97 74s-85-26-97-74" stroke-width="18"/>
+  </g>
+
+  <circle cx="256" cy="146" r="18" fill="#d8b53f"/>
+  <path d="M256 113l7 17 18-4-11 15 14 10-18 1 1 18-11-15-16 9 6-17-17-5 17-5-6-17 16 9 11-15-1 18 18 1-14 10 11 15-18-4z" fill="#d8b53f"/>
+</svg>

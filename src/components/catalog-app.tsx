@@ -618,7 +618,7 @@ export function CatalogApp({
                 >
                   <div className="relative h-24 w-24">
                     <Image
-                      src={item.logo ?? "/next.svg"}
+                      src={item.logo ?? "/images/logo-remeras-argentina.svg"}
                       alt={translateTeamName(item.team)}
                       fill
                       className="object-contain transition duration-300 group-hover:scale-[1.04]"
@@ -661,7 +661,7 @@ export function CatalogApp({
                 >
                   <div className="relative h-20 w-20">
                     <Image
-                      src={item.logo ?? "/next.svg"}
+                      src={item.logo ?? "/images/logo-remeras-argentina.svg"}
                       alt={translateTeamName(item.team)}
                       fill
                       className="object-contain transition duration-300 group-hover:scale-[1.04]"
