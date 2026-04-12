@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { formatArs, normalizeWhatsapp } from "@/lib/catalog";
 import type { CatalogProduct, CatalogSummary } from "@/types/catalog";
@@ -47,6 +47,7 @@ const FEATURED_CLUB_TEAMS = [
   "Arsenal",
   "Tottenham",
   "Boca Juniors",
+  "River Plate",
   "Juventus",
   "Barcelona",
   "Real Madrid",
@@ -57,6 +58,53 @@ const FEATURED_CLUB_TEAMS = [
   "PSG",
   "Inter",
   "AC Milan",
+] as const;
+
+const REQUIRED_RETRO_GROUPS = [
+  {
+    title: "Argentina y locales",
+    items: [
+      "Argentina alternativa 1994 #10 Maradona",
+      "Argentina titular 1986 #10 Maradona",
+      "Argentina titular 1990",
+      "Boca Juniors 2001 #10 Riquelme",
+      "Boca Juniors 2003 Tevez",
+      "Boca Juniors 1997 #10 Maradona",
+      "River Plate 1996 Libertadores",
+      "River Plate 2001 #10 Aimar",
+    ],
+  },
+  {
+    title: "Selecciones",
+    items: [
+      "Francia 1998 #10 Zidane",
+      "Francia 2006 #10 Zidane",
+      "Brasil 1994 Romario",
+      "Brasil 2002 #9 Ronaldo",
+      "Croacia 1998 Suker",
+      "Colombia 1998 Valderrama",
+      "Japon 1998 Nakata",
+    ],
+  },
+  {
+    title: "Clubes de Europa",
+    items: [
+      "Manchester United 2008 #7 Cristiano Ronaldo",
+      "Manchester United 1999 #7 Beckham",
+      "Barcelona 2009 #10 Messi",
+      "Barcelona 2006 #10 Ronaldinho",
+      "AC Milan 2006 #22 Kaka",
+    ],
+  },
+  {
+    title: "Diferenciadoras",
+    items: [
+      "Inter 2010 #22 Milito",
+      "Fiorentina 1998 #9 Batistuta",
+      "Real Madrid 1999 #6 Redondo",
+      "Santos 2012 #11 Neymar",
+    ],
+  },
 ] as const;
 
 function depositFor(amount: number) {
@@ -156,6 +204,16 @@ function buildOrderText(
       ? `Mandame la confirmacion a ${orderEmail} y despues coordinamos la sena y la entrega.`
       : "Despues coordinamos la sena y la entrega.",
   ].join("\n");
+}
+
+function buildRetroRequestHref(cleanWhatsapp: string, item: string) {
+  if (!cleanWhatsapp) {
+    return "#";
+  }
+
+  return `https://wa.me/${cleanWhatsapp}?text=${encodeURIComponent(
+    `Hola, quiero pedir esta retro: ${item}. Me confirmas precio y tiempo de llegada?`,
+  )}`;
 }
 
 export function CatalogApp({
@@ -297,6 +355,52 @@ export function CatalogApp({
 
     return activeGalleryProduct.gallery[gallery.index] ?? activeGalleryProduct.image;
   }, [activeGalleryProduct, gallery]);
+
+  useEffect(() => {
+    if (!gallery) {
+      return undefined;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setGallery(null);
+      }
+      if (event.key === "ArrowLeft" && activeGalleryProduct && activeGalleryProduct.gallery.length > 0) {
+        event.preventDefault();
+        const total = activeGalleryProduct.gallery.length;
+        setGallery((current) =>
+          current
+            ? {
+                productId: current.productId,
+                index: (current.index - 1 + total) % total,
+              }
+            : current,
+        );
+      }
+      if (event.key === "ArrowRight" && activeGalleryProduct && activeGalleryProduct.gallery.length > 0) {
+        event.preventDefault();
+        const total = activeGalleryProduct.gallery.length;
+        setGallery((current) =>
+          current
+            ? {
+                productId: current.productId,
+                index: (current.index + 1) % total,
+              }
+            : current,
+        );
+      }
+    }
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [gallery, activeGalleryProduct]);
 
   function getSelectedSize(product: CatalogProduct) {
     return selectedSizes[product.id] ?? product.sizeOptions[0]?.size ?? "";
@@ -492,6 +596,156 @@ export function CatalogApp({
       </header>
 
       <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+        <section className="rounded-[8px] border border-[var(--line)] bg-[var(--surface)] p-4 sm:p-6">
+          <div className="flex flex-wrap items-end justify-between gap-3">
+            <div>
+              <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">Filtros rapidos</p>
+              <h2 className="mt-1 text-2xl font-semibold">Explora por seleccion o club</h2>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                setCollectionFilter("Todas");
+                setTeamFilter("Todos");
+                document.getElementById("catalogo")?.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="rounded-[8px] border border-[var(--line)] px-4 py-2 text-sm font-semibold"
+            >
+              Ver todo el catalogo
+            </button>
+          </div>
+
+          <div className="mt-6 overflow-hidden rounded-[8px] border border-[var(--line)]">
+            <div className="flex items-center justify-between gap-3 bg-[#303030] px-4 py-3 text-white">
+              <h2 className="text-lg font-semibold">Selecciones</h2>
+              <button
+                type="button"
+                onClick={() => {
+                  setCollectionFilter("Selecciones");
+                  setTeamFilter("Todos");
+                  document.getElementById("catalogo")?.scrollIntoView({ behavior: "smooth" });
+                }}
+                className="text-sm font-semibold text-white/85"
+              >
+                Ver todas
+              </button>
+            </div>
+
+            <div className="overflow-x-auto bg-white px-4 py-5">
+              <div className="grid min-w-max grid-flow-col gap-3 md:min-w-0 md:grid-flow-row md:grid-cols-3 lg:grid-cols-5">
+                {nationalFilterItems.map((item) => (
+                  <button
+                    key={item.team}
+                    type="button"
+                    onClick={() => {
+                      setCollectionFilter("Selecciones");
+                      setTeamFilter(item.team);
+                      document.getElementById("catalogo")?.scrollIntoView({ behavior: "smooth" });
+                    }}
+                    className="group flex min-h-[8.5rem] w-[6.6rem] flex-col items-center justify-center rounded-[8px] border border-transparent px-3 py-3 text-center transition hover:border-[var(--line)] hover:bg-[var(--background)] md:min-h-[9rem] md:w-auto"
+                  >
+                    <div className="relative h-20 w-20 md:h-24 md:w-24">
+                      <Image
+                        src={item.logo ?? "/images/logo-remeras-argentina.svg"}
+                        alt={translateTeamName(item.team)}
+                        fill
+                        className="object-contain transition duration-300 group-hover:scale-[1.04]"
+                        sizes="96px"
+                      />
+                    </div>
+                    <p className="mt-3 text-sm font-semibold md:text-base">{translateTeamName(item.team)}</p>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-6 overflow-hidden rounded-[8px] border border-[var(--line)]">
+            <div className="flex items-center justify-between gap-3 bg-[#303030] px-4 py-3 text-white">
+              <h2 className="text-lg font-semibold">Clubes</h2>
+              <button
+                type="button"
+                onClick={() => {
+                  setCollectionFilter("Clubes");
+                  setTeamFilter("Todos");
+                  document.getElementById("catalogo")?.scrollIntoView({ behavior: "smooth" });
+                }}
+                className="text-sm font-semibold text-white/85"
+              >
+                Ver todos
+              </button>
+            </div>
+
+            <div className="overflow-x-auto bg-white px-4 py-5">
+              <div className="grid min-w-max grid-flow-col gap-3 md:min-w-0 md:grid-flow-row md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
+                {clubFilterItems.map((item) => (
+                  <button
+                    key={item.team}
+                    type="button"
+                    onClick={() => {
+                      setCollectionFilter("Clubes");
+                      setTeamFilter(item.team);
+                      document.getElementById("catalogo")?.scrollIntoView({ behavior: "smooth" });
+                    }}
+                    className="group flex min-h-[8.4rem] w-[6.3rem] flex-col items-center justify-center rounded-[8px] border border-transparent px-2 py-3 text-center transition hover:border-[var(--line)] hover:bg-[var(--background)] md:min-h-[8.8rem] md:w-auto"
+                  >
+                    <div className="relative h-16 w-16 md:h-20 md:w-20">
+                      <Image
+                        src={item.logo ?? "/images/logo-remeras-argentina.svg"}
+                        alt={translateTeamName(item.team)}
+                        fill
+                        className="object-contain transition duration-300 group-hover:scale-[1.04]"
+                        sizes="80px"
+                      />
+                    </div>
+                    <p className="mt-3 text-sm font-semibold">{translateTeamName(item.team)}</p>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="mt-8 rounded-[8px] border border-[var(--line)] bg-[var(--surface)] p-5 sm:p-6">
+          <div className="flex flex-wrap items-end justify-between gap-3">
+            <div>
+              <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">Base de ventas</p>
+              <h2 className="mt-1 text-2xl font-semibold">Retros que no pueden faltar</h2>
+            </div>
+            <a
+              href={otherJerseyHref}
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-[8px] border border-[var(--line)] px-4 py-2 text-sm font-semibold"
+            >
+              Pedir una que no ves
+            </a>
+          </div>
+
+          <div className="mt-6 grid gap-4 lg:grid-cols-2">
+            {REQUIRED_RETRO_GROUPS.map((group) => (
+              <div
+                key={group.title}
+                className="rounded-[8px] border border-[var(--line)] bg-[var(--background)] p-4"
+              >
+                <h3 className="text-lg font-semibold">{group.title}</h3>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {group.items.map((item) => (
+                    <a
+                      key={item}
+                      href={buildRetroRequestHref(cleanWhatsapp, item)}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="rounded-[8px] border border-[var(--line)] bg-[var(--surface)] px-3 py-3 text-sm font-semibold leading-5 transition hover:border-[var(--foreground)]"
+                    >
+                      {item}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
 
         <section className="mt-8 rounded-[8px] bg-[var(--accent)] px-6 py-7 text-white sm:px-8">
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-white/75">Pedido especial</p>
@@ -584,94 +838,6 @@ export function CatalogApp({
                 </div>
               </article>
             ))}
-          </div>
-        </section>
-
-        <section className="mt-8 rounded-[8px] border border-[var(--line)] bg-[var(--surface)] p-4 sm:p-6">
-          <div className="overflow-hidden rounded-[8px] border border-[var(--line)]">
-            <div className="flex items-center justify-between gap-3 bg-[#303030] px-4 py-3 text-white">
-              <h2 className="text-lg font-semibold">Selecciones</h2>
-              <button
-                type="button"
-                onClick={() => {
-                  setCollectionFilter("Selecciones");
-                  setTeamFilter("Todos");
-                  document.getElementById("catalogo")?.scrollIntoView({ behavior: "smooth" });
-                }}
-                className="text-sm font-semibold text-white/85"
-              >
-                Ver todas
-              </button>
-            </div>
-
-            <div className="grid gap-4 bg-white px-4 py-5 sm:grid-cols-3 lg:grid-cols-5">
-              {nationalFilterItems.map((item) => (
-                <button
-                  key={item.team}
-                  type="button"
-                  onClick={() => {
-                    setCollectionFilter("Selecciones");
-                    setTeamFilter(item.team);
-                    document.getElementById("catalogo")?.scrollIntoView({ behavior: "smooth" });
-                  }}
-                  className="group flex flex-col items-center justify-center rounded-[8px] px-3 py-2 text-center"
-                >
-                  <div className="relative h-24 w-24">
-                    <Image
-                      src={item.logo ?? "/images/logo-remeras-argentina.svg"}
-                      alt={translateTeamName(item.team)}
-                      fill
-                      className="object-contain transition duration-300 group-hover:scale-[1.04]"
-                      sizes="96px"
-                    />
-                  </div>
-                  <p className="mt-3 text-base font-semibold">{translateTeamName(item.team)}</p>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="mt-6 overflow-hidden rounded-[8px] border border-[var(--line)]">
-            <div className="flex items-center justify-between gap-3 bg-[#303030] px-4 py-3 text-white">
-              <h2 className="text-lg font-semibold">Clubes</h2>
-              <button
-                type="button"
-                onClick={() => {
-                  setCollectionFilter("Clubes");
-                  setTeamFilter("Todos");
-                  document.getElementById("catalogo")?.scrollIntoView({ behavior: "smooth" });
-                }}
-                className="text-sm font-semibold text-white/85"
-              >
-                Ver todos
-              </button>
-            </div>
-
-            <div className="grid gap-4 bg-white px-4 py-5 sm:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
-              {clubFilterItems.map((item) => (
-                <button
-                  key={item.team}
-                  type="button"
-                  onClick={() => {
-                    setCollectionFilter("Clubes");
-                    setTeamFilter(item.team);
-                    document.getElementById("catalogo")?.scrollIntoView({ behavior: "smooth" });
-                  }}
-                  className="group flex flex-col items-center justify-center rounded-[8px] px-2 py-2 text-center"
-                >
-                  <div className="relative h-20 w-20">
-                    <Image
-                      src={item.logo ?? "/images/logo-remeras-argentina.svg"}
-                      alt={translateTeamName(item.team)}
-                      fill
-                      className="object-contain transition duration-300 group-hover:scale-[1.04]"
-                      sizes="80px"
-                    />
-                  </div>
-                  <p className="mt-3 text-sm font-semibold">{translateTeamName(item.team)}</p>
-                </button>
-              ))}
-            </div>
           </div>
         </section>
 
@@ -1063,9 +1229,15 @@ export function CatalogApp({
       </main>
 
       {activeGalleryProduct && activeGalleryImage ? (
-        <div className="fixed inset-0 z-50 bg-black/82 p-4">
-          <div className="mx-auto flex h-full max-w-5xl flex-col gap-4">
-            <div className="flex items-center justify-between gap-4 text-white">
+        <div
+          className="fixed inset-0 z-50 bg-[rgba(7,11,17,0.60)] p-3 backdrop-blur-[8px] sm:p-4"
+          onClick={() => setGallery(null)}
+        >
+          <div
+            className="mx-auto flex h-full max-w-5xl flex-col gap-3 sm:gap-4"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="flex items-center justify-between gap-4 rounded-[8px] border border-white/12 bg-[rgba(10,15,22,0.78)] px-4 py-3 text-white shadow-[0_18px_60px_rgba(0,0,0,0.35)] backdrop-blur-md">
               <div>
                 <p className="text-xs uppercase tracking-[0.16em] text-white/70">
                   {activeGalleryProduct.collection}
@@ -1077,23 +1249,25 @@ export function CatalogApp({
               <button
                 type="button"
                 onClick={() => setGallery(null)}
-                className="rounded-[8px] border border-white/30 px-4 py-2 text-sm font-semibold"
+                className="shrink-0 rounded-[8px] border border-white/20 bg-white px-4 py-2 text-sm font-semibold text-[#111820] shadow-sm"
               >
                 Cerrar
               </button>
             </div>
 
-            <div className="relative flex-1 overflow-hidden rounded-[8px] bg-white">
+            <div className="relative flex-1 overflow-hidden rounded-[8px] border border-white/14 bg-[rgba(255,255,255,0.96)] shadow-[0_22px_70px_rgba(0,0,0,0.32)]">
+              <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-10 bg-gradient-to-r from-black/12 to-transparent sm:w-16" />
+              <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-gradient-to-l from-black/12 to-transparent sm:w-16" />
               <Image
                 src={activeGalleryImage}
                 alt={activeGalleryProduct.shortName}
                 fill
-                className="object-contain"
+                className="object-contain p-3 sm:p-5"
                 sizes="100vw"
               />
             </div>
 
-            <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex flex-col gap-3 rounded-[8px] border border-white/12 bg-[rgba(10,15,22,0.74)] px-3 py-3 text-white shadow-[0_16px_50px_rgba(0,0,0,0.28)] backdrop-blur-md sm:flex-row sm:items-center sm:justify-between">
               <div className="flex flex-wrap gap-2">
                 {activeGalleryProduct.gallery.map((image, index) => (
                   <button
@@ -1106,7 +1280,9 @@ export function CatalogApp({
                       })
                     }
                     className={`relative h-16 w-16 overflow-hidden rounded-[8px] border ${
-                      gallery?.index === index ? "border-white" : "border-white/25"
+                      gallery?.index === index
+                        ? "border-white bg-white/10"
+                        : "border-white/20 bg-black/10"
                     }`}
                   >
                     <Image
@@ -1124,14 +1300,14 @@ export function CatalogApp({
                 <button
                   type="button"
                   onClick={() => moveGallery(-1)}
-                  className="rounded-[8px] border border-white/30 px-4 py-3 text-sm font-semibold text-white"
+                  className="rounded-[8px] border border-white/20 bg-white/10 px-4 py-3 text-sm font-semibold text-white"
                 >
                   Anterior
                 </button>
                 <button
                   type="button"
                   onClick={() => moveGallery(1)}
-                  className="rounded-[8px] border border-white/30 px-4 py-3 text-sm font-semibold text-white"
+                  className="rounded-[8px] border border-white/20 bg-white/10 px-4 py-3 text-sm font-semibold text-white"
                 >
                   Siguiente
                 </button>
