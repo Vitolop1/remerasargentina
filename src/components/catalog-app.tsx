@@ -554,15 +554,15 @@ export function CatalogApp({
   }
 
   return (
-    <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)]">
+    <div className="min-h-screen overflow-x-hidden bg-[var(--background)] text-[var(--foreground)]">
       <header className="border-b border-[var(--line)] bg-[var(--background)]">
         <div className="mx-auto max-w-7xl px-4 pt-4 sm:px-6 lg:px-8">
-          <div className="grid gap-3 lg:grid-cols-[1fr_auto_1fr] lg:items-center">
-            <div className="flex justify-center lg:justify-start">
+          <div className="grid gap-3 md:grid-cols-[1fr_auto_1fr] md:items-center">
+            <div className="flex justify-center md:justify-start">
               <button
                 type="button"
                 onClick={openCatalogMenu}
-                className="inline-flex w-full max-w-[18rem] items-center gap-3 rounded-full border border-[var(--line)] bg-[var(--surface)] px-3 py-2 shadow-[var(--soft-shadow)] transition hover:border-[var(--foreground)] lg:max-w-none"
+                className="inline-flex w-full max-w-none items-center gap-3 rounded-full border border-[var(--line)] bg-[var(--surface)] px-3 py-2 shadow-[var(--soft-shadow)] transition hover:border-[var(--foreground)] md:max-w-[18rem]"
               >
                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[var(--foreground)] text-[var(--surface)]">
                   <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2">
@@ -598,10 +598,10 @@ export function CatalogApp({
               </div>
             </div>
 
-            <div className="flex justify-center lg:justify-end">
+            <div className="flex justify-center md:justify-end">
               <div
                 suppressHydrationWarning
-                className="inline-flex items-center gap-1 rounded-full border border-[var(--line)] bg-[var(--surface)] p-1 shadow-[var(--soft-shadow)]"
+                className="inline-flex w-full items-center justify-center gap-1 rounded-full border border-[var(--line)] bg-[var(--surface)] p-1 shadow-[var(--soft-shadow)] md:w-auto"
               >
                 <span className="hidden pl-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--muted)] sm:block">
                   Tema
@@ -666,17 +666,17 @@ export function CatalogApp({
                   </div>
                 </div>
 
-                <div className="flex flex-wrap gap-3">
+                <div className="grid gap-3 sm:flex sm:flex-wrap">
                   <a
                     href="#destacados"
-                    className="rounded-[8px] bg-white px-4 py-3 text-sm font-semibold text-[#111820]"
+                    className="rounded-[8px] bg-white px-4 py-3 text-center text-sm font-semibold text-[#111820]"
                   >
                     Lo mas vendido
                   </a>
                   <button
                     type="button"
                     onClick={scrollToCatalog}
-                    className="rounded-[8px] border border-white/20 bg-white/8 px-4 py-3 text-sm font-semibold text-white"
+                    className="rounded-[8px] border border-white/20 bg-white/8 px-4 py-3 text-center text-sm font-semibold text-white"
                   >
                     Catalogo completo
                   </button>
@@ -684,7 +684,7 @@ export function CatalogApp({
                     href={otherJerseyHref}
                     target="_blank"
                     rel="noreferrer"
-                    className="rounded-[8px] bg-[var(--accent)] px-4 py-3 text-sm font-semibold text-white"
+                    className="rounded-[8px] bg-[var(--accent)] px-4 py-3 text-center text-sm font-semibold text-white"
                   >
                     WhatsApp {whatsappDisplay}
                   </a>
@@ -763,7 +763,7 @@ export function CatalogApp({
                   </button>
                 </div>
 
-                <div className="mt-4 flex gap-4 overflow-x-auto pb-2">
+                <div className="mt-4 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 pr-2">
                   {section.products.map((product) => {
                     const selectedSize = getSelectedSize(product);
                     const soldOut = availableForSelection(product, selectedSize) === 0;
@@ -771,7 +771,7 @@ export function CatalogApp({
                     return (
                       <article
                         key={product.id}
-                        className="flex min-w-[17rem] max-w-[17rem] shrink-0 snap-start flex-col rounded-[8px] border border-[var(--line)] bg-[var(--background)] p-4"
+                        className="flex min-w-[14.75rem] max-w-[14.75rem] shrink-0 snap-start flex-col rounded-[8px] border border-[var(--line)] bg-[var(--background)] p-4 sm:min-w-[17rem] sm:max-w-[17rem]"
                       >
                         <button
                           type="button"
@@ -885,13 +885,13 @@ export function CatalogApp({
                   </button>
                 </div>
 
-                <div className="mt-3 flex gap-3 overflow-x-auto pb-2">
+                <div className="mt-3 flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 pr-2">
                   {group.items.map((item) => (
                     <button
                       key={item.team}
                       type="button"
                       onClick={() => openCatalogWithTeam(item.team)}
-                      className="flex min-w-[6.8rem] max-w-[6.8rem] shrink-0 flex-col items-center gap-3 rounded-[8px] border border-[var(--line)] bg-[var(--background)] px-3 py-4 text-center transition hover:border-[var(--foreground)]"
+                      className="flex min-w-[5.9rem] max-w-[5.9rem] shrink-0 snap-start flex-col items-center gap-3 rounded-[8px] border border-[var(--line)] bg-[var(--background)] px-3 py-4 text-center transition hover:border-[var(--foreground)] sm:min-w-[6.8rem] sm:max-w-[6.8rem]"
                     >
                       <div className="flex h-14 w-14 items-center justify-center rounded-[8px] bg-[var(--crest-tile)]">
                         {item.logo ? (
@@ -944,7 +944,7 @@ export function CatalogApp({
                   />
                 </label>
 
-                <div className="flex flex-wrap gap-2">
+                <div className="grid gap-2 sm:flex sm:flex-wrap">
                   <button
                     type="button"
                     onClick={openCatalogMenu}
@@ -1111,7 +1111,7 @@ export function CatalogApp({
             </div>
           </section>
 
-          <aside className="h-fit rounded-[8px] border border-[var(--line)] bg-[var(--surface)] p-5 lg:sticky lg:top-6">
+          <aside className="h-fit rounded-[8px] border border-[var(--line)] bg-[var(--surface)] p-4 sm:p-5 lg:sticky lg:top-6">
             <div className="flex items-start justify-between gap-4">
               <div>
                 <p className="text-xs uppercase tracking-[0.18em] text-[var(--muted)]">Pedido</p>
@@ -1170,38 +1170,38 @@ export function CatalogApp({
                 value={customer.name}
                 onChange={(event) => updateCustomer("name", event.target.value)}
                 placeholder="Nombre y apellido"
-                className="rounded-[8px] border border-[var(--line)] bg-[var(--background)] px-4 py-3 text-sm"
+                className="rounded-[8px] border border-[var(--line)] bg-[var(--background)] px-4 py-3 text-base sm:text-sm"
               />
               <input
                 value={customer.phone}
                 onChange={(event) => updateCustomer("phone", event.target.value)}
                 placeholder="WhatsApp"
-                className="rounded-[8px] border border-[var(--line)] bg-[var(--background)] px-4 py-3 text-sm"
+                className="rounded-[8px] border border-[var(--line)] bg-[var(--background)] px-4 py-3 text-base sm:text-sm"
               />
               <input
                 value={customer.email}
                 onChange={(event) => updateCustomer("email", event.target.value)}
                 placeholder="Mail"
-                className="rounded-[8px] border border-[var(--line)] bg-[var(--background)] px-4 py-3 text-sm"
+                className="rounded-[8px] border border-[var(--line)] bg-[var(--background)] px-4 py-3 text-base sm:text-sm"
               />
               <input
                 value={customer.zone}
                 onChange={(event) => updateCustomer("zone", event.target.value)}
                 placeholder="Barrio o ciudad"
-                className="rounded-[8px] border border-[var(--line)] bg-[var(--background)] px-4 py-3 text-sm"
+                className="rounded-[8px] border border-[var(--line)] bg-[var(--background)] px-4 py-3 text-base sm:text-sm"
               />
               <input
                 value={customer.instagram}
                 onChange={(event) => updateCustomer("instagram", event.target.value)}
                 placeholder="Instagram opcional"
-                className="rounded-[8px] border border-[var(--line)] bg-[var(--background)] px-4 py-3 text-sm"
+                className="rounded-[8px] border border-[var(--line)] bg-[var(--background)] px-4 py-3 text-base sm:text-sm"
               />
               <textarea
                 value={customer.notes}
                 onChange={(event) => updateCustomer("notes", event.target.value)}
                 placeholder="Notas, talle alternativo o consulta"
                 rows={4}
-                className="rounded-[8px] border border-[var(--line)] bg-[var(--background)] px-4 py-3 text-sm"
+                className="rounded-[8px] border border-[var(--line)] bg-[var(--background)] px-4 py-3 text-base sm:text-sm"
               />
             </div>
 
@@ -1361,7 +1361,7 @@ export function CatalogApp({
           onClick={() => setCatalogMenuOpen(false)}
         >
           <aside
-            className="h-full w-[23rem] max-w-[90vw] overflow-y-auto border-r border-[var(--line)] bg-[var(--surface)] p-4 shadow-[var(--soft-shadow)]"
+            className="h-full w-[22rem] max-w-[92vw] overflow-y-auto border-r border-[var(--line)] bg-[var(--surface)] p-4 shadow-[var(--soft-shadow)]"
             onClick={(event) => event.stopPropagation()}
           >
             <div className="flex items-center justify-between gap-3">
@@ -1393,7 +1393,7 @@ export function CatalogApp({
                     value={query}
                     onChange={(event) => setQuery(event.target.value)}
                     placeholder="Messi, Boca, Argentina, Milan..."
-                    className="w-full rounded-[8px] border border-[var(--line)] bg-[var(--background)] py-3 pl-11 pr-4 text-sm"
+                    className="w-full rounded-[8px] border border-[var(--line)] bg-[var(--background)] py-3 pl-11 pr-4 text-base sm:text-sm"
                   />
                 </div>
               </div>

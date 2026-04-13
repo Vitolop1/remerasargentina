@@ -70,6 +70,9 @@
 
 html {
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  overflow-x: hidden;
 }
 
 body {
@@ -77,6 +80,7 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
   line-height: 1.4;
+  overflow-x: hidden;
   transition:
     background-color 180ms ease,
     color 180ms ease;
@@ -97,6 +101,19 @@ textarea {
     color 180ms ease,
     border-color 180ms ease,
     box-shadow 180ms ease;
+}
+
+button,
+a {
+  touch-action: manipulation;
+}
+
+@media (max-width: 767px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
 }
 
 ::selection {
