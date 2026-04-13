@@ -558,7 +558,7 @@ export function CatalogApp({
       <header className="border-b border-[var(--line)] bg-[var(--background)]">
         <div className="mx-auto max-w-7xl px-4 pt-4 sm:px-6 lg:px-8">
           <div className="grid gap-3 md:grid-cols-[1fr_auto_1fr] md:items-center">
-            <div className="flex justify-center md:justify-start">
+            <div className="order-2 flex justify-center md:order-1 md:justify-start">
               <button
                 type="button"
                 onClick={openCatalogMenu}
@@ -577,9 +577,9 @@ export function CatalogApp({
               </button>
             </div>
 
-            <div className="flex justify-center">
-              <div className="inline-flex max-w-full items-center gap-3 rounded-full border border-[var(--line)] bg-[var(--surface)] px-4 py-3 shadow-[var(--soft-shadow)]">
-                <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-full bg-[var(--background)]">
+            <div className="order-1 flex justify-center md:order-2">
+              <div className="inline-flex max-w-full items-center gap-3 rounded-[8px] border border-[var(--line)] bg-[var(--surface)] px-3 py-3 shadow-[var(--soft-shadow)] md:rounded-full md:px-4">
+                <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full bg-[var(--background)] md:h-11 md:w-11">
                   <Image
                     src="/images/logo-remeras-argentina.svg"
                     alt="Logo La Linda Retro"
@@ -589,16 +589,16 @@ export function CatalogApp({
                   />
                 </div>
                 <div className="min-w-0">
-                  <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--muted)]">
+                  <p className="hidden text-[10px] uppercase tracking-[0.18em] text-[var(--muted)] sm:block">
                     Catalogo retro del norte
                   </p>
-                  <p className="truncate text-lg font-black leading-none sm:text-xl">La Linda Retro</p>
-                  <p className="mt-1 text-xs text-[var(--muted)]">Remeras de futbol en Salta</p>
+                  <p className="truncate text-base font-black leading-none sm:text-xl">La Linda Retro</p>
+                  <p className="mt-1 text-[11px] text-[var(--muted)] sm:text-xs">Remeras de futbol</p>
                 </div>
               </div>
             </div>
 
-            <div className="flex justify-center md:justify-end">
+            <div className="order-3 flex justify-center md:justify-end">
               <div
                 suppressHydrationWarning
                 className="inline-flex w-full items-center justify-center gap-1 rounded-full border border-[var(--line)] bg-[var(--surface)] p-1 shadow-[var(--soft-shadow)] md:w-auto"
@@ -636,23 +636,23 @@ export function CatalogApp({
             className="overflow-hidden rounded-[8px] border border-[var(--hero-line)] shadow-[var(--soft-shadow)]"
             style={{ backgroundImage: "linear-gradient(135deg, var(--hero-start), var(--hero-end))" }}
           >
-            <div className="px-4 py-5 text-[var(--hero-foreground)] sm:px-6 sm:py-6">
-              <div className="flex flex-col gap-6">
+            <div className="px-4 py-4 text-[var(--hero-foreground)] sm:px-6 sm:py-6">
+              <div className="flex flex-col gap-5">
                 <div className="flex flex-col gap-5 xl:flex-row xl:items-end xl:justify-between">
                   <div className="max-w-3xl">
                     <p className="text-xs uppercase tracking-[0.18em] text-[var(--hero-muted)]">
                       Top ventas y catalogo completo
                     </p>
-                    <h1 className="mt-2 text-3xl font-semibold leading-tight sm:text-4xl lg:text-5xl">
+                    <h1 className="mt-2 text-[1.9rem] font-semibold leading-tight sm:text-4xl lg:text-5xl">
                       Primero las que mas salen. Despues, todo el catalogo.
                     </h1>
-                    <p className="mt-3 max-w-2xl text-sm leading-6 text-[var(--hero-muted)]">
+                    <p className="mt-3 max-w-2xl text-sm leading-5 text-[var(--hero-muted)]">
                       Toca la foto, elegi talle y manda el pedido. La idea es que entrar, buscar y
                       reservar sea rapido en el telefono.
                     </p>
                   </div>
 
-                  <div className="flex flex-wrap gap-2 text-sm">
+                  <div className="hidden flex-wrap gap-2 text-sm sm:flex">
                     <span className="rounded-[8px] border border-white/18 bg-white/8 px-3 py-2">
                       {teams.length} equipos
                     </span>
@@ -666,7 +666,7 @@ export function CatalogApp({
                   </div>
                 </div>
 
-                <div className="grid gap-3 sm:flex sm:flex-wrap">
+                <div className="grid gap-2 sm:flex sm:flex-wrap sm:gap-3">
                   <a
                     href="#destacados"
                     className="rounded-[8px] bg-white px-4 py-3 text-center text-sm font-semibold text-[#111820]"
@@ -690,13 +690,13 @@ export function CatalogApp({
                   </a>
                 </div>
 
-                <div className="grid gap-3 sm:grid-cols-3">
+                <div className="-mx-1 flex gap-3 overflow-x-auto px-1 pb-1 sm:mx-0 sm:grid sm:overflow-visible sm:px-0 sm:pb-0 sm:grid-cols-3">
                   {featuredProducts.map((product) => (
                     <button
                       key={product.id}
                       type="button"
                       onClick={() => openGallery(product)}
-                      className="group relative min-h-[11rem] overflow-hidden rounded-[8px] border border-white/12 bg-white/5 text-left"
+                      className="group relative min-h-[10rem] min-w-[15rem] shrink-0 overflow-hidden rounded-[8px] border border-white/12 bg-white/5 text-left sm:min-w-0"
                     >
                       {product.image ? (
                         <Image
@@ -744,7 +744,7 @@ export function CatalogApp({
             </button>
           </div>
 
-          <div className="mt-6 space-y-7">
+          <div className="mt-6 space-y-6">
             {homeFeaturedSections.map((section) => (
               <div key={section.team}>
                 <div className="flex items-end justify-between gap-3">
@@ -752,12 +752,12 @@ export function CatalogApp({
                     <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">
                       {section.collection}
                     </p>
-                    <h3 className="mt-1 text-xl font-semibold">{translateTeamName(section.label)}</h3>
+                    <h3 className="mt-1 text-lg font-semibold sm:text-xl">{translateTeamName(section.label)}</h3>
                   </div>
                   <button
                     type="button"
                     onClick={() => openCatalogWithTeam(section.team)}
-                    className="rounded-[8px] border border-[var(--line)] px-3 py-2 text-sm font-semibold"
+                    className="rounded-[8px] border border-[var(--line)] px-3 py-2 text-xs font-semibold sm:text-sm"
                   >
                     Ver todo
                   </button>
@@ -810,7 +810,7 @@ export function CatalogApp({
                                 [product.id]: event.target.value,
                               }))
                             }
-                            className="rounded-[8px] border border-[var(--line)] bg-[var(--surface)] px-3 py-3 text-sm"
+                            className="rounded-[8px] border border-[var(--line)] bg-[var(--surface)] px-3 py-3 text-base sm:text-sm"
                           >
                             {product.sizeOptions.map((option) => (
                               <option key={option.size} value={option.size}>
@@ -819,7 +819,7 @@ export function CatalogApp({
                             ))}
                           </select>
 
-                          <div className="grid grid-cols-2 gap-2">
+                          <div className="grid gap-2 sm:grid-cols-2">
                             <button
                               type="button"
                               onClick={() => openGallery(product)}
@@ -868,7 +868,7 @@ export function CatalogApp({
             </button>
           </div>
 
-          <div className="mt-6 grid gap-6">
+          <div className="mt-5 grid gap-5 sm:mt-6 sm:gap-6">
             {[
               { title: "Selecciones", items: drawerItems.national },
               { title: "Clubes", items: drawerItems.clubs },
@@ -879,7 +879,7 @@ export function CatalogApp({
                   <button
                     type="button"
                     onClick={() => openCatalogWithCollection(group.title)}
-                    className="text-sm font-semibold text-[var(--muted)]"
+                    className="text-xs font-semibold text-[var(--muted)] sm:text-sm"
                   >
                     Ver todas
                   </button>
@@ -891,11 +891,11 @@ export function CatalogApp({
                       key={item.team}
                       type="button"
                       onClick={() => openCatalogWithTeam(item.team)}
-                      className="flex min-w-[5.9rem] max-w-[5.9rem] shrink-0 snap-start flex-col items-center gap-3 rounded-[8px] border border-[var(--line)] bg-[var(--background)] px-3 py-4 text-center transition hover:border-[var(--foreground)] sm:min-w-[6.8rem] sm:max-w-[6.8rem]"
+                      className="flex min-w-[5.4rem] max-w-[5.4rem] shrink-0 snap-start flex-col items-center gap-2 rounded-[8px] border border-[var(--line)] bg-[var(--background)] px-2 py-3 text-center transition hover:border-[var(--foreground)] sm:min-w-[6.8rem] sm:max-w-[6.8rem] sm:gap-3 sm:px-3 sm:py-4"
                     >
-                      <div className="flex h-14 w-14 items-center justify-center rounded-[8px] bg-[var(--crest-tile)]">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-[8px] bg-[var(--crest-tile)] sm:h-14 sm:w-14">
                         {item.logo ? (
-                          <div className="relative h-10 w-10">
+                          <div className="relative h-8 w-8 sm:h-10 sm:w-10">
                             <Image
                               src={item.logo}
                               alt={translateTeamName(item.team)}
@@ -906,7 +906,7 @@ export function CatalogApp({
                           </div>
                         ) : null}
                       </div>
-                      <span className="text-xs font-semibold leading-4">{translateTeamName(item.team)}</span>
+                      <span className="text-[11px] font-semibold leading-4 sm:text-xs">{translateTeamName(item.team)}</span>
                     </button>
                   ))}
                 </div>
@@ -940,7 +940,7 @@ export function CatalogApp({
                     value={query}
                     onChange={(event) => setQuery(event.target.value)}
                     placeholder="Busca por jugador, club o temporada"
-                    className="w-full rounded-[8px] border border-[var(--line)] bg-[var(--background)] py-3.5 pl-12 pr-4 text-sm"
+                    className="w-full rounded-[8px] border border-[var(--line)] bg-[var(--background)] py-3.5 pl-12 pr-4 text-base sm:text-sm"
                   />
                 </label>
 
@@ -991,7 +991,7 @@ export function CatalogApp({
               </div>
             </div>
 
-            <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
               {filteredProducts.map((product) => {
                 const selectedSize = getSelectedSize(product);
 
@@ -1088,7 +1088,7 @@ export function CatalogApp({
                     </div>
 
                     <div className="mt-auto pt-5">
-                      <div className="grid gap-3 sm:grid-cols-2">
+                      <div className="grid gap-2 sm:grid-cols-2">
                         <button
                           type="button"
                           onClick={() => openGallery(product)}
@@ -1122,7 +1122,7 @@ export function CatalogApp({
               </span>
             </div>
 
-            <div className="mt-5 space-y-3 rounded-[8px] border border-[var(--line)] bg-[var(--background)] p-4 text-sm">
+            <div className="mt-5 space-y-2 rounded-[8px] border border-[var(--line)] bg-[var(--background)] p-4 text-sm">
               <p className="font-semibold">1. Elegi remera y talle.</p>
               <p className="font-semibold">2. Envia el pedido por mail o WhatsApp.</p>
               <p className="font-semibold">3. Te confirmamos llegada, precio final y sena.</p>
@@ -1330,9 +1330,9 @@ export function CatalogApp({
           </aside>
         </div>
 
-        <section className="mt-8 rounded-[8px] bg-[var(--accent)] px-6 py-7 text-white sm:px-8">
+        <section className="mt-8 rounded-[8px] bg-[var(--accent)] px-5 py-6 text-white sm:px-8 sm:py-7">
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-white/75">No ves tu camiseta?</p>
-          <h2 className="mt-2 text-3xl font-semibold leading-tight sm:text-4xl">
+          <h2 className="mt-2 text-2xl font-semibold leading-tight sm:text-4xl">
             Contacta al vendedor y la buscamos para vos.
           </h2>
           <p className="mt-3 max-w-2xl text-sm leading-6 text-white/85">
@@ -1361,7 +1361,7 @@ export function CatalogApp({
           onClick={() => setCatalogMenuOpen(false)}
         >
           <aside
-            className="h-full w-[22rem] max-w-[92vw] overflow-y-auto border-r border-[var(--line)] bg-[var(--surface)] p-4 shadow-[var(--soft-shadow)]"
+            className="h-full w-[20rem] max-w-[92vw] overflow-y-auto border-r border-[var(--line)] bg-[var(--surface)] p-4 shadow-[var(--soft-shadow)] sm:w-[22rem]"
             onClick={(event) => event.stopPropagation()}
           >
             <div className="flex items-center justify-between gap-3">
@@ -1400,7 +1400,7 @@ export function CatalogApp({
 
               <div>
                 <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">Atajos</p>
-                <div className="mt-2 grid grid-cols-2 gap-2">
+                <div className="mt-2 grid gap-2 grid-cols-2">
                   {HOME_TEAM_PRIORITY.map((item) => (
                     <button
                       key={item.team}
@@ -1420,7 +1420,7 @@ export function CatalogApp({
 
               <div>
                 <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">Categorias</p>
-                <div className="mt-2 grid grid-cols-3 gap-2">
+                <div className="mt-2 grid gap-2 grid-cols-2 sm:grid-cols-3">
                   {["Todas", "Selecciones", "Clubes"].map((item) => (
                     <button
                       key={item}
