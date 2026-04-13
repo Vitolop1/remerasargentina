@@ -1,5 +1,6 @@
 import catalog from "@/data/catalog.json";
 import supplierImages from "@/data/supplier-images.json";
+import supplierSearchCatalog from "@/data/supplier-search-catalog.json";
 import supplierTopPicks from "@/data/supplier-top-picks.json";
 import teamLogos from "@/data/team-logos.json";
 import type { CatalogOrderLine, CatalogPayload, CatalogProduct, CatalogSummary } from "@/types/catalog";
@@ -9,6 +10,21 @@ const supplierImagePayload = supplierImages as {
   products: Record<string, { images: Array<{ path: string }>; sources?: Array<{ url: string }> }>;
 };
 const supplierTopPickPayload = supplierTopPicks as {
+  products: Array<{
+    id: string;
+    name: string;
+    shortName: string;
+    team: string;
+    collection: string;
+    player: string;
+    eraLabel: string;
+    tags: string[];
+    sourceUrl: string;
+    image: string | null;
+    gallery: string[];
+  }>;
+};
+const supplierSearchPayload = supplierSearchCatalog as {
   products: Array<{
     id: string;
     name: string;
@@ -279,7 +295,50 @@ export function getCatalogData(): CatalogSummary {
     };
   });
 
-  const products: CatalogProduct[] = [...topPickProducts, ...stockProducts]
+  const extendedSupplierProducts: CatalogProduct[] = supplierSearchPayload.products.map((product) => {
+    const priceArs = PROMO_PRICE_ARS;
+    const priceUsd = Number((priceArs / catalogPayload.settings.exchangeRateArsPerUsd).toFixed(2));
+    const heroImage = product.image ?? choosePrimaryImage(product.gallery);
+    const gallery = product.gallery.length > 0 ? product.gallery : heroImage ? [heroImage] : [];
+
+    return {
+      id: product.id,
+      name: product.name,
+      shortName: product.shortName,
+      eraLabel: product.eraLabel,
+      team: product.team,
+      teamLogo: TEAM_LOGOS[product.team] ?? null,
+      collection: product.collection,
+      player: product.player,
+      totalStock: 999,
+      sizeOptions: PREORDER_SIZES.map((size) => ({ size, stock: 999 })),
+      image: heroImage,
+      gallery,
+      priceUsd,
+      priceArs,
+      featured: false,
+      isTopPick: false,
+      sourceUrl: product.sourceUrl,
+      tags: product.tags,
+      searchText: [product.name, product.team, product.player, product.eraLabel, ...product.tags]
+        .join(" ")
+        .toLowerCase(),
+    };
+  });
+
+  const seenProductKeys = new Set<string>();
+  const dedupeKey = (product: CatalogProduct) =>
+    `${product.sourceUrl ?? product.id}::${product.name.toLowerCase()}`;
+
+  const products: CatalogProduct[] = [...topPickProducts, ...extendedSupplierProducts, ...stockProducts]
+    .filter((product) => {
+      const key = dedupeKey(product);
+      if (seenProductKeys.has(key)) {
+        return false;
+      }
+      seenProductKeys.add(key);
+      return true;
+    })
     .sort((a, b) => {
       if (a.isTopPick !== b.isTopPick) {
         return a.isTopPick ? -1 : 1;

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { formatArs, normalizeWhatsapp } from "@/lib/catalog";
 import type { CatalogProduct, CatalogSummary } from "@/types/catalog";
@@ -191,6 +191,7 @@ export function CatalogApp({
   paymentAccountName,
   paymentQrPath,
 }: CatalogAppProps) {
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
   const [theme, setTheme] = useState<ThemeMode>(() => {
     if (typeof document !== "undefined") {
       const currentTheme = document.documentElement.dataset.theme;
@@ -367,6 +368,10 @@ export function CatalogApp({
     scrollToCatalog();
   }
 
+  function openCatalogMenu() {
+    setCatalogMenuOpen(true);
+  }
+
   const activeGalleryProduct = useMemo(() => {
     if (!gallery) {
       return null;
@@ -438,6 +443,18 @@ export function CatalogApp({
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [gallery, activeGalleryProduct, catalogMenuOpen]);
+
+  useEffect(() => {
+    if (!catalogMenuOpen) {
+      return;
+    }
+
+    const timer = window.setTimeout(() => {
+      searchInputRef.current?.focus();
+    }, 80);
+
+    return () => window.clearTimeout(timer);
+  }, [catalogMenuOpen]);
 
   function getSelectedSize(product: CatalogProduct) {
     return selectedSizes[product.id] ?? product.sizeOptions[0]?.size ?? "";
@@ -542,12 +559,22 @@ export function CatalogApp({
         <div className="mx-auto max-w-7xl px-4 pt-4 sm:px-6 lg:px-8">
           <div className="grid gap-3 lg:grid-cols-[1fr_auto_1fr] lg:items-center">
             <div className="flex justify-center lg:justify-start">
-              <div className="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--surface)] px-4 py-2 shadow-[var(--soft-shadow)]">
-                <span className="h-2.5 w-2.5 rounded-full bg-[var(--accent)]" />
-                <span className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
-                  Hecho para Salta
+              <button
+                type="button"
+                onClick={openCatalogMenu}
+                className="inline-flex w-full max-w-[18rem] items-center gap-3 rounded-full border border-[var(--line)] bg-[var(--surface)] px-3 py-2 shadow-[var(--soft-shadow)] transition hover:border-[var(--foreground)] lg:max-w-none"
+              >
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[var(--foreground)] text-[var(--surface)]">
+                  <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2">
+                    <circle cx="11" cy="11" r="7" />
+                    <path d="m20 20-3.5-3.5" />
+                  </svg>
                 </span>
-              </div>
+                <div className="min-w-0 text-left">
+                  <p className="text-[10px] uppercase tracking-[0.16em] text-[var(--muted)]">Buscar rapido</p>
+                  <p className="truncate text-sm font-semibold">Busca tu remera</p>
+                </div>
+              </button>
             </div>
 
             <div className="flex justify-center">
@@ -614,14 +641,14 @@ export function CatalogApp({
                 <div className="flex flex-col gap-5 xl:flex-row xl:items-end xl:justify-between">
                   <div className="max-w-3xl">
                     <p className="text-xs uppercase tracking-[0.18em] text-[var(--hero-muted)]">
-                      Reserva facil, entrega en Salta y sena del 50%
+                      Top ventas y catalogo completo
                     </p>
                     <h1 className="mt-2 text-3xl font-semibold leading-tight sm:text-4xl lg:text-5xl">
-                      La Linda Retro: camisetas que se hacen mirar apenas las ves.
+                      Primero las que mas salen. Despues, todo el catalogo.
                     </h1>
                     <p className="mt-3 max-w-2xl text-sm leading-6 text-[var(--hero-muted)]">
-                      Retro, seleccion, clubes y modelos importados para vender en Salta. Elegis la que
-                      te gusta, reservas por WhatsApp y coordinamos la sena.
+                      Toca la foto, elegi talle y manda el pedido. La idea es que entrar, buscar y
+                      reservar sea rapido en el telefono.
                     </p>
                   </div>
 
@@ -648,10 +675,7 @@ export function CatalogApp({
                   </a>
                   <button
                     type="button"
-                    onClick={() => {
-                      setCatalogMenuOpen(true);
-                      scrollToCatalog();
-                    }}
+                    onClick={scrollToCatalog}
                     className="rounded-[8px] border border-white/20 bg-white/8 px-4 py-3 text-sm font-semibold text-white"
                   >
                     Catalogo completo
@@ -713,10 +737,7 @@ export function CatalogApp({
             </div>
             <button
               type="button"
-              onClick={() => {
-                setCatalogMenuOpen(true);
-                scrollToCatalog();
-              }}
+              onClick={scrollToCatalog}
               className="rounded-[8px] bg-[var(--foreground)] px-4 py-3 text-sm font-semibold text-[var(--surface)]"
             >
               Catalogo completo
@@ -829,6 +850,71 @@ export function CatalogApp({
           </div>
         </section>
 
+        <section className="mt-8 rounded-[8px] border border-[var(--line)] bg-[var(--surface)] p-4 sm:p-6">
+          <div className="flex flex-wrap items-end justify-between gap-3">
+            <div className="max-w-2xl">
+              <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">Explora por escudo</p>
+              <h2 className="mt-1 text-2xl font-semibold">Todos los clubes y selecciones de un vistazo</h2>
+              <p className="mt-2 text-sm text-[var(--muted)]">
+                Toca un escudo y te llevamos directo a ese equipo dentro del catalogo.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={openCatalogMenu}
+              className="rounded-[8px] border border-[var(--line)] px-4 py-3 text-sm font-semibold"
+            >
+              Abrir filtros
+            </button>
+          </div>
+
+          <div className="mt-6 grid gap-6">
+            {[
+              { title: "Selecciones", items: drawerItems.national },
+              { title: "Clubes", items: drawerItems.clubs },
+            ].map((group) => (
+              <div key={group.title}>
+                <div className="flex items-center justify-between gap-3">
+                  <h3 className="text-lg font-semibold">{group.title}</h3>
+                  <button
+                    type="button"
+                    onClick={() => openCatalogWithCollection(group.title)}
+                    className="text-sm font-semibold text-[var(--muted)]"
+                  >
+                    Ver todas
+                  </button>
+                </div>
+
+                <div className="mt-3 flex gap-3 overflow-x-auto pb-2">
+                  {group.items.map((item) => (
+                    <button
+                      key={item.team}
+                      type="button"
+                      onClick={() => openCatalogWithTeam(item.team)}
+                      className="flex min-w-[6.8rem] max-w-[6.8rem] shrink-0 flex-col items-center gap-3 rounded-[8px] border border-[var(--line)] bg-[var(--background)] px-3 py-4 text-center transition hover:border-[var(--foreground)]"
+                    >
+                      <div className="flex h-14 w-14 items-center justify-center rounded-[8px] bg-[var(--crest-tile)]">
+                        {item.logo ? (
+                          <div className="relative h-10 w-10">
+                            <Image
+                              src={item.logo}
+                              alt={translateTeamName(item.team)}
+                              fill
+                              className="object-contain"
+                              sizes="40px"
+                            />
+                          </div>
+                        ) : null}
+                      </div>
+                      <span className="text-xs font-semibold leading-4">{translateTeamName(item.team)}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
         <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_25rem]">
           <section id="catalogo" className="min-w-0">
             <div className="rounded-[8px] border border-[var(--line)] bg-[var(--surface)] p-4 sm:p-5">
@@ -840,10 +926,28 @@ export function CatalogApp({
                     {filteredProducts.length} modelos para ver, reservar y hablar por WhatsApp.
                   </p>
                 </div>
+              </div>
+
+              <div className="mt-4 grid gap-3 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+                <label className="relative block">
+                  <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[var(--muted)]">
+                    <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2">
+                      <circle cx="11" cy="11" r="7" />
+                      <path d="m20 20-3.5-3.5" />
+                    </svg>
+                  </span>
+                  <input
+                    value={query}
+                    onChange={(event) => setQuery(event.target.value)}
+                    placeholder="Busca por jugador, club o temporada"
+                    className="w-full rounded-[8px] border border-[var(--line)] bg-[var(--background)] py-3.5 pl-12 pr-4 text-sm"
+                  />
+                </label>
+
                 <div className="flex flex-wrap gap-2">
                   <button
                     type="button"
-                    onClick={() => setCatalogMenuOpen(true)}
+                    onClick={openCatalogMenu}
                     className="rounded-[8px] bg-[var(--foreground)] px-4 py-3 text-sm font-semibold text-[var(--surface)]"
                   >
                     Filtros y clubes
@@ -1277,12 +1381,21 @@ export function CatalogApp({
             <div className="mt-5 space-y-5">
               <div>
                 <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">Buscar</p>
-                <input
-                  value={query}
-                  onChange={(event) => setQuery(event.target.value)}
-                  placeholder="Messi, Boca, Argentina, Milan..."
-                  className="mt-2 w-full rounded-[8px] border border-[var(--line)] bg-[var(--background)] px-4 py-3 text-sm"
-                />
+                <div className="relative mt-2">
+                  <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[var(--muted)]">
+                    <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2">
+                      <circle cx="11" cy="11" r="7" />
+                      <path d="m20 20-3.5-3.5" />
+                    </svg>
+                  </span>
+                  <input
+                    ref={searchInputRef}
+                    value={query}
+                    onChange={(event) => setQuery(event.target.value)}
+                    placeholder="Messi, Boca, Argentina, Milan..."
+                    className="w-full rounded-[8px] border border-[var(--line)] bg-[var(--background)] py-3 pl-11 pr-4 text-sm"
+                  />
+                </div>
               </div>
 
               <div>

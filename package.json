@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "sync:catalog": "python scripts/export_catalog.py",
-    "sync:supplier-images": "python scripts/fetch_supplier_images.py"
+    "sync:supplier-images": "python scripts/fetch_supplier_images.py",
+    "sync:supplier-search": "python scripts/fetch_supplier_search_catalog.py"
   },
   "dependencies": {
     "next": "16.2.3",
