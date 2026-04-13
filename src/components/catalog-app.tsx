@@ -182,7 +182,6 @@ export function CatalogApp({
   teams,
   teamLogos,
   sizes,
-  settings,
   orderEmail,
   whatsappNumber,
   whatsappDisplay = "+1 704 676 2602",
@@ -240,10 +239,6 @@ export function CatalogApp({
       };
     }).filter((section) => section.products.length > 0);
   }, [products]);
-
-  const featuredProducts = useMemo(() => {
-    return homeFeaturedSections.flatMap((section) => section.products.slice(0, 1)).slice(0, 3);
-  }, [homeFeaturedSections]);
 
   const drawerItems = useMemo(() => {
     const teamOrder = new Map<string, number>(
@@ -626,99 +621,6 @@ export function CatalogApp({
                 >
                   Oscuro
                 </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
-          <div
-            className="overflow-hidden rounded-[8px] border border-[var(--hero-line)] shadow-[var(--soft-shadow)]"
-            style={{ backgroundImage: "linear-gradient(135deg, var(--hero-start), var(--hero-end))" }}
-          >
-            <div className="px-4 py-4 text-[var(--hero-foreground)] sm:px-6 sm:py-6">
-              <div className="flex flex-col gap-5">
-                <div className="flex flex-col gap-5 xl:flex-row xl:items-end xl:justify-between">
-                  <div className="max-w-3xl">
-                    <p className="text-xs uppercase tracking-[0.18em] text-[var(--hero-muted)]">
-                      Top ventas y catalogo completo
-                    </p>
-                    <h1 className="mt-2 text-[1.9rem] font-semibold leading-tight sm:text-4xl lg:text-5xl">
-                      Primero las que mas salen. Despues, todo el catalogo.
-                    </h1>
-                    <p className="mt-3 max-w-2xl text-sm leading-5 text-[var(--hero-muted)]">
-                      Toca la foto, elegi talle y manda el pedido. La idea es que entrar, buscar y
-                      reservar sea rapido en el telefono.
-                    </p>
-                  </div>
-
-                  <div className="hidden flex-wrap gap-2 text-sm sm:flex">
-                    <span className="rounded-[8px] border border-white/18 bg-white/8 px-3 py-2">
-                      {teams.length} equipos
-                    </span>
-                    <span className="rounded-[8px] border border-white/18 bg-white/8 px-3 py-2">
-                      {products.length} modelos
-                    </span>
-                    <span className="rounded-[8px] border border-white/18 bg-white/8 px-3 py-2">
-                      {formatArs(settings.defaultSalePriceArs)} promo
-                    </span>
-                    <span className="rounded-[8px] border border-white/18 bg-white/8 px-3 py-2">Seleccion y clubes</span>
-                  </div>
-                </div>
-
-                <div className="grid gap-2 sm:flex sm:flex-wrap sm:gap-3">
-                  <a
-                    href="#destacados"
-                    className="rounded-[8px] bg-white px-4 py-3 text-center text-sm font-semibold text-[#111820]"
-                  >
-                    Lo mas vendido
-                  </a>
-                  <button
-                    type="button"
-                    onClick={scrollToCatalog}
-                    className="rounded-[8px] border border-white/20 bg-white/8 px-4 py-3 text-center text-sm font-semibold text-white"
-                  >
-                    Catalogo completo
-                  </button>
-                  <a
-                    href={otherJerseyHref}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="rounded-[8px] bg-[var(--accent)] px-4 py-3 text-center text-sm font-semibold text-white"
-                  >
-                    WhatsApp {whatsappDisplay}
-                  </a>
-                </div>
-
-                <div className="-mx-1 flex gap-3 overflow-x-auto px-1 pb-1 sm:mx-0 sm:grid sm:overflow-visible sm:px-0 sm:pb-0 sm:grid-cols-3">
-                  {featuredProducts.map((product) => (
-                    <button
-                      key={product.id}
-                      type="button"
-                      onClick={() => openGallery(product)}
-                      className="group relative min-h-[10rem] min-w-[15rem] shrink-0 overflow-hidden rounded-[8px] border border-white/12 bg-white/5 text-left sm:min-w-0"
-                    >
-                      {product.image ? (
-                        <Image
-                          src={product.image}
-                          alt={product.shortName}
-                          fill
-                          className="object-cover transition duration-300 group-hover:scale-[1.02]"
-                          sizes="(max-width: 640px) 100vw, 33vw"
-                        />
-                      ) : null}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
-                      <div className="absolute inset-x-0 bottom-0 p-4">
-                        <p className="text-xs uppercase tracking-[0.16em] text-white/70">
-                          {product.collection}
-                        </p>
-                        <p className="mt-1 text-sm font-semibold text-white">
-                          {translateProductName(product.shortName)}
-                        </p>
-                      </div>
-                    </button>
-                  ))}
-                </div>
               </div>
             </div>
           </div>
