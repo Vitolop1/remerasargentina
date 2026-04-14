@@ -1,32 +1,29 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useRef, useState } from "react";
+import Link from "next/link";
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 
 import { formatArs, normalizeWhatsapp } from "@/lib/catalog";
+import {
+  depositFor,
+  loadStoredCart,
+  ORIGINAL_PRICE_ARS,
+  resolveThemePreference,
+  saveStoredCart,
+  THEME_STORAGE_KEY,
+  translateProductName,
+  translateTag,
+  translateTeamName,
+  type CartItem,
+  type ThemeMode,
+} from "@/lib/storefront";
 import type { CatalogProduct, CatalogSummary } from "@/types/catalog";
-
-type CartItem = {
-  productId: string;
-  size: string;
-  quantity: number;
-};
-
-type Customer = {
-  name: string;
-  phone: string;
-  email: string;
-  zone: string;
-  instagram: string;
-  notes: string;
-};
 
 type GalleryState = {
   productId: string;
   index: number;
 };
-
-type ThemeMode = "light" | "dark";
 
 type CatalogAppProps = CatalogSummary & {
   orderEmail?: string;
@@ -38,11 +35,6 @@ type CatalogAppProps = CatalogSummary & {
   paymentQrPath?: string;
 };
 
-const DEPOSIT_RATE = 0.5;
-const ORIGINAL_PRICE_ARS = 79000;
-const THEME_STORAGE_KEY = "remeras-theme";
-const ESTIMATED_ARRIVAL_LABEL = "13 de mayo";
-
 const HOME_TEAM_PRIORITY = [
   { team: "Argentina", label: "Argentina" },
   { team: "Boca Juniors", label: "Boca Juniors" },
@@ -51,149 +43,21 @@ const HOME_TEAM_PRIORITY = [
   { team: "Real Madrid", label: "Real Madrid" },
 ] as const;
 
-function resolveThemePreference(): ThemeMode {
-  if (typeof window === "undefined") {
-    return "light";
-  }
-
-  const saved = window.localStorage.getItem(THEME_STORAGE_KEY);
-  if (saved === "light" || saved === "dark") {
-    return saved;
-  }
-
-  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-}
-
-function depositFor(amount: number) {
-  return Math.round(amount * DEPOSIT_RATE);
-}
-
-function translateProductName(value: string) {
-  return value
-    .replace(/\bLIV\b/gi, "Liverpool")
-    .replace(/\bCHE\b/gi, "Chelsea")
-    .replace(/\bARS\b/gi, "Arsenal")
-    .replace(/\bRMA\b/gi, "Real Madrid")
-    .replace(/\bBAR\b/gi, "Barcelona")
-    .replace(/\bINT\b/gi, "Inter")
-    .replace(/\bJUV\b/gi, "Juventus")
-    .replace(/\bATM\b/gi, "Atletico Madrid")
-    .replace(/\bACM\b/gi, "AC Milan")
-    .replace(/\bMan City\b/gi, "Manchester City")
-    .replace(/\bPlayer Version\b/gi, "Version jugador")
-    .replace(/\bLong Sleeve\b/gi, "Manga larga")
-    .replace(/\bHome\b/gi, "Titular")
-    .replace(/\bAway\b/gi, "Alternativa")
-    .replace(/\bThird\b/gi, "Tercera")
-    .replace(/\bFourth\b/gi, "Cuarta")
-    .replace(/\bPlayer\b/gi, "Version jugador")
-    .replace(/\bSpecial Edition\b/gi, "Edicion especial")
-    .replace(/\bJoint Edition\b/gi, "Edicion conjunta")
-    .replace(/\bAnniversary\b/gi, "Aniversario")
-    .replace(/\bUCL Final\b/gi, "Final Champions")
-    .replace(/\bUCL\b/gi, "Champions")
-    .replace(/\bWC2022\b/gi, "Mundial 2022")
-    .replace(/\bWC\b/gi, "Mundial")
-    .replace(/\b1:1\b/gi, "")
-    .replace(/\bFans Soccer Jersey\b/gi, "")
-    .replace(/\bSoccer Jersey\b/gi, "")
-    .replace(/\bFans\b/gi, "")
-    .replace(/\bJersey\b/gi, "")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-function translateTeamName(team: string) {
-  switch (team) {
-    case "Brazil":
-      return "Brasil";
-    case "Spain":
-      return "Espana";
-    case "France":
-      return "Francia";
-    case "Germany":
-      return "Alemania";
-    case "Italy":
-      return "Italia";
-    case "Croatia":
-      return "Croacia";
-    default:
-      return team;
-  }
-}
-
-function translateTag(tag: string) {
-  switch (tag) {
-    case "Home":
-      return "Titular";
-    case "Away":
-      return "Alternativa";
-    case "Third":
-      return "Tercera";
-    case "Player":
-      return "Version jugador";
-    case "UCL":
-      return "Champions";
-    default:
-      return translateTeamName(tag);
-  }
-}
-
-function buildOrderText(
-  items: Array<{
-    product: CatalogProduct;
-    size: string;
-    quantity: number;
-  }>,
-  customer: Customer,
-  totalArs: number,
-  depositArs: number,
-  orderEmail?: string,
-) {
-  const itemLines = items.map(
-    ({ product, size, quantity }) =>
-      `- ${translateProductName(product.shortName)} | talle ${size} | x${quantity} | ${formatArs(
-        product.priceArs * quantity,
-      )}`,
-  );
-
-  return [
-    "Hola, quiero pedir estas remeras:",
-    "",
-    ...itemLines,
-    "",
-    `Total promocional: ${formatArs(totalArs)}`,
-    `Sena estimada (50%): ${formatArs(depositArs)}`,
-    `Llegada estimada: ${ESTIMATED_ARRIVAL_LABEL}`,
-    "",
-    `Nombre: ${customer.name || "-"}`,
-    `Telefono: ${customer.phone || "-"}`,
-    `Mail: ${customer.email || "-"}`,
-    `Zona: ${customer.zone || "-"}`,
-    `Instagram: ${customer.instagram || "-"}`,
-    `Notas: ${customer.notes || "-"}`,
-    "",
-    orderEmail
-      ? `Mandame la confirmacion a ${orderEmail} y despues coordinamos la sena y la entrega.`
-      : "Despues coordinamos la sena y la entrega.",
-  ].join("\n");
-}
-
 export function CatalogApp({
   products,
   teams,
   teamLogos,
   sizes,
-  orderEmail,
   whatsappNumber,
   whatsappDisplay = "+1 704 676 2602",
-  paymentAlias,
-  paymentCvu,
-  paymentAccountName,
-  paymentQrPath,
 }: CatalogAppProps) {
   const searchInputRef = useRef<HTMLInputElement | null>(null);
   const cartNoticeTimeoutRef = useRef<number | null>(null);
+  const isClient = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
   const [theme, setTheme] = useState<ThemeMode>(() => {
     if (typeof document !== "undefined") {
       const currentTheme = document.documentElement.dataset.theme;
@@ -211,18 +75,7 @@ export function CatalogApp({
   const [selectedSizes, setSelectedSizes] = useState<Record<string, string>>(
     Object.fromEntries(products.map((product) => [product.id, product.sizeOptions[0]?.size ?? ""])),
   );
-  const [cart, setCart] = useState<CartItem[]>([]);
-  const [customer, setCustomer] = useState<Customer>({
-    name: "",
-    phone: "",
-    email: "",
-    zone: "Salta Capital",
-    instagram: "",
-    notes: "",
-  });
-  const [copiedOrder, setCopiedOrder] = useState(false);
-  const [copiedAlias, setCopiedAlias] = useState(false);
-  const [copiedCvu, setCopiedCvu] = useState(false);
+  const [cart, setCart] = useState<CartItem[]>(() => loadStoredCart());
   const [cartNotice, setCartNotice] = useState<string | null>(null);
   const [gallery, setGallery] = useState<GalleryState | null>(null);
   const [catalogMenuOpen, setCatalogMenuOpen] = useState(false);
@@ -282,51 +135,10 @@ export function CatalogApp({
     });
   }, [collectionFilter, products, query, sizeFilter, teamFilter]);
 
-  const cartDetails = useMemo(() => {
-    return cart
-      .map((item) => {
-        const product = products.find((candidate) => candidate.id === item.productId);
-        if (!product) {
-          return null;
-        }
-
-        return {
-          product,
-          size: item.size,
-          quantity: item.quantity,
-        };
-      })
-      .filter(Boolean) as Array<{
-      product: CatalogProduct;
-      size: string;
-      quantity: number;
-    }>;
-  }, [cart, products]);
-
-  const totals = useMemo(() => {
-    return cartDetails.reduce(
-      (accumulator, item) => {
-        accumulator.ars += item.product.priceArs * item.quantity;
-        accumulator.units += item.quantity;
-        return accumulator;
-      },
-      { ars: 0, units: 0 },
-    );
-  }, [cartDetails]);
-
-  const depositArs = depositFor(totals.ars);
-  const remainingArs = Math.max(totals.ars - depositArs, 0);
-  const canSendOrder =
-    cartDetails.length > 0 && customer.name.trim() !== "" && customer.phone.trim() !== "";
-  const orderText = buildOrderText(cartDetails, customer, totals.ars, depositArs, orderEmail);
-  const whatsappHref = cleanWhatsapp
-    ? `https://wa.me/${cleanWhatsapp}?text=${encodeURIComponent(orderText)}`
-    : "#";
-  const emailHref = orderEmail
-    ? `mailto:${orderEmail}?subject=${encodeURIComponent(
-        `Pedido web - ${customer.name || "Cliente"}`,
-      )}&body=${encodeURIComponent(orderText)}`
-    : "#";
+  const cartUnits = useMemo(
+    () => (isClient ? cart : []).reduce((total, item) => total + item.quantity, 0),
+    [cart, isClient],
+  );
   const otherJerseyHref = cleanWhatsapp
     ? `https://wa.me/${cleanWhatsapp}?text=${encodeURIComponent(
         "Hola, quiero una remera que no vi en el catalogo. Me pasas modelos y precio?",
@@ -336,12 +148,6 @@ export function CatalogApp({
   function scrollToCatalog() {
     window.setTimeout(() => {
       document.getElementById("catalogo")?.scrollIntoView({ behavior: "smooth" });
-    }, 20);
-  }
-
-  function scrollToOrder() {
-    window.setTimeout(() => {
-      document.getElementById("pedido")?.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 20);
   }
 
@@ -377,6 +183,13 @@ export function CatalogApp({
     setCatalogMenuOpen(true);
   }
 
+  function openSearchMenu() {
+    setCatalogMenuOpen(true);
+    window.setTimeout(() => {
+      searchInputRef.current?.focus();
+    }, 90);
+  }
+
   const activeGalleryProduct = useMemo(() => {
     if (!gallery) {
       return null;
@@ -397,6 +210,14 @@ export function CatalogApp({
     document.documentElement.dataset.theme = theme;
     window.localStorage.setItem(THEME_STORAGE_KEY, theme);
   }, [theme]);
+
+  useEffect(() => {
+    if (!isClient) {
+      return;
+    }
+
+    saveStoredCart(cart);
+  }, [cart, isClient]);
 
   useEffect(() => {
     if (!gallery && !catalogMenuOpen) {
@@ -466,7 +287,8 @@ export function CatalogApp({
   }
 
   function reservedInCart(productId: string, size: string) {
-    return cart.find((item) => item.productId === productId && item.size === size)?.quantity ?? 0;
+    const sourceCart = isClient ? cart : [];
+    return sourceCart.find((item) => item.productId === productId && item.size === size)?.quantity ?? 0;
   }
 
   function availableForSelection(product: CatalogProduct, size: string) {
@@ -493,7 +315,7 @@ export function CatalogApp({
         );
     });
 
-    setCartNotice("Agregado al pedido");
+    setCartNotice("Agregado al carrito");
     if (cartNoticeTimeoutRef.current) {
       window.clearTimeout(cartNoticeTimeoutRef.current);
     }
@@ -501,24 +323,6 @@ export function CatalogApp({
       setCartNotice(null);
       cartNoticeTimeoutRef.current = null;
     }, 1800);
-  }
-
-  function changeQuantity(productId: string, size: string, delta: number) {
-    setCart((current) => {
-      return current
-        .map((item) => {
-          if (item.productId !== productId || item.size !== size) {
-            return item;
-          }
-
-          return { ...item, quantity: item.quantity + delta };
-        })
-        .filter((item) => item.quantity > 0);
-    });
-  }
-
-  function updateCustomer(field: keyof Customer, value: string) {
-    setCustomer((current) => ({ ...current, [field]: value }));
   }
 
   function openGallery(product: CatalogProduct) {
@@ -541,32 +345,6 @@ export function CatalogApp({
     });
   }
 
-  async function copyOrder() {
-    await navigator.clipboard.writeText(orderText);
-    setCopiedOrder(true);
-    window.setTimeout(() => setCopiedOrder(false), 1800);
-  }
-
-  async function copyAlias() {
-    if (!paymentAlias) {
-      return;
-    }
-
-    await navigator.clipboard.writeText(paymentAlias);
-    setCopiedAlias(true);
-    window.setTimeout(() => setCopiedAlias(false), 1800);
-  }
-
-  async function copyCvu() {
-    if (!paymentCvu) {
-      return;
-    }
-
-    await navigator.clipboard.writeText(paymentCvu);
-    setCopiedCvu(true);
-    window.setTimeout(() => setCopiedCvu(false), 1800);
-  }
-
   useEffect(() => {
     return () => {
       if (cartNoticeTimeoutRef.current) {
@@ -578,28 +356,40 @@ export function CatalogApp({
   return (
     <div className="min-h-screen overflow-x-hidden bg-[var(--background)] text-[var(--foreground)]">
       <header className="border-b border-[var(--line)] bg-[var(--background)]">
-        <div className="mx-auto max-w-7xl px-4 pt-4 sm:px-6 lg:px-8">
-          <div className="grid gap-3 md:grid-cols-[1fr_auto_1fr] md:items-center">
-            <div className="order-2 flex justify-center md:order-1 md:justify-start">
+        <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-[auto_1fr_auto] items-center gap-3">
+            <div className="flex items-center gap-2">
               <button
                 type="button"
                 onClick={openCatalogMenu}
-                className="inline-flex w-full max-w-none items-center gap-3 rounded-full border border-[var(--line)] bg-[var(--surface)] px-3 py-2 shadow-[var(--soft-shadow)] transition hover:border-[var(--foreground)] md:max-w-[18rem]"
+                className="flex h-12 w-12 items-center justify-center rounded-[8px] border border-[var(--line)] bg-[var(--surface)] shadow-[var(--soft-shadow)] transition hover:border-[var(--foreground)]"
+                aria-label="Abrir menu"
               >
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[var(--foreground)] text-[var(--surface)]">
-                  <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2">
-                    <circle cx="11" cy="11" r="7" />
-                    <path d="m20 20-3.5-3.5" />
-                  </svg>
-                </span>
-                <div className="min-w-0 text-left">
-                  <p className="text-[10px] uppercase tracking-[0.16em] text-[var(--muted)]">Buscar rapido</p>
-                  <p className="truncate text-sm font-semibold">Busca tu remera</p>
-                </div>
+                <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M4 7h16" />
+                  <path d="M4 12h16" />
+                  <path d="M4 17h16" />
+                </svg>
+              </button>
+
+              <button
+                type="button"
+                onClick={openSearchMenu}
+                className="flex h-12 w-12 items-center justify-center rounded-[8px] border border-[var(--line)] bg-[var(--surface)] shadow-[var(--soft-shadow)] transition hover:border-[var(--foreground)]"
+                aria-label="Buscar remeras"
+              >
+                <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="11" cy="11" r="7" />
+                  <path d="m20 20-3.5-3.5" />
+                </svg>
               </button>
             </div>
 
-            <div className="order-1 flex justify-center md:order-2">
+            <Link
+              href="/"
+              className="justify-self-center"
+              aria-label="RL importaciones"
+            >
               <div className="inline-flex max-w-full items-center gap-3 rounded-[8px] border border-[var(--line)] bg-[var(--surface)] px-3 py-3 shadow-[var(--soft-shadow)] md:rounded-full md:px-4">
                 <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full bg-[var(--background)] md:h-11 md:w-11">
                   <Image
@@ -610,91 +400,58 @@ export function CatalogApp({
                     sizes="44px"
                   />
                 </div>
-                <div className="min-w-0">
+                <div className="min-w-0 text-left">
                   <p className="hidden text-[10px] uppercase tracking-[0.18em] text-[var(--muted)] sm:block">
-                    Catalogo retro del norte
+                    Catalogo retro
                   </p>
                   <p className="truncate text-base font-black leading-none sm:text-xl">RL importaciones</p>
                   <p className="mt-1 text-[11px] text-[var(--muted)] sm:text-xs">Remeras de futbol</p>
                 </div>
               </div>
-            </div>
+            </Link>
 
-            <div className="order-3 flex flex-col justify-center gap-2 md:items-end">
-              <button
-                type="button"
-                onClick={scrollToOrder}
-                className={`inline-flex w-full items-center justify-between gap-3 rounded-[8px] border px-3 py-3 text-left shadow-[var(--soft-shadow)] md:w-[15rem] ${
-                  totals.units > 0 || cartNotice
-                    ? "border-[var(--accent-2)] bg-[var(--accent-2)] text-white"
-                    : "border-[var(--line)] bg-[var(--surface)] text-[var(--foreground)]"
+            <Link
+              href="/carrito"
+              className={`justify-self-end inline-flex items-center gap-3 rounded-[8px] border px-3 py-3 shadow-[var(--soft-shadow)] transition ${
+                cartUnits > 0 || cartNotice
+                  ? "border-[var(--accent-2)] bg-[var(--accent-2)] text-white"
+                  : "border-[var(--line)] bg-[var(--surface)] text-[var(--foreground)]"
+              }`}
+            >
+              <span
+                className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-[8px] ${
+                  cartUnits > 0 || cartNotice
+                    ? "bg-white/14 text-white"
+                    : "bg-[var(--foreground)] text-[var(--surface)]"
                 }`}
               >
-                <span className="flex items-center gap-3">
-                  <span
-                    className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-[8px] ${
-                      totals.units > 0 || cartNotice
-                        ? "bg-white/14 text-white"
-                        : "bg-[var(--foreground)] text-[var(--surface)]"
-                    }`}
-                  >
-                    <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2">
-                      <circle cx="9" cy="20" r="1.5" />
-                      <circle cx="18" cy="20" r="1.5" />
-                      <path d="M3 4h2l2.4 10.2a1 1 0 0 0 1 .8h8.9a1 1 0 0 0 1-.8L20 7H7" />
-                    </svg>
-                  </span>
-                  <span>
-                    <span className={`block text-[10px] font-semibold uppercase tracking-[0.16em] ${
-                      totals.units > 0 || cartNotice ? "text-white/70" : "text-[var(--muted)]"
-                    }`}>
-                      Pedido
-                    </span>
-                    <span className="block text-sm font-semibold">
-                      {cartNotice ?? (totals.units > 0 ? `${totals.units} remeras en carrito` : "Tu carrito")}
-                    </span>
-                  </span>
+                <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="9" cy="20" r="1.5" />
+                  <circle cx="18" cy="20" r="1.5" />
+                  <path d="M3 4h2l2.4 10.2a1 1 0 0 0 1 .8h8.9a1 1 0 0 0 1-.8L20 7H7" />
+                </svg>
+              </span>
+              <span className="hidden text-left sm:block">
+                <span className={`block text-[10px] font-semibold uppercase tracking-[0.16em] ${
+                  cartUnits > 0 || cartNotice ? "text-white/75" : "text-[var(--muted)]"
+                }`}>
+                  Carrito
                 </span>
-                <span
-                  className={`rounded-[8px] px-3 py-2 text-sm font-semibold ${
-                    totals.units > 0 || cartNotice
-                      ? "bg-white text-[#111820]"
-                      : "bg-[var(--foreground)] text-[var(--surface)]"
-                  }`}
-                >
-                  {totals.units}
+                <span className="block text-sm font-semibold">
+                  {cartNotice ?? (cartUnits > 0 ? `${cartUnits} remeras` : "Ver pedido")}
                 </span>
-              </button>
-
-              <div
+              </span>
+              <span
                 suppressHydrationWarning
-                className="inline-flex w-full items-center justify-center gap-1 rounded-full border border-[var(--line)] bg-[var(--surface)] p-1 shadow-[var(--soft-shadow)] md:w-auto"
+                className={`rounded-[8px] px-3 py-2 text-sm font-semibold ${
+                  cartUnits > 0 || cartNotice
+                    ? "bg-white text-[#111820]"
+                    : "bg-[var(--foreground)] text-[var(--surface)]"
+                }`}
               >
-                <span className="hidden pl-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--muted)] sm:block">
-                  Tema
-                </span>
-                <button
-                  type="button"
-                  onClick={() => setTheme("light")}
-                  aria-pressed={theme === "light"}
-                  className={`rounded-full px-4 py-2 text-sm font-semibold ${
-                    theme === "light" ? "bg-[var(--accent)] text-white" : "text-[var(--muted)]"
-                  }`}
-                >
-                  Claro
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setTheme("dark")}
-                  aria-pressed={theme === "dark"}
-                  className={`rounded-full px-4 py-2 text-sm font-semibold ${
-                    theme === "dark" ? "bg-[var(--accent)] text-white" : "text-[var(--muted)]"
-                  }`}
-                >
-                  Oscuro
-                </button>
-              </div>
-            </div>
+                {cartUnits}
+              </span>
+            </Link>
           </div>
         </div>
       </header>
@@ -889,7 +646,7 @@ export function CatalogApp({
           </div>
         </section>
 
-        <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_25rem]">
+        <div className="mt-8">
           <section id="catalogo" className="min-w-0">
             <div className="rounded-[8px] border border-[var(--line)] bg-[var(--surface)] p-4 sm:p-5">
               <div className="flex flex-wrap items-end justify-between gap-3">
@@ -1084,230 +841,6 @@ export function CatalogApp({
               })}
             </div>
           </section>
-
-          <aside
-            id="pedido"
-            className="h-fit rounded-[8px] border border-[var(--line)] bg-[var(--surface)] p-4 sm:p-5 lg:sticky lg:top-6"
-          >
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <p className="text-xs uppercase tracking-[0.18em] text-[var(--muted)]">Pedido</p>
-                <h2 className="mt-1 text-xl font-semibold">Arma tu carrito</h2>
-                <p className="mt-2 text-xs font-semibold uppercase tracking-[0.16em] text-[var(--accent)]">
-                  Llega estimado: {ESTIMATED_ARRIVAL_LABEL}
-                </p>
-              </div>
-              <span className="rounded-[8px] bg-[var(--foreground)] px-3 py-2 text-sm font-semibold text-[var(--surface)]">
-                {totals.units}
-              </span>
-            </div>
-
-            <div className="mt-5 space-y-2 rounded-[8px] border border-[var(--line)] bg-[var(--background)] p-4 text-sm">
-              <p className="font-semibold">1. Elegi remera y talle.</p>
-              <p className="font-semibold">2. Envia el pedido por mail o WhatsApp.</p>
-              <p className="font-semibold">3. Llega estimado el {ESTIMATED_ARRIVAL_LABEL}; confirmamos precio final y sena.</p>
-            </div>
-
-            <div className="mt-5 space-y-3 border-b border-[var(--line)] pb-5">
-              {cartDetails.length === 0 ? (
-                <p className="text-sm text-[var(--muted)]">
-                  Agrega tus remeras y te dejamos el pedido listo para enviar.
-                </p>
-              ) : (
-                cartDetails.map((item) => (
-                  <div key={`${item.product.id}-${item.size}`} className="flex items-start justify-between gap-4">
-                    <div className="min-w-0">
-                      <p className="text-sm font-medium">{translateProductName(item.product.shortName)}</p>
-                      <p className="text-xs text-[var(--muted)]">
-                        Talle {item.size} / {formatArs(item.product.priceArs)}
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <button
-                        type="button"
-                        onClick={() => changeQuantity(item.product.id, item.size, -1)}
-                        className="h-8 w-8 rounded-[8px] border border-[var(--line)] text-sm"
-                      >
-                        -
-                      </button>
-                      <span className="w-6 text-center text-sm font-semibold">{item.quantity}</span>
-                      <button
-                        type="button"
-                        onClick={() => changeQuantity(item.product.id, item.size, 1)}
-                        disabled={availableForSelection(item.product, item.size) === 0}
-                        className="h-8 w-8 rounded-[8px] border border-[var(--line)] text-sm disabled:cursor-not-allowed disabled:text-[var(--muted)]"
-                      >
-                        +
-                      </button>
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
-
-            <div className="mt-5 grid gap-3">
-              <input
-                value={customer.name}
-                onChange={(event) => updateCustomer("name", event.target.value)}
-                placeholder="Nombre y apellido"
-                className="rounded-[8px] border border-[var(--line)] bg-[var(--background)] px-4 py-3 text-base sm:text-sm"
-              />
-              <input
-                value={customer.phone}
-                onChange={(event) => updateCustomer("phone", event.target.value)}
-                placeholder="WhatsApp"
-                className="rounded-[8px] border border-[var(--line)] bg-[var(--background)] px-4 py-3 text-base sm:text-sm"
-              />
-              <input
-                value={customer.email}
-                onChange={(event) => updateCustomer("email", event.target.value)}
-                placeholder="Mail"
-                className="rounded-[8px] border border-[var(--line)] bg-[var(--background)] px-4 py-3 text-base sm:text-sm"
-              />
-              <input
-                value={customer.zone}
-                onChange={(event) => updateCustomer("zone", event.target.value)}
-                placeholder="Barrio o ciudad"
-                className="rounded-[8px] border border-[var(--line)] bg-[var(--background)] px-4 py-3 text-base sm:text-sm"
-              />
-              <input
-                value={customer.instagram}
-                onChange={(event) => updateCustomer("instagram", event.target.value)}
-                placeholder="Instagram opcional"
-                className="rounded-[8px] border border-[var(--line)] bg-[var(--background)] px-4 py-3 text-base sm:text-sm"
-              />
-              <textarea
-                value={customer.notes}
-                onChange={(event) => updateCustomer("notes", event.target.value)}
-                placeholder="Notas, talle alternativo o consulta"
-                rows={4}
-                className="rounded-[8px] border border-[var(--line)] bg-[var(--background)] px-4 py-3 text-base sm:text-sm"
-              />
-            </div>
-
-            <div className="mt-5 space-y-4 rounded-[8px] border border-[var(--line)] bg-[var(--background)] p-4">
-              <div className="space-y-2">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-[var(--muted)]">Precio original</span>
-                  <strong className="line-through">{formatArs(ORIGINAL_PRICE_ARS * totals.units)}</strong>
-                </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-[var(--muted)]">Total promocional</span>
-                  <strong>{formatArs(totals.ars)}</strong>
-                </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-[var(--muted)]">Sena estimada</span>
-                  <strong>{formatArs(depositArs)}</strong>
-                </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-[var(--muted)]">Saldo estimado</span>
-                  <strong>{formatArs(remainingArs)}</strong>
-                </div>
-              </div>
-
-              <div className="rounded-[8px] border border-[var(--line)] bg-[var(--surface)] p-4">
-                <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">Como sigue</p>
-                {paymentAlias || paymentCvu || paymentAccountName ? (
-                  <div className="mt-3 space-y-3">
-                    <div className="rounded-[8px] border border-[var(--line)] bg-[var(--background)] px-3 py-3">
-                      <p className="text-xs text-[var(--muted)]">Alias Mercado Pago</p>
-                      <code className="mt-1 block text-sm font-semibold text-[var(--foreground)]">
-                        {paymentAlias || "-"}
-                      </code>
-                    </div>
-
-                    {paymentCvu ? (
-                      <div className="rounded-[8px] border border-[var(--line)] bg-[var(--background)] px-3 py-3">
-                        <p className="text-xs text-[var(--muted)]">CVU</p>
-                        <code className="mt-1 block break-all text-sm font-semibold text-[var(--foreground)]">
-                          {paymentCvu}
-                        </code>
-                      </div>
-                    ) : null}
-
-                    {paymentAccountName ? (
-                      <div className="rounded-[8px] border border-[var(--line)] bg-[var(--background)] px-3 py-3">
-                        <p className="text-xs text-[var(--muted)]">Titular</p>
-                        <p className="mt-1 text-sm font-semibold text-[var(--foreground)]">
-                          {paymentAccountName}
-                        </p>
-                      </div>
-                    ) : null}
-
-                    <div className="grid gap-3 sm:grid-cols-2">
-                      <button
-                        type="button"
-                        onClick={copyAlias}
-                        disabled={!paymentAlias}
-                        className="w-full rounded-[8px] border border-[var(--foreground)] px-4 py-3 text-sm font-semibold disabled:cursor-not-allowed disabled:border-[var(--line)] disabled:text-[var(--muted)]"
-                      >
-                        {copiedAlias ? "Alias copiado" : "Copiar alias"}
-                      </button>
-                      <button
-                        type="button"
-                        onClick={copyCvu}
-                        disabled={!paymentCvu}
-                        className="w-full rounded-[8px] border border-[var(--foreground)] px-4 py-3 text-sm font-semibold disabled:cursor-not-allowed disabled:border-[var(--line)] disabled:text-[var(--muted)]"
-                      >
-                        {copiedCvu ? "CVU copiado" : "Copiar CVU"}
-                      </button>
-                    </div>
-                  </div>
-                ) : (
-                  <p className="mt-3 text-sm text-[var(--muted)]">
-                    Cuando confirmemos disponibilidad, te pasamos por mail o por WhatsApp el alias o el
-                    QR para la sena.
-                  </p>
-                )}
-
-                {paymentQrPath ? (
-                  <div className="relative mt-4 aspect-square overflow-hidden rounded-[8px] border border-[var(--line)] bg-white">
-                    <Image src={paymentQrPath} alt="QR para reservar" fill className="object-contain p-4" />
-                  </div>
-                ) : null}
-
-                <p className="mt-4 text-sm text-[var(--muted)]">
-                  Primero recibimos el pedido y despues coordinamos la compra, la sena y la fecha de
-                  entrega.
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-5 grid gap-3">
-              <button
-                type="button"
-                onClick={copyOrder}
-                disabled={cartDetails.length === 0}
-                className="rounded-[8px] border border-[var(--foreground)] px-4 py-3 text-sm font-semibold disabled:cursor-not-allowed disabled:border-[var(--line)] disabled:text-[var(--muted)]"
-              >
-                {copiedOrder ? "Pedido copiado" : "Copiar pedido"}
-              </button>
-
-              <a
-                href={canSendOrder ? emailHref : "#"}
-                className={`rounded-[8px] px-4 py-3 text-center text-sm font-semibold text-white ${
-                  canSendOrder && orderEmail
-                    ? "bg-[var(--foreground)]"
-                    : "pointer-events-none bg-[var(--line)] text-[var(--muted)]"
-                }`}
-              >
-                Enviar pedido por mail
-              </a>
-
-              <a
-                href={canSendOrder ? whatsappHref : "#"}
-                target="_blank"
-                rel="noreferrer"
-                className={`rounded-[8px] px-4 py-3 text-center text-sm font-semibold text-white ${
-                  canSendOrder
-                    ? "bg-[var(--accent)]"
-                    : "pointer-events-none bg-[var(--line)] text-[var(--muted)]"
-                }`}
-              >
-                Hablar por WhatsApp
-              </a>
-            </div>
-          </aside>
         </div>
 
         <section className="mt-8 rounded-[8px] bg-[var(--accent)] px-5 py-6 text-white sm:px-8 sm:py-7">
@@ -1435,6 +968,36 @@ export function CatalogApp({
                       {size}
                     </button>
                   ))}
+                </div>
+              </div>
+
+              <div>
+                <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">Tema</p>
+                <div className="mt-2 grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setTheme("light")}
+                    aria-pressed={theme === "light"}
+                    className={`rounded-[8px] border px-3 py-3 text-sm font-semibold ${
+                      theme === "light"
+                        ? "border-[var(--accent)] bg-[var(--accent)] text-white"
+                        : "border-[var(--line)] bg-[var(--background)]"
+                    }`}
+                  >
+                    Claro
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setTheme("dark")}
+                    aria-pressed={theme === "dark"}
+                    className={`rounded-[8px] border px-3 py-3 text-sm font-semibold ${
+                      theme === "dark"
+                        ? "border-[var(--accent)] bg-[var(--accent)] text-white"
+                        : "border-[var(--line)] bg-[var(--background)]"
+                    }`}
+                  >
+                    Oscuro
+                  </button>
                 </div>
               </div>
 
