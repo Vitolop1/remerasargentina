@@ -135,7 +135,7 @@ export function CartPage({
   );
   const emailHref = orderEmail
     ? `mailto:${orderEmail}?subject=${encodeURIComponent(
-        `Pedido web - ${customer.name || "Cliente"}`,
+        `Pedido RL importaciones - ${customer.name || "Cliente"}`,
       )}&body=${encodeURIComponent(orderText)}`
     : "#";
 
@@ -216,9 +216,6 @@ export function CartPage({
                   />
                 </div>
                 <div className="min-w-0 text-left">
-                  <p className="hidden text-[10px] uppercase tracking-[0.18em] text-[var(--muted)] sm:block">
-                    Pedido web
-                  </p>
                   <p className="truncate text-base font-black leading-none sm:text-xl">RL importaciones</p>
                   <p className="mt-1 text-[11px] text-[var(--muted)] sm:text-xs">
                     {isClient ? `${totals.units} remeras en carrito` : "Cargando carrito"}

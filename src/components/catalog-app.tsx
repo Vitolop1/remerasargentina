@@ -399,9 +399,6 @@ export function CatalogApp({
                   />
                 </div>
                 <div className="min-w-0 text-left">
-                  <p className="hidden text-[10px] uppercase tracking-[0.18em] text-[var(--muted)] sm:block">
-                    Catalogo retro
-                  </p>
                   <p className="truncate text-base font-black leading-none sm:text-xl">RL importaciones</p>
                   <p className="mt-1 text-[11px] text-[var(--muted)] sm:text-xs">Remeras de futbol</p>
                 </div>
@@ -458,11 +455,8 @@ export function CatalogApp({
         <section id="destacados" className="rounded-[8px] border border-[var(--line)] bg-[var(--surface)] p-4 sm:p-6">
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div className="max-w-2xl">
-              <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">Lo mas vendido primero</p>
+              <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">Destacados</p>
               <h2 className="mt-1 text-2xl font-semibold">Argentina, Boca, River, Barca y Real Madrid</h2>
-              <p className="mt-2 text-sm text-[var(--muted)]">
-                Apenas entran, que vean primero lo que mas te conviene vender.
-              </p>
             </div>
             <button
               type="button"
