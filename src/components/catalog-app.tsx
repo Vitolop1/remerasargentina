@@ -138,6 +138,10 @@ export function CatalogApp({
     () => (isClient ? cart : []).reduce((total, item) => total + item.quantity, 0),
     [cart, isClient],
   );
+  const headerWhatsappHref = buildWhatsappHref(
+    whatsappNumber,
+    "Hola, quiero hablar por WhatsApp por una remera del catalogo.",
+  );
   const otherJerseyHref = buildWhatsappHref(
     whatsappNumber,
     "Hola, quiero una remera que no vi en el catalogo. Me pasas modelos y precio?",
@@ -354,16 +358,16 @@ export function CatalogApp({
   return (
     <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)]">
       <header className="fixed inset-x-0 top-0 z-50 border-b border-[var(--line)] bg-[color:var(--background)]/95 backdrop-blur">
-        <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-[3rem_minmax(0,1fr)_auto] items-center gap-2 sm:gap-3">
+        <div className="mx-auto max-w-7xl px-3 py-3 sm:px-6 sm:py-4 lg:px-8">
+          <div className="grid grid-cols-[2.5rem_minmax(0,1fr)_auto] items-center gap-2 sm:gap-3">
             <div className="flex items-center">
               <button
                 type="button"
                 onClick={openSearchMenu}
-                className="flex h-12 w-12 items-center justify-center rounded-[8px] border border-[var(--line)] bg-[var(--surface)] shadow-[var(--soft-shadow)] transition hover:border-[var(--foreground)]"
+                className="flex h-10 w-10 items-center justify-center rounded-[8px] border border-[var(--line)] bg-[var(--surface)] shadow-[var(--soft-shadow)] transition hover:border-[var(--foreground)] sm:h-11 sm:w-11"
                 aria-label="Buscar remeras"
               >
-                <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg viewBox="0 0 24 24" className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2">
                   <circle cx="11" cy="11" r="7" />
                   <path d="m20 20-3.5-3.5" />
                 </svg>
@@ -375,71 +379,76 @@ export function CatalogApp({
               className="justify-self-center"
               aria-label="RL importaciones"
             >
-              <div className="inline-flex max-w-full items-center gap-2 rounded-[8px] border border-[var(--line)] bg-[var(--surface)] px-3 py-3 shadow-[var(--soft-shadow)] md:rounded-full md:px-4">
-                <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full bg-[var(--background)] md:h-11 md:w-11">
+              <div className="inline-flex max-w-full items-center gap-2 rounded-[8px] border border-[var(--line)] bg-[var(--surface)] px-2.5 py-2.5 shadow-[var(--soft-shadow)] md:rounded-full md:px-4">
+                <div className="relative h-8 w-8 shrink-0 overflow-hidden rounded-full bg-[var(--background)] sm:h-9 sm:w-9 md:h-11 md:w-11">
                   <Image
                     src="/images/logo-remeras-argentina.svg"
                     alt="Logo RL importaciones"
                     fill
-                    className="object-contain p-2"
-                    sizes="44px"
+                    className="object-contain p-1.5 sm:p-2"
+                    sizes="(max-width: 640px) 32px, 44px"
                   />
                 </div>
                 <div className="min-w-0 text-left">
-                  <p className="truncate text-base font-black leading-none sm:text-xl">RL importaciones</p>
-                  <p className="mt-1 hidden text-[11px] text-[var(--muted)] sm:block sm:text-xs">Remeras de futbol</p>
+                  <p className="truncate text-[15px] font-black leading-none sm:text-lg md:text-xl">RL importaciones</p>
+                  <p className="mt-1 hidden text-[11px] text-[var(--muted)] md:block md:text-xs">Remeras de futbol</p>
                 </div>
               </div>
             </Link>
 
-            <Link
-              href="/carrito"
-              className={`justify-self-end inline-flex items-center gap-2 rounded-[8px] border px-3 py-3 shadow-[var(--soft-shadow)] transition ${
-                cartUnits > 0 || cartNotice
-                  ? "border-[var(--accent-2)] bg-[var(--accent-2)] text-white"
-                  : "border-[var(--line)] bg-[var(--surface)] text-[var(--foreground)]"
-              } ${cartNotice ? "animate-pulse ring-2 ring-[var(--accent-2)] ring-offset-2 ring-offset-[var(--background)]" : ""}`}
-            >
-              <span
-                className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-[8px] ${
-                  cartUnits > 0 || cartNotice
-                    ? "bg-white/14 text-white"
-                    : "bg-[var(--foreground)] text-[var(--surface)]"
-                } ${cartNotice ? "animate-bounce" : ""}`}
+            <div className="justify-self-end flex items-center gap-2">
+              <a
+                href={headerWhatsappHref}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-[8px] bg-[#25D366] text-white shadow-[var(--soft-shadow)] transition hover:brightness-95 sm:h-11 sm:w-auto sm:gap-2 sm:px-3"
+                aria-label="Hablanos por WhatsApp"
               >
-                <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg viewBox="0 0 24 24" className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" fill="currentColor">
+                  <path d="M20.52 3.48A11.8 11.8 0 0 0 12.09 0C5.54 0 .19 5.32.19 11.86c0 2.09.55 4.13 1.59 5.92L0 24l6.39-1.67a11.8 11.8 0 0 0 5.69 1.45h.01c6.55 0 11.9-5.32 11.9-11.86 0-3.17-1.24-6.15-3.47-8.44Zm-8.43 18.3h-.01a9.82 9.82 0 0 1-5.01-1.37l-.36-.21-3.79.99 1.01-3.69-.24-.38a9.78 9.78 0 0 1-1.51-5.24c0-5.43 4.45-9.86 9.92-9.86 2.65 0 5.13 1.03 7 2.9a9.78 9.78 0 0 1 2.9 6.96c0 5.44-4.45 9.87-9.91 9.87Zm5.41-7.39c-.3-.15-1.78-.88-2.05-.98-.28-.1-.48-.15-.68.15-.2.29-.78.97-.95 1.17-.18.2-.35.22-.65.07-.3-.15-1.27-.47-2.42-1.49a9.1 9.1 0 0 1-1.68-2.08c-.18-.3-.02-.46.14-.6.13-.13.3-.35.45-.52.15-.17.2-.29.3-.49.1-.2.05-.37-.03-.52-.08-.15-.68-1.63-.94-2.24-.24-.57-.49-.49-.68-.5h-.58c-.2 0-.52.07-.8.37-.27.29-1.04 1.01-1.04 2.47 0 1.45 1.07 2.85 1.22 3.04.15.2 2.1 3.2 5.09 4.49.71.31 1.26.49 1.7.62.71.22 1.36.19 1.87.11.57-.08 1.78-.73 2.03-1.44.25-.71.25-1.31.17-1.43-.07-.12-.27-.2-.57-.35Z" />
+                </svg>
+                <span className="hidden text-sm font-semibold sm:inline">WhatsApp</span>
+              </a>
+
+              <Link
+                href="/carrito"
+                className={`relative inline-flex h-10 min-w-10 items-center justify-center rounded-[8px] border px-2.5 shadow-[var(--soft-shadow)] transition sm:h-11 sm:min-w-11 sm:px-3 ${
+                  cartUnits > 0 || cartNotice
+                    ? "border-[var(--accent-2)] bg-[var(--accent-2)] text-white"
+                    : "border-[var(--line)] bg-[var(--surface)] text-[var(--foreground)]"
+                } ${cartNotice ? "animate-pulse ring-2 ring-[var(--accent-2)] ring-offset-2 ring-offset-[var(--background)]" : ""}`}
+                aria-label="Ver carrito"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  className={`h-4 w-4 sm:h-5 sm:w-5 ${cartNotice ? "animate-bounce" : ""}`}
+                  aria-hidden="true"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
                   <circle cx="9" cy="20" r="1.5" />
                   <circle cx="18" cy="20" r="1.5" />
                   <path d="M3 4h2l2.4 10.2a1 1 0 0 0 1 .8h8.9a1 1 0 0 0 1-.8L20 7H7" />
                 </svg>
-              </span>
-              <span className="hidden text-left sm:block">
-                <span className={`block text-[10px] font-semibold uppercase tracking-[0.16em] ${
-                  cartUnits > 0 || cartNotice ? "text-white/75" : "text-[var(--muted)]"
-                }`}>
-                  Carrito
+                <span
+                  suppressHydrationWarning
+                  className={`absolute -right-1.5 -top-1.5 min-w-[1.25rem] rounded-full px-1.5 py-0.5 text-center text-[11px] font-semibold leading-none ${
+                    cartUnits > 0 || cartNotice
+                      ? "bg-white text-[#111820]"
+                      : "bg-[var(--foreground)] text-[var(--surface)]"
+                  }`}
+                >
+                  {cartUnits}
                 </span>
-                <span className="block text-sm font-semibold">
-                  {cartUnits > 0 ? `${cartUnits} remeras` : "Ver carrito"}
-                </span>
-              </span>
-              <span
-                suppressHydrationWarning
-                className={`rounded-[8px] px-3 py-2 text-sm font-semibold ${
-                  cartUnits > 0 || cartNotice
-                    ? "bg-white text-[#111820]"
-                    : "bg-[var(--foreground)] text-[var(--surface)]"
-                }`}
-              >
-                {cartUnits}
-              </span>
-            </Link>
+              </Link>
+            </div>
           </div>
         </div>
       </header>
 
       {cartNotice ? (
-        <div className="fixed left-4 right-4 top-24 z-[60] sm:left-auto sm:right-6 sm:w-[21rem]">
+        <div className="fixed left-4 right-4 top-20 z-[60] sm:left-auto sm:right-6 sm:top-24 sm:w-[21rem]">
           <div className="flex items-center justify-between gap-3 rounded-[8px] border border-[var(--accent-2)] bg-[var(--surface)] px-4 py-3 shadow-[0_18px_40px_rgba(0,0,0,0.18)]">
             <div className="min-w-0">
               <p className="text-sm font-semibold">{cartNotice}</p>
@@ -455,7 +464,7 @@ export function CatalogApp({
         </div>
       ) : null}
 
-      <main className="mx-auto max-w-7xl px-4 pb-6 pt-28 sm:px-6 sm:pb-8 sm:pt-32 lg:px-8">
+      <main className="mx-auto max-w-7xl px-4 pb-6 pt-24 sm:px-6 sm:pb-8 sm:pt-32 lg:px-8">
         <section id="destacados" className="rounded-[8px] border border-[var(--line)] bg-[var(--surface)] p-4 sm:p-6">
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div className="max-w-2xl">
