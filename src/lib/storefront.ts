@@ -12,7 +12,6 @@ export type Customer = {
   phone: string;
   email: string;
   zone: string;
-  instagram: string;
   notes: string;
 };
 
@@ -30,7 +29,6 @@ export const DEFAULT_CUSTOMER: Customer = {
   phone: "",
   email: "",
   zone: "Salta Capital",
-  instagram: "",
   notes: "",
 };
 
@@ -153,7 +151,6 @@ export function buildOrderText(
     `Telefono: ${customer.phone || "-"}`,
     `Mail: ${customer.email || "-"}`,
     `Zona: ${customer.zone || "-"}`,
-    `Instagram: ${customer.instagram || "-"}`,
     `Notas: ${customer.notes || "-"}`,
     "",
     orderEmail

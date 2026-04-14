@@ -352,8 +352,8 @@ export function CatalogApp({
   }, []);
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-[var(--background)] text-[var(--foreground)]">
-      <header className="sticky top-0 z-40 border-b border-[var(--line)] bg-[color:var(--background)]/95 backdrop-blur">
+    <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)]">
+      <header className="fixed inset-x-0 top-0 z-50 border-b border-[var(--line)] bg-[color:var(--background)]/95 backdrop-blur">
         <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-[auto_1fr_auto] items-center gap-3">
             <div className="flex items-center gap-2">
@@ -454,7 +454,7 @@ export function CatalogApp({
         </div>
       </header>
 
-      <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+      <main className="mx-auto max-w-7xl px-4 pb-6 pt-28 sm:px-6 sm:pb-8 sm:pt-32 lg:px-8">
         <section id="destacados" className="rounded-[8px] border border-[var(--line)] bg-[var(--surface)] p-4 sm:p-6">
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div className="max-w-2xl">
