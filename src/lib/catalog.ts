@@ -171,6 +171,11 @@ function choosePrimaryImage(gallery: string[]) {
   );
 }
 
+function keepCleanGallery(gallery: string[], preferredImage?: string | null) {
+  const primary = preferredImage ?? choosePrimaryImage(gallery);
+  return primary ? [primary] : [];
+}
+
 export function getCatalogData(): CatalogSummary {
   const grouped = new Map<
     string,
@@ -211,7 +216,9 @@ export function getCatalogData(): CatalogSummary {
       const priceArs = PROMO_PRICE_ARS;
       const priceUsd = Number((priceArs / catalogPayload.settings.exchangeRateArsPerUsd).toFixed(2));
       const supplierMatch = supplierImagePayload.products[baseLine.name];
-      const gallery = supplierMatch?.images.map((image) => image.path) ?? [];
+      const supplierGallery = supplierMatch?.images.map((image) => image.path) ?? [];
+      const image = choosePrimaryImage(supplierGallery);
+      const gallery = keepCleanGallery(supplierGallery, image);
 
       return {
         id: slugify(baseLine.name),
@@ -224,7 +231,7 @@ export function getCatalogData(): CatalogSummary {
         player,
         totalStock: 999,
         sizeOptions: PREORDER_SIZES.map((size) => ({ size, stock: 999 })),
-        image: choosePrimaryImage(gallery),
+        image,
         gallery,
         priceUsd,
         priceArs,
@@ -268,7 +275,7 @@ export function getCatalogData(): CatalogSummary {
     const priceArs = PROMO_PRICE_ARS;
     const priceUsd = Number((priceArs / catalogPayload.settings.exchangeRateArsPerUsd).toFixed(2));
     const heroImage = product.image ?? choosePrimaryImage(product.gallery);
-    const gallery = product.gallery.length > 0 ? product.gallery : heroImage ? [heroImage] : [];
+    const gallery = keepCleanGallery(product.gallery, heroImage);
 
     return {
       id: product.id,
@@ -299,7 +306,7 @@ export function getCatalogData(): CatalogSummary {
     const priceArs = PROMO_PRICE_ARS;
     const priceUsd = Number((priceArs / catalogPayload.settings.exchangeRateArsPerUsd).toFixed(2));
     const heroImage = product.image ?? choosePrimaryImage(product.gallery);
-    const gallery = product.gallery.length > 0 ? product.gallery : heroImage ? [heroImage] : [];
+    const gallery = keepCleanGallery(product.gallery, heroImage);
 
     return {
       id: product.id,
