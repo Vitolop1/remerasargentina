@@ -406,3 +406,14 @@ export function formatArs(value: number) {
 export function normalizeWhatsapp(value: string | undefined) {
   return (value ?? "").replace(/\D/g, "");
 }
+
+export function buildWhatsappHref(value: string | undefined, text?: string) {
+  const phone = normalizeWhatsapp(value);
+
+  if (!phone) {
+    return "#";
+  }
+
+  const base = `https://api.whatsapp.com/send?phone=${phone}`;
+  return text ? `${base}&text=${encodeURIComponent(text)}` : base;
+}

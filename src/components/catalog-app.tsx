@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 
-import { formatArs, normalizeWhatsapp } from "@/lib/catalog";
+import { buildWhatsappHref, formatArs } from "@/lib/catalog";
 import {
   depositFor,
   loadStoredCart,
@@ -80,7 +80,6 @@ export function CatalogApp({
   const [gallery, setGallery] = useState<GalleryState | null>(null);
   const [catalogMenuOpen, setCatalogMenuOpen] = useState(false);
 
-  const cleanWhatsapp = normalizeWhatsapp(whatsappNumber);
   const homeFeaturedSections = useMemo(() => {
     return HOME_TEAM_PRIORITY.map(({ team, label }) => {
       const sectionProducts = products
@@ -139,11 +138,10 @@ export function CatalogApp({
     () => (isClient ? cart : []).reduce((total, item) => total + item.quantity, 0),
     [cart, isClient],
   );
-  const otherJerseyHref = cleanWhatsapp
-    ? `https://wa.me/${cleanWhatsapp}?text=${encodeURIComponent(
-        "Hola, quiero una remera que no vi en el catalogo. Me pasas modelos y precio?",
-      )}`
-    : "#";
+  const otherJerseyHref = buildWhatsappHref(
+    whatsappNumber,
+    "Hola, quiero una remera que no vi en el catalogo. Me pasas modelos y precio?",
+  );
 
   function scrollToCatalog() {
     window.setTimeout(() => {
@@ -857,8 +855,11 @@ export function CatalogApp({
               href={otherJerseyHref}
               target="_blank"
               rel="noreferrer"
-              className="rounded-[8px] bg-white px-4 py-3 text-sm font-semibold text-[var(--accent)]"
+              className="inline-flex items-center gap-2 rounded-[8px] bg-white px-4 py-3 text-sm font-semibold text-[var(--accent)]"
             >
+              <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true" fill="currentColor">
+                <path d="M20.52 3.48A11.8 11.8 0 0 0 12.09 0C5.54 0 .19 5.32.19 11.86c0 2.09.55 4.13 1.59 5.92L0 24l6.39-1.67a11.8 11.8 0 0 0 5.69 1.45h.01c6.55 0 11.9-5.32 11.9-11.86 0-3.17-1.24-6.15-3.47-8.44Zm-8.43 18.3h-.01a9.82 9.82 0 0 1-5.01-1.37l-.36-.21-3.79.99 1.01-3.69-.24-.38a9.78 9.78 0 0 1-1.51-5.24c0-5.43 4.45-9.86 9.92-9.86 2.65 0 5.13 1.03 7 2.9a9.78 9.78 0 0 1 2.9 6.96c0 5.44-4.45 9.87-9.91 9.87Zm5.41-7.39c-.3-.15-1.78-.88-2.05-.98-.28-.1-.48-.15-.68.15-.2.29-.78.97-.95 1.17-.18.2-.35.22-.65.07-.3-.15-1.27-.47-2.42-1.49a9.1 9.1 0 0 1-1.68-2.08c-.18-.3-.02-.46.14-.6.13-.13.3-.35.45-.52.15-.17.2-.29.3-.49.1-.2.05-.37-.03-.52-.08-.15-.68-1.63-.94-2.24-.24-.57-.49-.49-.68-.5h-.58c-.2 0-.52.07-.8.37-.27.29-1.04 1.01-1.04 2.47 0 1.45 1.07 2.85 1.22 3.04.15.2 2.1 3.2 5.09 4.49.71.31 1.26.49 1.7.62.71.22 1.36.19 1.87.11.57-.08 1.78-.73 2.03-1.44.25-.71.25-1.31.17-1.43-.07-.12-.27-.2-.57-.35Z" />
+              </svg>
               Contactar al vendedor
             </a>
             <span className="rounded-[8px] border border-white/35 px-4 py-3 text-sm font-semibold">
