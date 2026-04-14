@@ -355,21 +355,8 @@ export function CatalogApp({
     <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)]">
       <header className="fixed inset-x-0 top-0 z-50 border-b border-[var(--line)] bg-[color:var(--background)]/95 backdrop-blur">
         <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-[auto_1fr_auto] items-center gap-3">
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={openCatalogMenu}
-                className="flex h-12 w-12 items-center justify-center rounded-[8px] border border-[var(--line)] bg-[var(--surface)] shadow-[var(--soft-shadow)] transition hover:border-[var(--foreground)]"
-                aria-label="Abrir menu"
-              >
-                <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M4 7h16" />
-                  <path d="M4 12h16" />
-                  <path d="M4 17h16" />
-                </svg>
-              </button>
-
+          <div className="grid grid-cols-[3rem_minmax(0,1fr)_auto] items-center gap-2 sm:gap-3">
+            <div className="flex items-center">
               <button
                 type="button"
                 onClick={openSearchMenu}
@@ -388,7 +375,7 @@ export function CatalogApp({
               className="justify-self-center"
               aria-label="RL importaciones"
             >
-              <div className="inline-flex max-w-full items-center gap-3 rounded-[8px] border border-[var(--line)] bg-[var(--surface)] px-3 py-3 shadow-[var(--soft-shadow)] md:rounded-full md:px-4">
+              <div className="inline-flex max-w-full items-center gap-2 rounded-[8px] border border-[var(--line)] bg-[var(--surface)] px-3 py-3 shadow-[var(--soft-shadow)] md:rounded-full md:px-4">
                 <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full bg-[var(--background)] md:h-11 md:w-11">
                   <Image
                     src="/images/logo-remeras-argentina.svg"
@@ -400,25 +387,25 @@ export function CatalogApp({
                 </div>
                 <div className="min-w-0 text-left">
                   <p className="truncate text-base font-black leading-none sm:text-xl">RL importaciones</p>
-                  <p className="mt-1 text-[11px] text-[var(--muted)] sm:text-xs">Remeras de futbol</p>
+                  <p className="mt-1 hidden text-[11px] text-[var(--muted)] sm:block sm:text-xs">Remeras de futbol</p>
                 </div>
               </div>
             </Link>
 
             <Link
               href="/carrito"
-              className={`justify-self-end inline-flex items-center gap-3 rounded-[8px] border px-3 py-3 shadow-[var(--soft-shadow)] transition ${
+              className={`justify-self-end inline-flex items-center gap-2 rounded-[8px] border px-3 py-3 shadow-[var(--soft-shadow)] transition ${
                 cartUnits > 0 || cartNotice
                   ? "border-[var(--accent-2)] bg-[var(--accent-2)] text-white"
                   : "border-[var(--line)] bg-[var(--surface)] text-[var(--foreground)]"
-              }`}
+              } ${cartNotice ? "animate-pulse ring-2 ring-[var(--accent-2)] ring-offset-2 ring-offset-[var(--background)]" : ""}`}
             >
               <span
                 className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-[8px] ${
                   cartUnits > 0 || cartNotice
                     ? "bg-white/14 text-white"
                     : "bg-[var(--foreground)] text-[var(--surface)]"
-                }`}
+                } ${cartNotice ? "animate-bounce" : ""}`}
               >
                 <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2">
                   <circle cx="9" cy="20" r="1.5" />
@@ -433,7 +420,7 @@ export function CatalogApp({
                   Carrito
                 </span>
                 <span className="block text-sm font-semibold">
-                  {cartNotice ?? (cartUnits > 0 ? `${cartUnits} remeras` : "Ver pedido")}
+                  {cartUnits > 0 ? `${cartUnits} remeras` : "Ver carrito"}
                 </span>
               </span>
               <span
@@ -450,6 +437,23 @@ export function CatalogApp({
           </div>
         </div>
       </header>
+
+      {cartNotice ? (
+        <div className="fixed left-4 right-4 top-24 z-[60] sm:left-auto sm:right-6 sm:w-[21rem]">
+          <div className="flex items-center justify-between gap-3 rounded-[8px] border border-[var(--accent-2)] bg-[var(--surface)] px-4 py-3 shadow-[0_18px_40px_rgba(0,0,0,0.18)]">
+            <div className="min-w-0">
+              <p className="text-sm font-semibold">{cartNotice}</p>
+              <p className="text-xs text-[var(--muted)]">Ya la tenes lista para cerrar el pedido.</p>
+            </div>
+            <Link
+              href="/carrito"
+              className="shrink-0 rounded-[8px] bg-[var(--accent-2)] px-3 py-2 text-sm font-semibold text-white"
+            >
+              Ver carrito
+            </Link>
+          </div>
+        </div>
+      ) : null}
 
       <main className="mx-auto max-w-7xl px-4 pb-6 pt-28 sm:px-6 sm:pb-8 sm:pt-32 lg:px-8">
         <section id="destacados" className="rounded-[8px] border border-[var(--line)] bg-[var(--surface)] p-4 sm:p-6">
