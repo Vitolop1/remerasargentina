@@ -146,7 +146,7 @@ export function buildOrderText(
     ...itemLines,
     "",
     `Total promocional: ${formatArs(totalArs)}`,
-    `Sena estimada (50%): ${formatArs(depositArs)}`,
+    `Se\u00f1a estimada (50%): ${formatArs(depositArs)}`,
     `Llegada estimada: ${ESTIMATED_ARRIVAL_LABEL}`,
     "",
     `Nombre: ${customer.name || "-"}`,
@@ -157,8 +157,8 @@ export function buildOrderText(
     `Notas: ${customer.notes || "-"}`,
     "",
     orderEmail
-      ? `Mandame la confirmacion a ${orderEmail} y despues coordinamos la sena y la entrega.`
-      : "Despues coordinamos la sena y la entrega.",
+      ? `Mandame la confirmacion a ${orderEmail} y despues coordinamos la se\u00f1a y la entrega.`
+      : "Despues coordinamos la se\u00f1a y la entrega.",
   ].join("\n");
 }
 

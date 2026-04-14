@@ -353,7 +353,7 @@ export function CatalogApp({
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-[var(--background)] text-[var(--foreground)]">
-      <header className="border-b border-[var(--line)] bg-[var(--background)]">
+      <header className="sticky top-0 z-40 border-b border-[var(--line)] bg-[color:var(--background)]/95 backdrop-blur">
         <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-[auto_1fr_auto] items-center gap-3">
             <div className="flex items-center gap-2">
@@ -527,7 +527,7 @@ export function CatalogApp({
                         <p className="mt-3 text-sm text-[var(--muted)] line-through">{formatArs(ORIGINAL_PRICE_ARS)}</p>
                         <p className="mt-1 text-2xl font-semibold">{formatArs(product.priceArs)}</p>
                         <p className="mt-1 text-sm text-[var(--muted)]">
-                          Sena estimada: {formatArs(depositFor(product.priceArs))}
+                          {"Se\u00f1a estimada: "} {formatArs(depositFor(product.priceArs))}
                         </p>
 
                         <div className="mt-4 grid gap-2">
@@ -786,7 +786,7 @@ export function CatalogApp({
                       </p>
                       <p className="mt-1 text-2xl font-semibold">{formatArs(product.priceArs)}</p>
                       <p className="mt-1 text-sm text-[var(--muted)]">
-                        Sena estimada: {formatArs(depositFor(product.priceArs))}
+                        {"Se\u00f1a estimada: "} {formatArs(depositFor(product.priceArs))}
                       </p>
                     </div>
 

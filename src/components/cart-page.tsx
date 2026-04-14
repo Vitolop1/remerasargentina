@@ -191,7 +191,7 @@ export function CartPage({
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-[var(--background)] text-[var(--foreground)]">
-      <header className="border-b border-[var(--line)] bg-[var(--background)]">
+      <header className="sticky top-0 z-40 border-b border-[var(--line)] bg-[color:var(--background)]/95 backdrop-blur">
         <div className="mx-auto max-w-6xl px-4 py-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-[auto_1fr_auto] items-center gap-3">
             <Link
@@ -393,7 +393,7 @@ export function CartPage({
                   <strong>{formatArs(totals.ars)}</strong>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-[var(--muted)]">Sena estimada</span>
+                  <span className="text-[var(--muted)]">{"Se\u00f1a estimada"}</span>
                   <strong>{formatArs(depositArs)}</strong>
                 </div>
                 <div className="flex items-center justify-between">
@@ -491,7 +491,7 @@ export function CartPage({
                 ) : null}
 
                 <p className="mt-4 text-sm text-[var(--muted)]">
-                  Nos envias el pedido, te confirmamos disponibilidad y coordinamos la sena.
+                  {"Nos envias el pedido, te confirmamos disponibilidad y coordinamos la se\u00f1a."}
                 </p>
               </div>
 
