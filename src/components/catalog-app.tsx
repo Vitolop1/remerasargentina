@@ -538,22 +538,31 @@ export function CatalogApp({
                         </p>
 
                         <div className="mt-4 grid gap-2">
-                          <select
-                            value={selectedSize}
-                            onChange={(event) =>
-                              setSelectedSizes((current) => ({
-                                ...current,
-                                [product.id]: event.target.value,
-                              }))
-                            }
-                            className="rounded-[8px] border border-[var(--line)] bg-[var(--surface)] px-3 py-3 text-base sm:text-sm"
-                          >
-                            {product.sizeOptions.map((option) => (
-                              <option key={option.size} value={option.size}>
-                                {option.size}
-                              </option>
-                            ))}
-                          </select>
+                          <div className="flex flex-wrap gap-2">
+                            {product.sizeOptions.map((option) => {
+                              const active = selectedSize === option.size;
+
+                              return (
+                                <button
+                                  key={option.size}
+                                  type="button"
+                                  onClick={() =>
+                                    setSelectedSizes((current) => ({
+                                      ...current,
+                                      [product.id]: option.size,
+                                    }))
+                                  }
+                                  className={`rounded-[8px] border px-3 py-2 text-sm ${
+                                    active
+                                      ? "border-[var(--foreground)] bg-[var(--foreground)] text-[var(--surface)]"
+                                      : "border-[var(--line)]"
+                                  }`}
+                                >
+                                  {option.size}
+                                </button>
+                              );
+                            })}
+                          </div>
 
                           <div className="grid gap-2 sm:grid-cols-2">
                             <button

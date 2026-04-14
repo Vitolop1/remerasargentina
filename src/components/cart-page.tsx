@@ -12,14 +12,11 @@ import {
   loadStoredCart,
   loadStoredCustomer,
   ORIGINAL_PRICE_ARS,
-  resolveThemePreference,
   saveStoredCart,
   saveStoredCustomer,
-  THEME_STORAGE_KEY,
   translateProductName,
   type CartItem,
   type Customer,
-  type ThemeMode,
 } from "@/lib/storefront";
 import type { CatalogProduct, CatalogSummary } from "@/types/catalog";
 
@@ -52,16 +49,6 @@ export function CartPage({
     () => true,
     () => false,
   );
-  const [theme, setTheme] = useState<ThemeMode>(() => {
-    if (typeof document !== "undefined") {
-      const currentTheme = document.documentElement.dataset.theme;
-      if (currentTheme === "light" || currentTheme === "dark") {
-        return currentTheme;
-      }
-    }
-
-    return resolveThemePreference();
-  });
   const [cart, setCart] = useState<CartItem[]>(() => loadStoredCart());
   const [customer, setCustomer] = useState<Customer>(() => loadStoredCustomer());
   const [copiedOrder, setCopiedOrder] = useState(false);
@@ -69,11 +56,6 @@ export function CartPage({
   const [copiedCvu, setCopiedCvu] = useState(false);
 
   const cleanWhatsapp = normalizeWhatsapp(whatsappNumber);
-
-  useEffect(() => {
-    document.documentElement.dataset.theme = theme;
-    window.localStorage.setItem(THEME_STORAGE_KEY, theme);
-  }, [theme]);
 
   useEffect(() => {
     if (!isClient) {
@@ -132,6 +114,10 @@ export function CartPage({
   const quickWhatsappHref = buildWhatsappHref(
     whatsappNumber,
     "Hola, quiero hablar por WhatsApp por unas remeras del catalogo.",
+  );
+  const headerWhatsappHref = buildWhatsappHref(
+    whatsappNumber,
+    "Hola, quiero ayuda con mi carrito de remeras.",
   );
   const emailHref = orderEmail
     ? `mailto:${orderEmail}?subject=${encodeURIComponent(
@@ -192,68 +178,86 @@ export function CartPage({
   return (
     <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)]">
       <header className="fixed inset-x-0 top-0 z-50 border-b border-[var(--line)] bg-[color:var(--background)]/95 backdrop-blur">
-        <div className="mx-auto max-w-6xl px-4 py-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-[auto_1fr_auto] items-center gap-3">
-            <Link
-              href="/#catalogo"
-              className="inline-flex items-center gap-2 rounded-[8px] border border-[var(--line)] bg-[var(--surface)] px-3 py-3 text-sm font-semibold shadow-[var(--soft-shadow)]"
-            >
-              <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="m15 18-6-6 6-6" />
-              </svg>
-              <span className="hidden sm:inline">Volver al catalogo</span>
-            </Link>
+        <div className="mx-auto max-w-7xl px-3 py-3 sm:px-6 sm:py-4 lg:px-8">
+          <div className="grid grid-cols-[2.5rem_minmax(0,1fr)_auto] items-center gap-2 sm:gap-3">
+            <div className="flex items-center">
+              <Link
+                href="/#catalogo"
+                aria-label="Volver al catalogo"
+                className="flex h-10 w-10 items-center justify-center rounded-[8px] border border-[var(--line)] bg-[var(--surface)] shadow-[var(--soft-shadow)] transition hover:border-[var(--foreground)] sm:h-11 sm:w-11"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  className="h-[1.1rem] w-[1.1rem]"
+                  aria-hidden="true"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <circle cx="11" cy="11" r="6" />
+                  <path d="m20 20-3.5-3.5" />
+                </svg>
+              </Link>
+            </div>
 
-            <Link href="/" className="justify-self-center">
-              <div className="inline-flex max-w-full items-center gap-3 rounded-[8px] border border-[var(--line)] bg-[var(--surface)] px-3 py-3 shadow-[var(--soft-shadow)] md:rounded-full md:px-4">
-                <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full bg-[var(--background)] md:h-11 md:w-11">
+            <Link href="/" className="mx-auto min-w-0">
+              <div className="inline-flex min-w-0 items-center gap-2 rounded-[8px] border border-[var(--line)] bg-[var(--surface)] px-3 py-2 shadow-[var(--soft-shadow)] sm:gap-3 sm:px-4 sm:py-3">
+                <div className="relative h-7 w-7 shrink-0 overflow-hidden rounded-full bg-[var(--background)] sm:h-9 sm:w-9">
                   <Image
                     src="/images/logo-remeras-argentina.svg"
                     alt="Logo RL importaciones"
                     fill
-                    className="object-contain p-2"
-                    sizes="44px"
+                    className="object-contain p-1 sm:p-1.5"
+                    sizes="36px"
                   />
                 </div>
                 <div className="min-w-0 text-left">
                   <p className="truncate text-base font-black leading-none sm:text-xl">RL importaciones</p>
-                  <p className="mt-1 text-[11px] text-[var(--muted)] sm:text-xs">
-                    {isClient ? `${totals.units} remeras en carrito` : "Cargando carrito"}
-                  </p>
                 </div>
               </div>
             </Link>
 
-            <div
-              suppressHydrationWarning
-              className="inline-flex items-center gap-1 rounded-full border border-[var(--line)] bg-[var(--surface)] p-1 shadow-[var(--soft-shadow)]"
-            >
-              <button
-                type="button"
-                onClick={() => setTheme("light")}
-                aria-pressed={theme === "light"}
-                className={`rounded-full px-3 py-2 text-sm font-semibold ${
-                  theme === "light" ? "bg-[var(--accent)] text-white" : "text-[var(--muted)]"
-                }`}
+            <div className="justify-self-end flex items-center gap-2">
+              <a
+                href={headerWhatsappHref}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Hablar por WhatsApp"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-[8px] bg-[#25D366] text-white shadow-[var(--soft-shadow)] transition hover:opacity-95 sm:h-11 sm:w-auto sm:gap-2 sm:px-3"
               >
-                Claro
-              </button>
-              <button
-                type="button"
-                onClick={() => setTheme("dark")}
-                aria-pressed={theme === "dark"}
-                className={`rounded-full px-3 py-2 text-sm font-semibold ${
-                  theme === "dark" ? "bg-[var(--accent)] text-white" : "text-[var(--muted)]"
-                }`}
+                <svg
+                  viewBox="0 0 24 24"
+                  className="h-[1.15rem] w-[1.15rem]"
+                  aria-hidden="true"
+                  fill="currentColor"
+                >
+                  <path d="M19.05 4.94A9.86 9.86 0 0 0 12.02 2a9.97 9.97 0 0 0-8.63 14.96L2 22l5.2-1.36a9.97 9.97 0 0 0 4.79 1.22h.01c5.5 0 9.98-4.47 9.99-9.97a9.9 9.9 0 0 0-2.94-6.95Zm-7.03 15.24h-.01a8.3 8.3 0 0 1-4.23-1.16l-.3-.18-3.09.81.82-3.01-.2-.31a8.29 8.29 0 0 1-1.28-4.43c0-4.58 3.72-8.3 8.3-8.3a8.24 8.24 0 0 1 5.88 2.44 8.23 8.23 0 0 1 2.42 5.88c0 4.58-3.72 8.3-8.31 8.3Zm4.55-6.22c-.25-.12-1.47-.72-1.69-.8-.23-.08-.39-.12-.56.12-.16.25-.64.8-.78.97-.14.17-.29.18-.54.06-.25-.12-1.05-.39-2-1.24a7.48 7.48 0 0 1-1.39-1.73c-.15-.25-.01-.38.11-.5.11-.11.25-.29.37-.43.12-.15.16-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.42-.14-.01-.31-.01-.47-.01-.17 0-.43.06-.66.31-.23.25-.87.85-.87 2.08 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.68 4.24 3.75.59.26 1.05.41 1.41.52.59.19 1.12.16 1.54.1.47-.07 1.47-.6 1.67-1.18.21-.58.21-1.08.14-1.18-.06-.11-.22-.17-.47-.29Z" />
+                </svg>
+                <span className="hidden sm:inline">WhatsApp</span>
+              </a>
+
+              <Link
+                href="/carrito"
+                aria-label={`Abrir carrito con ${totals.units} productos`}
+                className="relative inline-flex h-10 min-w-10 items-center justify-center rounded-[8px] bg-[var(--accent-2)] px-3 text-white transition hover:opacity-95 sm:h-11 sm:min-w-11"
               >
-                Oscuro
-              </button>
+                <svg viewBox="0 0 24 24" className="h-[1.05rem] w-[1.05rem]" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="9" cy="20" r="1.5" />
+                  <circle cx="18" cy="20" r="1.5" />
+                  <path d="M3 4h2l2.2 9.2a1 1 0 0 0 1 .8h8.9a1 1 0 0 0 1-.8L20 7H7" />
+                </svg>
+                {totals.units > 0 ? (
+                  <span className="absolute -right-1.5 -top-1.5 inline-flex min-w-5 items-center justify-center rounded-full bg-[var(--surface)] px-1.5 py-0.5 text-[11px] font-bold text-[var(--foreground)] shadow-[var(--soft-shadow)]">
+                    {totals.units}
+                  </span>
+                ) : null}
+              </Link>
             </div>
           </div>
         </div>
       </header>
 
-      <main className="mx-auto max-w-6xl px-4 pb-6 pt-28 sm:px-6 sm:pb-8 sm:pt-32 lg:px-8">
+      <main className="mx-auto max-w-6xl px-4 pb-6 pt-24 sm:px-6 sm:pb-8 sm:pt-32 lg:px-8">
         <section className="rounded-[8px] border border-[var(--line)] bg-[var(--surface)] p-5 sm:p-6">
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div className="max-w-2xl">
