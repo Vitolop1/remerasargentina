@@ -172,8 +172,19 @@ function choosePrimaryImage(gallery: string[]) {
 }
 
 function keepCleanGallery(gallery: string[], preferredImage?: string | null) {
-  const primary = preferredImage ?? choosePrimaryImage(gallery);
-  return primary ? [primary] : [];
+  const uniqueGallery = [...new Set(gallery.filter(Boolean))];
+  const photoGallery = uniqueGallery.filter((image) => /\.(jpg|jpeg|webp)$/i.test(image));
+  const cleanedGallery = photoGallery.length >= 2 ? photoGallery : uniqueGallery;
+  const primary = preferredImage ?? choosePrimaryImage(cleanedGallery);
+
+  if (!primary) {
+    return [];
+  }
+
+  return [
+    primary,
+    ...cleanedGallery.filter((image) => image !== primary),
+  ].slice(0, 6);
 }
 
 export function getCatalogData(): CatalogSummary {
