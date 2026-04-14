@@ -139,7 +139,7 @@ export function buildOrderText(
   );
 
   return [
-    "Hola, quiero pedir estas remeras:",
+    "Hola, estoy interesado en las siguientes camisetas:",
     "",
     ...itemLines,
     "",
@@ -147,15 +147,16 @@ export function buildOrderText(
     `Se\u00f1a estimada (50%): ${formatArs(depositArs)}`,
     `Llegada estimada: ${ESTIMATED_ARRIVAL_LABEL}`,
     "",
+    "Datos del comprador:",
     `Nombre: ${customer.name || "-"}`,
-    `Telefono: ${customer.phone || "-"}`,
+    `WhatsApp: ${customer.phone || "-"}`,
     `Mail: ${customer.email || "-"}`,
     `Zona: ${customer.zone || "-"}`,
     `Notas: ${customer.notes || "-"}`,
     "",
     orderEmail
-      ? `Mandame la confirmacion a ${orderEmail} y despues coordinamos la se\u00f1a y la entrega.`
-      : "Despues coordinamos la se\u00f1a y la entrega.",
+      ? `Si hace falta, tambien me podes mandar la confirmacion a ${orderEmail}.`
+      : "Quedo atento para confirmar disponibilidad, se\u00f1a y entrega.",
   ].join("\n");
 }
 
