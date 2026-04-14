@@ -41,6 +41,7 @@ type CatalogAppProps = CatalogSummary & {
 const DEPOSIT_RATE = 0.5;
 const ORIGINAL_PRICE_ARS = 79000;
 const THEME_STORAGE_KEY = "remeras-theme";
+const ESTIMATED_ARRIVAL_LABEL = "13 de mayo";
 
 const HOME_TEAM_PRIORITY = [
   { team: "Argentina", label: "Argentina" },
@@ -163,6 +164,7 @@ function buildOrderText(
     "",
     `Total promocional: ${formatArs(totalArs)}`,
     `Sena estimada (50%): ${formatArs(depositArs)}`,
+    `Llegada estimada: ${ESTIMATED_ARRIVAL_LABEL}`,
     "",
     `Nombre: ${customer.name || "-"}`,
     `Telefono: ${customer.phone || "-"}`,
@@ -191,6 +193,7 @@ export function CatalogApp({
   paymentQrPath,
 }: CatalogAppProps) {
   const searchInputRef = useRef<HTMLInputElement | null>(null);
+  const cartNoticeTimeoutRef = useRef<number | null>(null);
   const [theme, setTheme] = useState<ThemeMode>(() => {
     if (typeof document !== "undefined") {
       const currentTheme = document.documentElement.dataset.theme;
@@ -220,6 +223,7 @@ export function CatalogApp({
   const [copiedOrder, setCopiedOrder] = useState(false);
   const [copiedAlias, setCopiedAlias] = useState(false);
   const [copiedCvu, setCopiedCvu] = useState(false);
+  const [cartNotice, setCartNotice] = useState<string | null>(null);
   const [gallery, setGallery] = useState<GalleryState | null>(null);
   const [catalogMenuOpen, setCatalogMenuOpen] = useState(false);
 
@@ -332,6 +336,12 @@ export function CatalogApp({
   function scrollToCatalog() {
     window.setTimeout(() => {
       document.getElementById("catalogo")?.scrollIntoView({ behavior: "smooth" });
+    }, 20);
+  }
+
+  function scrollToOrder() {
+    window.setTimeout(() => {
+      document.getElementById("pedido")?.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 20);
   }
 
@@ -480,8 +490,17 @@ export function CatalogApp({
         item.productId === product.id && item.size === size
           ? { ...item, quantity: item.quantity + 1 }
           : item,
-      );
+        );
     });
+
+    setCartNotice("Agregado al pedido");
+    if (cartNoticeTimeoutRef.current) {
+      window.clearTimeout(cartNoticeTimeoutRef.current);
+    }
+    cartNoticeTimeoutRef.current = window.setTimeout(() => {
+      setCartNotice(null);
+      cartNoticeTimeoutRef.current = null;
+    }, 1800);
   }
 
   function changeQuantity(productId: string, size: string, delta: number) {
@@ -548,6 +567,14 @@ export function CatalogApp({
     window.setTimeout(() => setCopiedCvu(false), 1800);
   }
 
+  useEffect(() => {
+    return () => {
+      if (cartNoticeTimeoutRef.current) {
+        window.clearTimeout(cartNoticeTimeoutRef.current);
+      }
+    };
+  }, []);
+
   return (
     <div className="min-h-screen overflow-x-hidden bg-[var(--background)] text-[var(--foreground)]">
       <header className="border-b border-[var(--line)] bg-[var(--background)]">
@@ -593,7 +620,52 @@ export function CatalogApp({
               </div>
             </div>
 
-            <div className="order-3 flex justify-center md:justify-end">
+            <div className="order-3 flex flex-col justify-center gap-2 md:items-end">
+              <button
+                type="button"
+                onClick={scrollToOrder}
+                className={`inline-flex w-full items-center justify-between gap-3 rounded-[8px] border px-3 py-3 text-left shadow-[var(--soft-shadow)] md:w-[15rem] ${
+                  totals.units > 0 || cartNotice
+                    ? "border-[var(--accent-2)] bg-[var(--accent-2)] text-white"
+                    : "border-[var(--line)] bg-[var(--surface)] text-[var(--foreground)]"
+                }`}
+              >
+                <span className="flex items-center gap-3">
+                  <span
+                    className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-[8px] ${
+                      totals.units > 0 || cartNotice
+                        ? "bg-white/14 text-white"
+                        : "bg-[var(--foreground)] text-[var(--surface)]"
+                    }`}
+                  >
+                    <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2">
+                      <circle cx="9" cy="20" r="1.5" />
+                      <circle cx="18" cy="20" r="1.5" />
+                      <path d="M3 4h2l2.4 10.2a1 1 0 0 0 1 .8h8.9a1 1 0 0 0 1-.8L20 7H7" />
+                    </svg>
+                  </span>
+                  <span>
+                    <span className={`block text-[10px] font-semibold uppercase tracking-[0.16em] ${
+                      totals.units > 0 || cartNotice ? "text-white/70" : "text-[var(--muted)]"
+                    }`}>
+                      Pedido
+                    </span>
+                    <span className="block text-sm font-semibold">
+                      {cartNotice ?? (totals.units > 0 ? `${totals.units} remeras en carrito` : "Tu carrito")}
+                    </span>
+                  </span>
+                </span>
+                <span
+                  className={`rounded-[8px] px-3 py-2 text-sm font-semibold ${
+                    totals.units > 0 || cartNotice
+                      ? "bg-white text-[#111820]"
+                      : "bg-[var(--foreground)] text-[var(--surface)]"
+                  }`}
+                >
+                  {totals.units}
+                </span>
+              </button>
+
               <div
                 suppressHydrationWarning
                 className="inline-flex w-full items-center justify-center gap-1 rounded-full border border-[var(--line)] bg-[var(--surface)] p-1 shadow-[var(--soft-shadow)] md:w-auto"
@@ -787,13 +859,13 @@ export function CatalogApp({
                   </button>
                 </div>
 
-                <div className="mt-3 flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 pr-2">
+                <div className="mt-3 grid grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
                   {group.items.map((item) => (
                     <button
                       key={item.team}
                       type="button"
                       onClick={() => openCatalogWithTeam(item.team)}
-                      className="flex min-w-[5.4rem] max-w-[5.4rem] shrink-0 snap-start flex-col items-center gap-2 rounded-[8px] border border-[var(--line)] bg-[var(--background)] px-2 py-3 text-center transition hover:border-[var(--foreground)] sm:min-w-[6.8rem] sm:max-w-[6.8rem] sm:gap-3 sm:px-3 sm:py-4"
+                      className="flex w-full flex-col items-center gap-2 rounded-[8px] border border-[var(--line)] bg-[var(--background)] px-2 py-3 text-center transition hover:border-[var(--foreground)] sm:gap-3 sm:px-3 sm:py-4"
                     >
                       <div className="flex h-12 w-12 items-center justify-center rounded-[8px] bg-[var(--crest-tile)] sm:h-14 sm:w-14">
                         {item.logo ? (
@@ -1013,11 +1085,17 @@ export function CatalogApp({
             </div>
           </section>
 
-          <aside className="h-fit rounded-[8px] border border-[var(--line)] bg-[var(--surface)] p-4 sm:p-5 lg:sticky lg:top-6">
+          <aside
+            id="pedido"
+            className="h-fit rounded-[8px] border border-[var(--line)] bg-[var(--surface)] p-4 sm:p-5 lg:sticky lg:top-6"
+          >
             <div className="flex items-start justify-between gap-4">
               <div>
                 <p className="text-xs uppercase tracking-[0.18em] text-[var(--muted)]">Pedido</p>
                 <h2 className="mt-1 text-xl font-semibold">Arma tu carrito</h2>
+                <p className="mt-2 text-xs font-semibold uppercase tracking-[0.16em] text-[var(--accent)]">
+                  Llega estimado: {ESTIMATED_ARRIVAL_LABEL}
+                </p>
               </div>
               <span className="rounded-[8px] bg-[var(--foreground)] px-3 py-2 text-sm font-semibold text-[var(--surface)]">
                 {totals.units}
@@ -1027,7 +1105,7 @@ export function CatalogApp({
             <div className="mt-5 space-y-2 rounded-[8px] border border-[var(--line)] bg-[var(--background)] p-4 text-sm">
               <p className="font-semibold">1. Elegi remera y talle.</p>
               <p className="font-semibold">2. Envia el pedido por mail o WhatsApp.</p>
-              <p className="font-semibold">3. Te confirmamos llegada, precio final y sena.</p>
+              <p className="font-semibold">3. Llega estimado el {ESTIMATED_ARRIVAL_LABEL}; confirmamos precio final y sena.</p>
             </div>
 
             <div className="mt-5 space-y-3 border-b border-[var(--line)] pb-5">
